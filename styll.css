@@ -10,7 +10,54 @@ header {
     text-align: center;
 }
 
+header h1 {body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+}
+
 header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+header p {
+    margin: 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Three columns */
+    grid-auto-rows: 1fr; /* Rows automatically adjust */
+    gap: 20px;
+    padding: 20px;
+}
+
+.project-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.project-card h2 {
+    margin-top: 0;
+}
+
+.project-card p {
+    color: #666;
+}
+
     margin: 0;
     font-size: 2em;
 }
