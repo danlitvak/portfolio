@@ -1,93 +1,59 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    font-family: Arial, sans-serif; /* Sets the default font */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+    background: #f0f0f0; /* Background color for the entire page */
 }
 
+/* Header Section Styling */
 header {
-    background-color: #f8f9fa;
-    padding: 20px;
-    text-align: center;
-}
-
-header h1 {body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #f8f9fa;
-    padding: 20px;
-    text-align: center;
+    background-color: #f0f0f0; /* Light background color */
+    padding: 20px; /* Padding inside the header */
+    text-align: center; /* Center aligns text */
 }
 
 header h1 {
-    margin: 0;
-    font-size: 2em;
+    margin: 0; /* Removes default margin */
+    font-size: 2em; /* Increases font size */
 }
 
 header p {
-    margin: 0;
-    font-size: 1.2em;
-    color: #555;
+    margin: 0; /* Removes default margin */
+    font-size: 1.2em; /* Sets font size */
+    color: #555; /* Sets text color */
 }
 
+/* Divider Line Styling */
+.divider {
+    width: 100%; /* Full width of the container */
+    height: 2px; /* Thickness of the line */
+    background-color: #ccc; /* Color of the line */
+    margin: 20px 0; /* Space above and below the line */
+}
+
+/* Project Grid Container Styling */
 .project-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Three columns */
-    grid-auto-rows: 1fr; /* Rows automatically adjust */
-    gap: 20px;
-    padding: 20px;
+    display: grid; /* Uses CSS Grid for layout */
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+    grid-auto-rows: minmax(600px, auto);
+    gap: 20px; /* Space between grid items */
+    padding: 20px; /* Padding inside the grid container */
 }
 
+/* Individual Project Card Styling */
 .project-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
+    background-color: #ffffff; /* White background for cards */
+    border: 1px solid #ddd; /* Light gray border */
+    /* border-radius: 8px; Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 5px; /* Padding inside each card */
+    text-align: center; /* Center aligns text inside cards */
 }
 
 .project-card h2 {
-    margin-top: 0;
+    margin-top: 0; /* Removes top margin */
 }
 
 .project-card p {
-    color: #666;
-}
-
-    margin: 0;
-    font-size: 2em;
-}
-
-header p {
-    margin: 0;
-    font-size: 1.2em;
-    color: #555;
-}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.project-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-}
-
-.project-card h2 {
-    margin-top: 0;
-}
-
-.project-card p {
-    color: #666;
+    color: #666; /* Gray text color */
 }
