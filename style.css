@@ -24,13 +24,42 @@ hr {
     background-color: #333;
 }
 
+.title-link, .title-link:visited {
+    color: rgb(255, 255, 255); 
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #333;
+}
+
 .container {
     width: 80%;
     margin: 0 auto;
 }
 
+.project-container {
+    width: 80%;
+    margin: auto;
+}
+
 .section {
     padding: 40px 0;
+}
+
+.project {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 400px;
+    margin:auto
 }
 
 .section h2 {
