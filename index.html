@@ -6,24 +6,26 @@
         <title>Daniel Litvak's Portfolio</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style.css">
-
+        
         <!-- fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+        <!-- style -->
+        <link rel="stylesheet" href="style.css">
     </head>
+
     <body>
+        <header class="header" id="header">
 
-        <header class="header">
-
-            <a class="header-title" href="#" id="1">
+            <a class="header-title" href="../index.html" id="1">
                 Daniel Litvak's Portfolio
             </a>
 
             <div class="header-buttons">
-                <button>Home</button>
-                <button>Projects</button>
-                <button>Contact</button>
+                <button onclick="window.location.href='#'">Home</button>
+                <button onclick="window.location.href='#project-board'">Projects</button>
+                <button onclick="window.location.href='#about'">Contact</button>
             </div>
 
         </header>
@@ -57,7 +59,7 @@
 
         
         <!-- Project Board Section -->
-        <section class="project-board">
+        <section class="project-board" id="project-board">
             <h2>My Projects</h2>
             <hr> <!-- line -->
             <div class="projects">
@@ -96,22 +98,26 @@
             </div>
         </section>
 
-        <section class="introduction">
-            <h1>Socials</h1>
+        <section class="introduction" id="about">
+            <h1>Find Me</h1>
             <hr>
-            <p> Find me: </p>
-            <p> *email* </p>
-            <p> *instagram* </p>
-            <p> *linkedin* </p>
+            <p></p>
+            <a href="https://www.instagram.com/daniell.3764/" target="_blank"> instagram </a>
+            <p></p>
+            <a href="mailto:daniel.litvak.64@gmail.com" target="_blank"> email </a>
+            <p></p>
+            <a href="https://www.linkedin.com/in/daniel-litvak-837224313/" target="_blank"> linkedin </a>
         </section>
 
-        <!-- scripting test -->
+        <!-- scripting -->
         <script>
-            
-            setTimeout(() => {
-                document.getElementById("1").innerText = "Changed after 5 seconds!";
-            }, 5000);
+            function main() {
 
+                requestAnimationFrame(main);
+            }
+
+            // Start the animation
+            // main();
         </script>
         
         <script src="" async defer></script>
