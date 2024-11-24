@@ -7,61 +7,87 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="style.css">
+
+        <!-- fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
-        <header>
-            <h1>Daniel Litvak's Portfolio</h1>
+
+        <header class="header">
+
+            <a class="header-title" href="#">
+                Daniel Litvak's Portfolio
+            </a>
+
+            <div class="header-buttons">
+                <button>Home</button>
+                <button>Projects</button>
+                <button>Contact</button>
+            </div>
+
         </header>
 
-        <div class="container">  
-            <section class="welcome section">
-                <h2>Welcome</h2>
-                <hr>
-                <p>Hello World, welcome to my portfolio where you can learn more about my skillset through my most intersting projects</p>
-            </section>
+        <!-- Introduction Section -->
+        <section class="introduction">
+            <h1>Welcome</h1>
+            <hr>
+            <p>
+                Welcome to my portfolio. This website about me and the projects which 
+                I am most proud of and represent my current skill set.
+            </p>
+        </section>
+        
+        <!-- Project Board Section -->
+        <section class="project-board">
+            <h2>My Projects</h2>
 
-            <section class="about-me section">
-                <h2>About Me</h2>
-                <hr>
-                <p>*about me*</p>
-            </section>
+            <hr>
 
-            <section class="projects section">
-                <h2>Projects</h2>
-                <hr>
-                <ul class="project-list">
-                    <li>
-                        <h3><a href="projects/project1.html"> Project 1 </a></h3>
-                        <p>Description of Project 1</p>
-                    </li>
+            <div class="projects">
+                <!-- Project Card Example -->
+                <a href="project 1.html" class="project-card">
+                    <h3>Quad Tree</h3>
+                    <p>An implementation of a Quad Tree with javascript</p>
+                </a>
 
-                    <li>
-                        <h3><a href="#"> Project 2</a></h3>
-                        <p>Description of Project 2</p>
-                    </li>
+                <a href="https://link-to-project1.com" class="project-card">
+                    <h3>project 2</h3>
+                    <p>A brief description of project 2.</p>
+                </a>
 
-                    <li>
-                        <h3><a href="#"> Project 3</a></h3>
-                        <p>Description of Project 3</p>
-                    </li>
+                <a href="https://link-to-project1.com" class="project-card">
+                    <h3>project 3</h3>
+                    <p>A brief description of project 3.</p>
+                </a>
 
-                    <li>
-                        <h3><a href="#"> Project 4</a></h3>
-                        <p>Description of Project 4</p>
-                    </li>
-                </ul>
-            </section>
+                <a href="https://link-to-project1.com" class="project-card">
+                    <h3>project 4</h3>
+                    <p>A brief description of project 4.</p>
+                </a>
 
-            <section class="socials section">
-                <h2>Find Me</h2>
-                <hr>
-                <p>*link to my socials*</p>
-            </section>
+                <a href="https://link-to-project1.com" class="project-card">
+                    <h3>project 5</h3>
+                    <p>A brief description of project 5.</p>
+                </a>
 
-        </div>
+                <a href="https://link-to-project1.com" class="project-card">
+                    <h3>project 6</h3>
+                    <p>A brief description of project 6.</p>
+                </a>
 
-        <header>
-        </header>
+
+            </div>
+        </section>
+
+        <section class="introduction">
+            <h1>Socials</h1>
+            <hr>
+            <p> Find me: </p>
+            <p> *email* </p>
+            <p> *instagram* </p>
+            <p> *linkedin* </p>
+        </section>
         
         <script src="" async defer></script>
     </body>

@@ -2,94 +2,177 @@ html, body {
     height: 100%; 
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 body {
-    background: linear-gradient(to bottom, #202020, #333);
-    /* background: #333; */
+    background: linear-gradient(to bottom, #000000, #0c0c0c);
     background-attachment: fixed;
     color: #333;
 }
 
-header {
-    color: #fcfcfc;
-    padding: 20px 0;
-    text-align: center;
-}
-
+/* horizontal line */
 hr {
-    border: 0;
-    height: 1px;
-    background-color: #333;
+    border: none; /* Removes default border styling */
+    height: 1px; /* Sets the thickness of the line */
+    background-color: rgb(95, 231, 135); /* Changes the color of the line */
+    margin: 10px 0; /* Adds spacing above and below the line */
+    width: 100%; /* Adjusts the width of the line */
+    margin-left: auto; /* Centers the line */
+    margin-right: auto;
 }
 
-.title-link, .title-link:visited {
-    color: rgb(255, 255, 255); 
+/* --- HEADER --- */
+
+/* Header Styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+    color: white;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+/* Title Styling */
+.header-title {
+    font-size: 24px;
+    padding: 5px 10px;
     text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px; /* Adds rounded corners */
 }
 
-a:hover {
+.header-title:visited {
+    color: white
+}
+
+/* Title Hover Effect */
+.header-title:hover {
+    background-color: rgb(95, 231, 135);
+    color: #222;
+}
+
+/* Button Section Styling */
+.header-buttons button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: transparent;
+    color: #444;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, text-decoration 0.3s;
+}
+
+.header-buttons button:hover {
+    background-color: rgb(95, 231, 135);
     text-decoration: underline;
 }
 
-a:visited {
-    color: #333;
-}
+/* --- BODY --- */
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-}
-
-.project-container {
-    width: 80%;
-    margin: auto;
-}
-
-.section {
-    padding: 40px 0;
-}
-
-.project {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
+/* Introduction Section */
+.introduction {
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
-    height: 400px;
-    margin:auto
+    background-color: transparent;
+    margin-left: 20%;
+    margin-right: 20%;
 }
 
-.section h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px; /* Add space below the heading */
+/* intro titles */
+.introduction h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #555;
 }
 
-.welcome, .about-me, .projects, .socials {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
-    margin: 20px 0;
+/* intro paragraph */
+.introduction p {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Project Board Section */
+.project-board {
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 20%;
+    margin-right: 20%;
     text-align: center;
 }
 
-.project-list {
+.project-board h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* project preview stuff */
+
+.project-preview{
+    height: 50%;
+}
+
+.resizable-box {
+    width: 100%; /* Set an initial width */
+    height: 100%; /* Set an initial height */
+    position: relative; /* Needed for resizing */
+    overflow: hidden; /* Prevents the content from overflowing */
+    resize: both; /* Enables both horizontal and vertical resizing */
+    box-sizing: border-box; /* Ensures padding/border is included in the element's total width/height */
+}
+
+
+
+
+/* Project Cards */
+.projects {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    list-style-type: none;
-    padding: 20px;
-    margin: 0; /* Remove default margin */
+    padding: 10px;
 }
 
-.project-list li {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.project-card {
+    display: block;
+    background-color: rgba(0, 0, 0, 0);
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* remove the link visitied effect */
+.project-card:visited h3 {
+    color: #555;
+}
+
+/* project card paragraph text */
+.project-card p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.project-card a {
+    text-decoration: none;
+    color: rgb(95, 231, 135);
+    font-weight: bold;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.5);
 }
