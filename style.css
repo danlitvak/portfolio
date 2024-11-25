@@ -162,6 +162,10 @@ a:visited{
     color: #999;
 }
 
+.introduction a{
+    color: #555;
+}
+
 .introduction a:visited{
     color: #555;
 }
