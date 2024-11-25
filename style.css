@@ -27,16 +27,45 @@ a:visited{
     color: #555;
 }
 
+@media (max-width: 800px) {
+    #header {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    #introduction {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    #horizontal-container {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    #project-board{
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+}
+
 /* --- HEADER --- */
 
 /* Header Styling */
 .header {
-    position: sticky;
     top: 0;
+    position: sticky;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
+    box-sizing: border-box;
 
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -46,18 +75,20 @@ a:visited{
     -webkit-backdrop-filter: blur(10px);
 
     width: 60%;
-    padding: 20px; 
+    padding: 20px;
     margin-left: 20%;
     margin-right: 20%;
 }
 
+
 /* Title Styling */
 .header-title {
-    font-size: 24px;
+    font-size: min(5vw, 24px);
     padding: 5px 10px;
     text-decoration: none;
     transition: background-color 0.3s, color 0.3s;
     border-radius: 4px; /* Adds rounded corners */
+    color: white;
 }
 
 .header-title:visited {
@@ -70,9 +101,13 @@ a:visited{
     color: #111;
 }
 
+.header-buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
 /* Button Section Styling */
 .header-buttons button {
-    margin-left: 10px;
     padding: 8px 16px;
     border: none;
     background-color: transparent;
@@ -88,15 +123,18 @@ a:visited{
     text-decoration: underline;
 }
 
+
 /* --- BODY --- */
 
 /* Introduction Section */
 .introduction {
+    width: 60%;
     padding: 20px;
     text-align: center;
     background-color: transparent;
     margin-left: 20%;
     margin-right: 20%;
+    box-sizing: border-box;
 }
 
 /* intro titles */
@@ -109,15 +147,17 @@ a:visited{
 /* intro paragraph */
 .introduction p {
     font-size: 18px;
-    color: #555;
+    color: #999;
 }
 
-/* side ways things */
+/* full paragraph */
 .full-paragraph {
-    padding: 20px;
     width: 100%;
+    padding: 20px;
     text-align: center;
     background-color: transparent;
+    align-items: center;
+    vertical-align: auto;
 }
 
 .full-paragraph h1 {
@@ -128,15 +168,16 @@ a:visited{
 
 .full-paragraph p {
     font-size: 18px;
-    color: #555;
+    color: #999;
 }
 
 .horizontal-container {
     margin-left: 20%;
     margin-right: 20%;
     width: 60%;
+    overflow-x: auto;
     display: flex;
-    align-items: top;
+    align-items: center;
 }
 
 
@@ -146,7 +187,9 @@ a:visited{
     padding: 20px;
     margin-left: 20%;
     margin-right: 20%;
+    width: 60%;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .project-board h2 {
@@ -174,9 +217,10 @@ a:visited{
 /* Project Cards */
 .projects {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(45%, 2fr));
     gap: 20px;
     padding: 10px;
+    overflow-x: auto;
 }
 
 .project-card {
@@ -184,6 +228,9 @@ a:visited{
     background-color: rgba(0, 0, 0, 0);
     text-decoration: none;
     border: 1px solid #ccc;
+
+    width: auto;
+
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
