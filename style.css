@@ -12,14 +12,14 @@ body {
     color: #333;
 }
 
-/* horizontal line */
+/* defualt horizontal line */
 hr {
-    border: none; /* Removes default border styling */
-    height: 1px; /* Sets the thickness of the line */
-    background-color: rgb(95, 231, 135); /* Changes the color of the line */
-    margin: 10px 0; /* Adds spacing above and below the line */
-    width: 100%; /* Adjusts the width of the line */
-    margin-left: auto; /* Centers the line */
+    border: none; /* removes default border styling */
+    height: 1px;
+    background-color: rgb(95, 231, 135);
+    margin: 10px 0;
+    width: 100%;
+    margin-left: auto;
     margin-right: auto;
 }
 
@@ -27,6 +27,7 @@ a:visited{
     color: #555;
 }
 
+/* change settins by ID when the view port is less than 800 pixles */
 @media (max-width: 800px) {
     #header {
         margin-left: 0;
@@ -59,39 +60,47 @@ a:visited{
 
 /* Header Styling */
 .header {
+    /* container styles */
     top: 0;
     position: sticky;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
     box-sizing: border-box;
-
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-
+    
+    /* default colors */
+    color: white;
+    
+    /* blurry background */
     background-color: rgba(40, 40, 40, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-
+    
+    /* sizing */
     width: 60%;
     padding: 20px;
     margin-left: 20%;
     margin-right: 20%;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 
 /* Title Styling */
 .header-title {
+    /* responsive font */
     font-size: min(5vw, 24px);
-    padding: 5px 10px;
     text-decoration: none;
+    color: white;
+
+    padding: 5px 10px;
     transition: background-color 0.3s, color 0.3s;
     border-radius: 4px; /* Adds rounded corners */
-    color: white;
 }
 
+/* head visited styleing */
 .header-title:visited {
+    /* set visited color to the defual color */
     color: white
 }
 
@@ -101,12 +110,13 @@ a:visited{
     color: #111;
 }
 
+/* header button container styling */
 .header-buttons{
     display: flex;
     justify-content: flex-end;
 }
 
-/* Button Section Styling */
+/* individual header button Styling */
 .header-buttons button {
     padding: 8px 16px;
     border: none;
@@ -118,6 +128,7 @@ a:visited{
     transition: background-color 0.3s, text-decoration 0.3s;
 }
 
+/* button hover animation*/
 .header-buttons button:hover {
     background-color: rgb(95, 231, 135);
     text-decoration: underline;
@@ -130,10 +141,11 @@ a:visited{
 .introduction {
     width: 60%;
     padding: 20px;
-    text-align: center;
-    background-color: transparent;
     margin-left: 20%;
     margin-right: 20%;
+
+    text-align: center;
+    background-color: transparent;
     box-sizing: border-box;
 }
 
@@ -148,6 +160,10 @@ a:visited{
 .introduction p {
     font-size: 18px;
     color: #999;
+}
+
+.introduction a:visited{
+    color: #555;
 }
 
 /* full paragraph */
