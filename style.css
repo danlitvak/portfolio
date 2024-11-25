@@ -2,6 +2,7 @@
 :root {
     --p-text-color: #999;  /* var(--p-text-color) */
     --h-text-color: #555;  /* var(--h-text-color) */
+    --g-text-color: #111;  /* var(--g-text-color) */
 }
 
 /* --- General Styles --- */
@@ -30,8 +31,20 @@ hr {
     margin-right: auto;
 }
 
-a:visited{
-    color: #555;
+button a:hover {
+    color: var(--p-text-color);
+    text-decoration: none;
+    color: var(--g-text-color);
+}
+
+
+a {
+    color: var(--p-text-color);
+    text-decoration: none;
+}
+
+a:visited {
+    color: var(--p-text-color);
 }
 
 /* change settins by ID when the view port is less than 800 pixles */
@@ -115,18 +128,19 @@ a:visited{
 /* Title Hover Effect */
 .header-title:hover {
     background-color: rgb(95, 231, 135);
-    color: #111;
+    color: var(--g-text-color);
 }
 
 /* header button container styling */
 .header-buttons{
     display: flex;
     justify-content: flex-end;
+    gap: 5px;
 }
 
 /* individual header button Styling */
 .header-buttons button {
-    padding: 8px 16px;
+    padding: 10px;
     border: none;
     background-color: transparent;
     color: var(--p-text-color);
@@ -140,6 +154,7 @@ a:visited{
 .header-buttons button:hover {
     background-color: rgb(95, 231, 135);
     text-decoration: underline;
+    color: var(--g-text-color);
 }
 
 
