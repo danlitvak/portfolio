@@ -16,8 +16,34 @@ html, body {
 }
 
 body {
+    /* background-image: url('/2background.png'); */
+    background-size: cover; /* Adjusts the image to cover the whole background */
+    background-repeat: no-repeat; /* Prevents tiling of the image */
+    background-position: center; /* Centers the image */
     background: linear-gradient(to bottom, #000000, #111111);
     background-attachment: fixed;
+}
+
+.parallax {
+    background-color: #000000;
+    background-image: url('/Images/2D\ Background.png');
+    width: 100%;
+    background-size: cover;
+    background-size: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: repeat-y;
+    position: relative;
+
+}
+
+.blur{
+    z-index: -1;
+    position: fixed;
+    backdrop-filter: blur(1px);
+    filter: saturate(1.05);
+    height: 100%;
+    width: 100%;
 }
 
 /* defualt horizontal line */
@@ -29,6 +55,7 @@ hr {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    box-shadow: 0px 0px 3px 0.4px rgb(95, 231, 135);
 }
 
 button a:hover {
@@ -45,6 +72,20 @@ a {
 
 a:visited {
     color: var(--p-text-color);
+}
+
+ul {
+    color: var(--p-text-color);
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+small a {
+    color: var(--p-text-color);
+}
+
+small a:hover {
+    text-decoration: underline;
 }
 
 /* change settins by ID when the view port is less than 800 pixles */
@@ -87,15 +128,18 @@ a:visited {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 1000;
     
     /* default colors */
     color: white;
     
     /* blurry background */
+    transition: background-color 3s;
     background-color: rgba(40, 40, 40, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+
+    transition: backdrop-filter 0.2s;
+    backdrop-filter: blur(3px);
+    /* -webkit-backdrop-filter: blur(5px); */
     
     /* sizing */
     width: 60%;
@@ -104,6 +148,14 @@ a:visited {
     margin-right: 20%;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+}
+
+.header:hover{
+    background-color: rgba(45, 45, 45, 0.4);
+
+    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
+    /* -webkit-backdrop-filter: blur(10px); */
 }
 
 
@@ -135,6 +187,7 @@ a:visited {
 .header-buttons{
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 5px;
 }
 
@@ -197,7 +250,7 @@ a:visited {
 .full-paragraph {
     width: 100%;
     padding: 20px;
-    text-align: center;
+    text-align: left;
     background-color: transparent;
     align-items: center;
     vertical-align: auto;
@@ -220,7 +273,7 @@ a:visited {
     width: 60%;
     overflow-x: auto;
     display: flex;
-    align-items: center;
+    align-items: top;
 }
 
 
@@ -320,8 +373,8 @@ a:visited {
     left: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: top;
+    justify-content: top;
     text-align: center;
     transform-origin: center;
     border: 1px solid #ccc;
@@ -331,11 +384,10 @@ a:visited {
 
 /* Initial state */
 .card-back {
-    background-color: #222;
+    background: rgba(40, 40, 40, 0.3);
     position: absolute;
     transform: scaleY(0);
     pointer-events: none;
-    
     opacity: 0;
 }
 
