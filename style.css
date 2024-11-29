@@ -26,7 +26,7 @@ body {
 
 .parallax {
     background-color: #000000;
-    background-image: url('../portfolio/assets/2D Background.png');
+    background-image: url('images/2D\ Background.png');
     width: 100%;
     background-size: cover;
     background-size: 100%;
