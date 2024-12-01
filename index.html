@@ -17,7 +17,6 @@
     </head>
 
     <body class="parallax">
-
         <div class="blur"></div>
 
             <header class="header" id="header">     
@@ -111,7 +110,7 @@
                     </div>
                     
                     <div class="project-card">
-                        <a href="projects/project-1.html" class="card-link">
+                        <a href="projects/project-2.html" class="card-link">
                             <div class="card-front">
                                 <h3>Project 2</h3>
                                 <p>Gravity Simulation</p>
@@ -175,18 +174,43 @@
             </section>
             
             <!-- javascript-->
-            <script>
+        <script>
+            const user_device = test_user() ? 1 : -1;;
+
             // run script to add parallax to the background
             document.addEventListener('scroll', () => {
                 const parallax = document.querySelector('.parallax');
                 let scrollPosition = window.pageYOffset;
-                parallax.style.backgroundPositionY = `${scrollPosition * 0.2 * -1}px`; // Adjust speed by changing 0.5
+                parallax.style.backgroundPositionY = `${scrollPosition * 0.2 * user_device}px`; // Adjust speed by changing 0.5
             });
+
+            window.addEventListener('resize', () => set_padding_height());
+
+            function test_user(){
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+                if (isMobile) {
+                    console.log("User is on a mobile device");
+                } else {
+                    console.log("User is on a desktop device");
+                }
+            }
+
+            function set_padding_height(){
+                const header = document.querySelector('.header');
+                const welcome = document.getElementById('introduction');
+                let header_height = header.offsetHeight;
+
+                welcome.style.paddingTop = `${header_height}px`;
+                // console.log(welcome.style.paddingTop);
+            }
 
             // script here just for when i need to do animation scripting
             function main() {
                 requestAnimationFrame(main);
             }
+
+            set_padding_height();
             // main();
         </script>
         

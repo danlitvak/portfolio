@@ -13,26 +13,29 @@ html, body {
     padding: 0;
     font-family: 'JetBrains Mono', monospace;
     scroll-behavior: smooth;
+    overflow: visible;
 }
 
 body {
     /* background-image: url('/2background.png'); */
     background-size: cover; /* Adjusts the image to cover the whole background */
-    background-repeat: no-repeat; /* Prevents tiling of the image */
     background-position: center; /* Centers the image */
     background: linear-gradient(to bottom, #000000, #111111);
     background-attachment: fixed;
+    height: 100%;
 }
 
 .parallax {
     background-color: #000000;
-    background-image: url('images/2D\ Background.png');
+    background-image: url('images/3d.png');
     width: 100%;
     background-size: cover;
-    background-size: 100%;
+    /* background-size: 100%; */
     background-attachment: fixed;
     background-position: center;
     background-repeat: repeat-y;
+    /* background-repeat: no-repeat; */
+    height: 100%;
     position: relative;
 }
 
@@ -124,7 +127,7 @@ small a:hover {
 .header {
     /* container styles */
     top: 0;
-    position: sticky;
+    position: fixed;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -221,6 +224,8 @@ small a:hover {
     margin-left: 20%;
     margin-right: 20%;
 
+    
+
     text-align: center;
     background-color: transparent;
     box-sizing: border-box;
@@ -293,7 +298,7 @@ small a:hover {
     flex-direction: column;
 }
 
-.project-board h2 {
+h2 {
     font-size: 28px;
     margin-bottom: 20px;
     color: var(--h-text-color);
@@ -302,7 +307,7 @@ small a:hover {
 /* project preview stuff */
 
 .project-preview{
-    height: 50%;
+    height: 90%;
 }
 
 .resizable-box {

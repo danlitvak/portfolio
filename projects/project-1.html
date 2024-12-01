@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="../style.css">
 
         <!-- fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
     </head>
     <body class="parallax">
         <div class="blur"></div>
-        <header class="header" id="header">
+        <header class="header" id="header" style="position: relative;">
 
             <a class="header-title" href="../index.html" id="1">
                 Daniel Litvak's Portfolio
@@ -33,9 +33,46 @@
         <section class="introduction" id="introduction">
             <h1>Description</h1>
             <hr>
-            <p>
-                *Detailed Description of the Project*
-            </p>
+            <div style="text-align: left;">
+                <h2>Introduction</h2>
+                <p>
+                    The difficulty of sorting vectors is a position many developers have found
+                    themselves in, including me. The naive approach would be to loop through
+                    every point then returning desired values, this would run in a time complexity 
+                    of the length of the array. 
+                </p>
+
+                <p>
+                    A quad tree is a sollution to store vectors of any length and search for them
+                    extremely quickly. In the beginning one Quad Tree object is created and when
+                    another vector needs to be stored it is pushed to the Quad Tree. If the current
+                    Quad Tree is storing too many vectors a subdivision occurs and the vectors are
+                    pushed further down the tree. To querry the tree, a recursion efficiently finds 
+                    the desired points.
+                </p>
+
+                <p>
+                    The key benifet of a Quad Tree is that when a small area is querried, very few
+                    position searches are performed, increasing the performance and reducing the 
+                    time complexity.
+                </p>
+
+                <h2>My Implementation</h2>
+                <p>
+                    In my implementation a user can place points by clicking which are represented 
+                    by a small circle. The area in which the querry happens is the green square
+                    around the users mouse. A Quad Tree which is returning its points has a grey background
+                    and a black background if it is not. From this it is clear to see how a Quad Tree 
+                    is an optimal solution.
+                </p>
+
+                <h2>What I Learned</h2>
+                <p>
+                    From this project I learned how to implement recursion algorithms and Axis Aligned
+                    Bounding Boxs (AABB).
+                </p>
+
+            </div>
         </section>
         
         <!-- Project Board Section -->
