@@ -1,7 +1,7 @@
 /* Variables */
 :root {
     --p-text-color: #999;  /* var(--p-text-color) */
-    --h-text-color: #555;  /* var(--h-text-color) */
+    --h-text-color: #666;  /* var(--h-text-color) */
     --g-text-color: #111;  /* var(--g-text-color) */
 }
 
@@ -17,79 +17,65 @@ html, body {
 }
 
 body {
-    /* background-image: url('/2background.png'); */
-    background-size: cover; /* Adjusts the image to cover the whole background */
-    background-position: center; /* Centers the image */
-    background: linear-gradient(to bottom, #000000, #111111);
-    background-attachment: fixed;
-    height: 100%;
-}
-
-.parallax {
-    background-color: #000000;
-    background-image: url('images/3d.png');
-    width: 100%;
     background-size: cover;
-    /* background-size: 100%; */
-    background-attachment: fixed;
     background-position: center;
-    background-repeat: repeat-y;
-    /* background-repeat: no-repeat; */
+    background-attachment: fixed;
     height: 100%;
-    position: relative;
 }
 
-.blur{
-    z-index: -1;
-    position: fixed;
-    backdrop-filter: blur(0.5px);
-    filter: brightness(1.5);
-    /* filter: blur(3px); */
-    filter: saturate(1.05);
-    height: 100%;
-    width: 100%;
-}
 
 /* defualt horizontal line */
 hr {
-    border: none; /* removes default border styling */
+    border: none;
     height: 1px;
     background-color: rgb(95, 231, 135);
     margin: 10px 0;
     width: 100%;
+    
     margin-left: auto;
     margin-right: auto;
+    
     box-shadow: 0px 0px 3px 0.4px rgb(95, 231, 135);
 }
 
-button a:hover {
+/* defualt link */
+a {
+    text-decoration: none;
     color: var(--p-text-color);
+}
+
+/* defualt link hover */
+button a:hover {
     text-decoration: none;
     color: var(--g-text-color);
 }
 
-
-a {
-    color: var(--p-text-color);
-    text-decoration: none;
-}
-
+/* defualt visited link */
 a:visited {
     color: var(--p-text-color);
 }
 
+/* unordered list defualt styling */
 ul {
     color: var(--p-text-color);
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
+/* defualt small link on hover*/
+small a:hover {
+    text-decoration: underline;
+}
+
+/* defualt small link */
 small a {
     color: var(--p-text-color);
 }
 
-small a:hover {
-    text-decoration: underline;
+/* selecting text default colors */
+::selection {
+    background-color: #fff;
+    color: #111;
 }
 
 /* change settins by ID when the view port is less than 800 pixles */
@@ -101,24 +87,50 @@ small a:hover {
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
-
+    
     #introduction {
         margin-left: 0;
         margin-right: 0;
         width: 100%;
     }
-
+    
     #horizontal-container {
         margin-left: 0;
         margin-right: 0;
         width: 100%;
     }
-
+    
     #project-board{
         margin-left: 0;
         margin-right: 0;
         width: 100%;
     }
+}
+
+/* --- BACKGROUND --- */
+
+/* parallax effect */
+.parallax {
+    background-color: #000000;
+    background-image: url('images/3d.png');
+    width: 100%;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: repeat-y;
+    height: 100%;
+    position: relative;
+}
+
+/* blur effect */
+.blur{
+    z-index: -1;
+    position: fixed;
+    backdrop-filter: blur(0.5px);
+    filter: brightness(1.5);
+    filter: saturate(1.05);
+    height: 100%;
+    width: 100%;
 }
 
 /* --- HEADER --- */
@@ -140,7 +152,7 @@ small a:hover {
     /* blurry background */
     transition: background-color 3s;
     background-color: rgba(40, 40, 40, 0.5);
-
+    
     transition: backdrop-filter 0.2s;
     backdrop-filter: blur(3px);
     /* -webkit-backdrop-filter: blur(5px); */
@@ -156,10 +168,7 @@ small a:hover {
 
 .header:hover{
     background-color: rgba(45, 45, 45, 0.4);
-
     backdrop-filter: blur(10px);
-    /* backdrop-filter: blur(10px); */
-    /* -webkit-backdrop-filter: blur(10px); */
 }
 
 
@@ -224,7 +233,7 @@ small a:hover {
     margin-left: 20%;
     margin-right: 20%;
 
-    text-align: center;
+    text-align: left;
     background-color: transparent;
     box-sizing: border-box;
 }
@@ -242,10 +251,12 @@ small a:hover {
     color: #999;
 }
 
+/* intro link */
 .introduction a{
     color: var(--p-text-color);
 }
 
+/* intro link visited */
 .introduction a:visited{
     color: var(--p-text-color);
 }
@@ -298,7 +309,7 @@ small a:hover {
 
 h2 {
     font-size: 28px;
-    margin-bottom: 20px;
+    margin-bottom: 7px;
     color: var(--h-text-color);
 }
 
@@ -328,7 +339,8 @@ h2 {
 
 .project-card h3 {
     font-size: 20px;
-    margin-bottom: 10px;
+    margin: 5px;
+    margin-top: 10px;
     text-decoration: underline;
     color: var(--h-text-color);
 }
@@ -341,7 +353,8 @@ h2 {
 /* project card paragraph text */
 .project-card p {
     font-size: 16px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin: 5px;
     color: var(--p-text-color);
 }
 
@@ -383,7 +396,6 @@ h2 {
     transform-origin: center;
     border: 1px solid #ccc;
     border-radius: 8px;
-
 }
 
 /* Initial state */
