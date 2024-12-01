@@ -2,219 +2,188 @@
 <html>
     <head> 
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Daniel Litvak's Portfolio</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">        
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <!-- fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <!-- fonts: jet brains mono-->
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+        
         <!-- style -->
         <link rel="stylesheet" href="style.css">
         
+        <!-- website title name -->
+        <title>Daniel Litvak's Portfolio</title>
     </head>
 
+    <!-- add parallax class to add parallax to background -->
     <body class="parallax">
-        <div class="blur"></div>
-
-            <header class="header" id="header">     
-                <a class="header-title" href="#" id="1">
-                    Daniel Litvak's Portfolio
-                </a>
-                
-                <div class="header-buttons">
-                    <button onclick="window.location.href='#'">Home</button>
-                    <button onclick="window.location.href='#project-board'">Projects</button>
-                    <button onclick="window.location.href='#about'">Contact</button>
-                    <button> <a href="../portfolio/blog/index.markdown" target="_blank"> Blog </a> </button>
-                </div>
-                
-            </header>
+        <!-- TBD: blur effect may or not be needed -->
+        <!-- <div class="blur"></div> -->
+        
+        <!-- top tool bar -->
+        <header class="header" id="header">     
+            <!-- title -->
+            <a class="header-title" href="#" id="1"> Daniel Litvak's Portfolio </a>
             
-            <!-- Introduction Section -->
-            <section class="introduction" id="introduction">
-                <h1>Welcome</h1>
-                <hr> <!-- line -->
-                <p>
-                    Welcome to my page, here you will learn about who I am and the stuff I make.
-                </p>
-                <p>
-                    Explore my skills, projects and blog below.
-                </p>
-            </section>
-            
-            <div class="horizontal-container" id="horizontal-container">
-                <section class="full-paragraph">
-                    <h1>About Me</h1>
-                    <hr> <!-- line -->
-                    <p>
-                        My passion for coding began from a young age when my father 
-                        taught me how to count in binary. From then ive been facinated
-                        with computers, more specifially with algorithms and simulations.
-                    </p>
-                    
-                    <p>
-                        Starting with the Scratch, I began to teach myself
-                        higher-level coding languages to making increasingly complex projects. 
-                    </p>
-                    
-                </section>
-                
-                <section class="full-paragraph">
-                    <h1>Resume</h1>
-                    <hr> <!-- line -->
-                    <p> Work Experience: </p>
-                    <ul>
-                        <li>Restaurant Worker</li>
-                        <li>Back End Developer</li>
-                        <li>Front End Developer</li>
-                    </ul>
-                    <p> Coding Experience: </p>
-                    <ul>
-                        <li>C# / C</li>
-                        <li>Javascript</li>
-                        <li>Python</li>
-                    </ul>
-                    <p> Education </p>
-                    <ul>
-                        <li>King David High School</li>
-                        <li>University of British Columbia</li>
-                    </ul>
-                    <p></p>
-                    <small>
-                        <a href="mailto:daniel.litvak.64@gmail.com" target="_blank">
-                            Full resume available apon request →
-                        </a>
-                    </small>
-                </section>
-            </div>
-            
-            
-            <!-- Project Board Section -->
-            <section class="project-board" id="project-board">
-                <h2>My Projects</h2>
-                <hr> <!-- line -->
-                <div class="projects">
-                    <div class="project-card">
-                        <a href="projects/project-1.html" class="card-link">
-                            <div class="card-front">
-                                <h3>Project 1</h3>
-                                <p>Quad Tree</p>
-                            </div>
-                            <div class="card-back">
-                                <p>Click for more details!</p>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="project-card">
-                        <a href="projects/project-2.html" class="card-link">
-                            <div class="card-front">
-                                <h3>Project 2</h3>
-                                <p>Gravity Simulation</p>
-                            </div>
-                            <div class="card-back">
-                                <p>Click for more details!</p>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="project-card">
-                        <a href="projects/project-1.html" class="card-link">
-                            <div class="card-front">
-                                <h3>Project 3</h3>
-                                <p>Flocking Simulation</p>
-                            </div>
-                            <div class="card-back">
-                                <p>Click for more details!</p>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="project-card">
-                        <a href="projects/project-1.html" class="card-link">
-                            <div class="card-front">
-                                <h3>Project 4</h3>
-                                <p>Conway's Game of Life</p>
-                            </div>
-                            <div class="card-back">
-                                <p>Click for more details!</p>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="project-card">
-                        <a href="projects/project-1.html" class="card-link">
-                            <div class="card-front">
-                                <h3>Project 5</h3>
-                                <p>Sierpiński Triangle</p>
-                            </div>
-                            <div class="card-back">
-                                <p>Click for more details!</p>
-                            </div>
-                        </a>
-                    </div>
-                    
-                </div>
-            </section>
-            
-            <section class="introduction" id="about">
-                <h1>Find Me</h1>
+            <!-- header buttons -->
+            <div class="header-buttons">
+                <button onclick="window.location.href='#'">Home</button>
+                <button onclick="window.location.href='#project-board'">Projects</button>
+                <button onclick="window.location.href='#about'">Contact</button>
+                <!-- blog not working: maybe create new repo or design my own blog -->
+                <!-- <button> <a href="../portfolio/blog/index.markdown" target="_blank"> Blog </a> </button> -->
+            </div>   
+        </header>
+        
+        <!-- Introduction Section -->
+        <section class="introduction" id="introduction">
+            <h1>Welcome</h1>
+            <hr>
+            <p> 
+                Welcome to my page, here you will learn about who I am and the stuff I make. 
+            </p>
+            <p>
+                Explore my skills, projects and blog below.
+            </p>
+        </section>
+        
+        <!-- about me and resume section -->
+        <div class="horizontal-container" id="horizontal-container">
+            <section class="full-paragraph">
+                <h1>About Me</h1>
                 <hr>
-                <!-- <p></p> -->
-                <!-- <a href="https://www.instagram.com/daniell.3764/" target="_blank"> instagram </a> -->
-                <p></p>
-                <a href="mailto:daniel.litvak.64@gmail.com" target="_blank"> Email Me </a>
-                <p></p>
-                <a href="https://www.linkedin.com/in/daniel-litvak-837224313/" target="_blank"> LinkedIn </a>
-                <p></p>
-                <a href="https://forms.gle/UFKdcaQ185sBBdb29" target="_blank"> Feedback Form </a>
+                <p>
+                    My passion for coding began from a young age when my father 
+                    taught me how to count in binary. From then ive been facinated
+                    with computers, more specifially with algorithms and simulations.
+                </p>
+                
+                <p>
+                    Starting with the Scratch, I began to teach myself
+                    higher-level coding languages to making increasingly complex projects. 
+                </p>
+                
             </section>
             
-            <!-- javascript-->
-        <script>
-            const user_device = test_user() ? 1 : -1;;
+            <section class="full-paragraph">
+                <h1>Resume</h1>
+                <hr>
+                <p> Work Experience: </p>
+                <ul>
+                    <li>Restaurant Worker</li>
+                    <li>Back End Developer</li>
+                    <li>Front End Developer</li>
+                </ul>
+                <p> Coding Experience: </p>
+                <ul>
+                    <li>C# / C</li>
+                    <li>Javascript</li>
+                    <li>Python</li>
+                </ul>
+                <p> Education </p>
+                <ul>
+                    <li>King David High School</li>
+                    <li>University of British Columbia</li>
+                </ul>
+                <p></p>
+                <small>
+                    <a href="mailto:daniel.litvak.64@gmail.com" target="_blank">
+                        Full resume available apon request →
+                    </a>
+                </small>
+            </section>
+        </div>
+        
+        
+        <!-- Project Board Section -->
+        <section class="project-board" id="project-board">
+            <h2> My Projects </h2>
+            <hr>
+            <!-- container div for all the project cards -->
+            <div class="projects">
+                <!-- Project 1: Quad Tree -->
+                <div class="project-card">
+                    <a href="projects/project-1.html" class="card-link">
+                        <div class="card-front">
+                            <h3>Project 1</h3>
+                            <p>Quad Tree</p>
+                        </div>
+                        <div class="card-back">
+                            <p>Click for more details!</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 2: Gravity Simulation -->
+                <div class="project-card">
+                    <a href="projects/project-2.html" class="card-link">
+                        <div class="card-front">
+                            <h3>Project 2</h3>
+                            <p>Gravity Simulation</p>
+                        </div>
+                        <div class="card-back">
+                            <p>Click for more details!</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 3: TBD -->
+                <div class="project-card">
+                    <a href="projects/project-1.html" class="card-link">
+                        <div class="card-front">
+                            <h3>Project 3</h3>
+                            <p>Flocking Simulation</p>
+                        </div>
+                        <div class="card-back">
+                            <p>Click for more details!</p>
+                        </div>
+                    </a>
+                </div>
 
-            // run script to add parallax to the background
-            document.addEventListener('scroll', () => {
-                const parallax = document.querySelector('.parallax');
-                let scrollPosition = window.pageYOffset;
-                parallax.style.backgroundPositionY = `${scrollPosition * 0.2 * user_device}px`; // Adjust speed by changing 0.5
-            });
+                <!-- Project 3: TBD -->
+                <div class="project-card">
+                    <a href="projects/project-1.html" class="card-link">
+                        <div class="card-front">
+                            <h3>Project 4</h3>
+                            <p>Conway's Game of Life</p>
+                        </div>
+                        <div class="card-back">
+                            <p>Click for more details!</p>
+                        </div>
+                    </a>
+                </div>
 
-            window.addEventListener('resize', () => set_padding_height());
-
-            function test_user(){
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
-                if (isMobile) {
-                    console.log("User is on a mobile device");
-                } else {
-                    console.log("User is on a desktop device");
-                }
-            }
-
-            function set_padding_height(){
-                const header = document.querySelector('.header');
-                const welcome = document.getElementById('introduction');
-                let header_height = header.offsetHeight;
-
-                welcome.style.paddingTop = `${header_height}px`;
-                // console.log(welcome.style.paddingTop);
-            }
-
-            // script here just for when i need to do animation scripting
-            function main() {
-                requestAnimationFrame(main);
-            }
-
-            set_padding_height();
-            // main();
-        </script>
+                <!-- Project 3: TBD -->
+                <div class="project-card">
+                    <a href="projects/project-1.html" class="card-link">
+                        <div class="card-front">
+                            <h3>Project 5</h3>
+                            <p>Sierpiński Triangle</p>
+                        </div>
+                        <div class="card-back">
+                            <p>Click for more details!</p>
+                        </div>
+                    </a>
+                </div>  
+            </div>
+        </section>
+        
+        <!-- Link section -->
+        <section class="introduction" id="about">
+            <h1>Find Me</h1>
+            <hr>
+            <p></p>
+            <a href="mailto:daniel.litvak.64@gmail.com" target="_blank"> Email Me </a>
+            <p></p>
+            <a href="https://www.linkedin.com/in/daniel-litvak-837224313/" target="_blank"> LinkedIn </a>
+            <p></p>
+            <a href="https://forms.gle/UFKdcaQ185sBBdb29" target="_blank"> Feedback Form </a>
+        </section>
+        
+        <!-- javascript-->
+        <script src="script.js"></script>
         
         <script src="" async defer></script>
-        
     </body>
-    </html>
+</html>
