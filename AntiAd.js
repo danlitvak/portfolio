@@ -1,4 +1,5 @@
 // automatically close the p5js ads (hopefully)
+// PROBLEM: ad may load after script is complete and dodge the script
 
 console.log("Running Anti Ad Script ...");
 

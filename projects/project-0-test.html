@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Daniel Litvak's Portfolio</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="../style.css">
+
+        <!-- fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+        <style>
+            details {
+                margin-bottom: 15px;
+                margin-top: 15px;
+                padding: 10px;
+                border: 2px solid rgba(95, 231, 135, 0.5);
+                border-radius: 5px;
+                background-color: rgba(20, 20, 20, 0.5);
+                overflow: hidden;
+            }
+
+            summary {
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+            }
+
+            summary h2 {
+                margin: 0;
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            summary:hover {
+                color: #007acc;
+            }
+
+            details[open] {
+                background-color: rgba(20, 20, 20, 0.9);
+            }
+
+        </style>
+    </head>
+    <body>
+        <header class="header" id="header" style="position: relative;">
+
+            <a class="header-title" href="../index.html" id="1">
+                Daniel Litvak's Portfolio
+            </a>
+
+            <div class="header-buttons">
+                <button onclick="window.location.href='../index.html#'">Home</button>
+                <button onclick="window.location.href='../index.html#project-board'">Projects</button>
+                <button onclick="window.location.href='../index.html#about'">Contact</button>
+            </div>
+
+        </header>
+
+        <!-- Introduction Section -->
+        <section class="introduction" id="introduction">
+            <h1>Description</h1>
+            <hr>
+            <div style="text-align: left;">
+                <details class="dropdown">
+                    <summary><h2>Introduction</h2></summary>
+                        <p>
+                            This is where your introduction content goes. Add a brief description about your portfolio or yourself here.
+                        </p>
+                </details>
+        
+                <details class="dropdown">
+                    <summary><h2>My Implementation</h2></summary>
+                        <p>
+                            This is where you explain your implementation. Highlight key aspects of your projects or coding strategies.
+                        </p>
+                </details>
+        
+                <details class="dropdown">
+                    <summary><h2>What I Learned</h2></summary>
+                        <p>
+                            Discuss what you learned through your projects or experiences. Focus on growth and new skills acquired.
+                        </p>
+                </details>
+            </div>
+        </section>
+    </body>
+</html>

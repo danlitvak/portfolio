@@ -37,44 +37,88 @@
             <h1>Description</h1>
             <hr>
             <div style="text-align: left;">
-                <h2>Introduction</h2>
-                <p>
-                    The difficulty of sorting vectors is a position many developers have found
-                    themselves in, including me. The naive approach would be to loop through
-                    every point then returning desired values, this would run in a time complexity 
-                    of the length of the array. 
-                </p>
-
-                <p>
-                    A quad tree is a sollution to store vectors of any length and search for them
-                    extremely quickly. In the beginning one Quad Tree object is created and when
-                    another vector needs to be stored it is pushed to the Quad Tree. If the current
-                    Quad Tree is storing too many vectors a subdivision occurs and the vectors are
-                    pushed further down the tree. To querry the tree, a recursion efficiently finds 
-                    the desired points.
-                </p>
-
-                <p>
-                    The key benifet of a Quad Tree is that when a small area is querried, very few
-                    position searches are performed, increasing the performance and reducing the 
-                    time complexity.
-                </p>
-
-                <h2>My Implementation</h2>
-                <p>
-                    In my implementation a user can place points by clicking which are represented 
-                    by a small circle. The area in which the querry happens is the green square
-                    around the users mouse. A Quad Tree which is returning its points has a grey background
-                    and a black background if it is not. From this it is clear to see how a Quad Tree 
-                    is an optimal solution.
-                </p>
-
-                <h2>What I Learned</h2>
-                <p>
-                    From this project I learned how to implement recursion algorithms and Axis Aligned
-                    Bounding Boxs (AABB).
-                </p>
+                <details class="dropdown">
+                    <summary><h2>Introduction</h2></summary>
+                    <p>
+                        The difficulty of sorting vectors is a position many developers have found
+                        themselves in, including me. The naive approach would be to loop through
+                        every point then returning desired values, this would run in a time complexity 
+                        of the length of the array. 
+                    </p>
+    
+                    <p>
+                        A quad tree is a sollution to store vectors of any length and search for them
+                        extremely quickly. In the beginning one Quad Tree object is created and when
+                        another vector needs to be stored it is pushed to the Quad Tree. If the current
+                        Quad Tree is storing too many vectors a subdivision occurs and the vectors are
+                        pushed further down the tree. To querry the tree, a recursion efficiently finds 
+                        the desired points.
+                    </p>
+    
+                    <p>
+                        The key benifet of a Quad Tree is that when a small area is querried, very few
+                        position searches are performed, increasing the performance and reducing the 
+                        time complexity.
+                    </p>
+                </details>
+        
+                <details class="dropdown">
+                    <summary><h2>My Implementation</h2></summary>
+                        <p>
+                            In my implementation a user can place points by clicking which are represented 
+                            by a small circle. The area in which the querry happens is the green square
+                            around the users mouse. A Quad Tree which is returning its points has a grey background
+                            and a black background if it is not. From this it is clear to see how a Quad Tree 
+                            is an optimal solution.
+                        </p>
+                </details>
+        
+                <details class="dropdown">
+                    <summary><h2>What I Learned</h2></summary>
+                        <p>
+                            From this project I learned how to implement recursion algorithms and Axis Aligned
+                            Bounding Boxs (AABB).
+                        </p>
+                </details>
             </div>
+
+            <style>
+                details {
+                    margin-bottom: 15px;
+                    margin-top: 15px;
+                    padding: 10px;
+                    border: 2px solid rgba(95, 231, 135, 0.5);
+                    border-radius: 5px;
+                    background-color: rgba(20, 20, 20, 0.5);
+                    overflow: hidden;
+
+                    transition: background-color 0.1s ease-in-out;
+                }
+    
+                summary {
+                    font-size: 18px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                }
+    
+                summary h2 {
+                    margin: 0;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+    
+                details:hover {
+                    background-color: rgba(80, 80, 80, 0.5);;
+
+                }
+    
+                details[open] {
+                    background-color: rgba(20, 20, 20, 0.9);
+                }
+    
+            </style>
         </section>
         
         <!-- Project Board Section -->
