@@ -285,7 +285,7 @@ small a {
 /* intro titles */
 .introduction h1 {
     font-size: 32px;
-    margin-bottom: 10px;
+    margin: 10px;
     color: var(--h-text-color);
 }
 
