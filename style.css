@@ -182,22 +182,40 @@ body {
     background: none;
     border: none;
     padding: 0.4rem 0.6rem;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     border-radius: 8px;
     cursor: pointer;
-    color: var(--text-muted, #666);
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 #darkModeToggle:hover {
     background-color: rgba(0, 0, 0, 0.05);
-    color: var(--text-color);
     transform: scale(1.05);
 }
 
 #darkModeToggle:active {
     transform: scale(0.97);
     background-color: rgba(0, 0, 0, 0.08);
+}
+
+#darkModeToggle i {
+    font-size: 1.2rem;
+    color: var(--text-muted, #666);
+    line-height: 1;
+    vertical-align: middle;
+    transition: color 0.3s ease, transform 0.2s ease;
+    position: relative;
+    top: 2px;
+    /* Manual vertical nudge */
+}
+
+#darkModeToggle:hover i {
+    color: var(--text-color);
+    transform: scale(1.1);
+    /* 👈 Just a subtle zoom */
 }
 
 

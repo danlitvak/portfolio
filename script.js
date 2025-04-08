@@ -89,19 +89,20 @@ currentPhrase = pickRandomPhrase("");
 typeLoop();
 
 const darkToggle = document.getElementById("darkModeToggle");
+const icon = darkToggle.querySelector("i");
+
+function setTheme(isDark) {
+    document.body.classList.toggle("dark-mode", isDark);
+    icon.className = isDark ? "fi fi-rr-sun" : "fi fi-rr-moon-stars";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+}
 
 darkToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-
-    // Save the current mode to localStorage
-    const isDark = document.body.classList.contains("dark-mode");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    const isDark = !document.body.classList.contains("dark-mode");
+    setTheme(isDark);
 });
 
-// On page load, check for saved preference
 window.addEventListener("DOMContentLoaded", () => {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark-mode");
-    }
+    setTheme(savedTheme === "dark");
 });
