@@ -4,110 +4,188 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Portfolio</title>
+    <title>[Daniel Litvak]</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Hi, I'm [Your Name]</h1>
-            <p>Frontend Developer & JavaScript Enthusiast</p>
+    <nav class="navbar fade-in-on-scroll">
+        <div class="nav-content">
+            <div class="nav-logo"><a href="#">[Daniel Litvak]</a></div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"> &#9776; </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </div>
+    </nav>
 
+    <div style="height: 50px;"></div>
+
+    <header class="hero fade-in-on-scroll">
+        <div class="hero-content">
+            <h1>Hey, I'm Daniel 👋</h1>
+            <p class="title-line">
+                Engineer / Programmer / Designer / Developer /
+                <span id="trailing-words"></span>
+            </p>
+        </div>
         <div class="scroll-indicator">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
+            <div class="chevron-hover" id="scrollChevron">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
         </div>
     </header>
 
+    <main class="page-content fade-in-on-scroll">
+        <section id="about" class="about">
+            <h2>About Me</h2>
+            <p>
+                I'm an engineer who is passionate about everything to do with computers, robotics, machine learning and programming. 
+            </p>
+            <br>
+            </p>
+                I began my journey with Scratch, then dived into C# before settling on working with javascript, specifically with the library p5.js
+            </p>
+            <br>
+            </p>
+                Many of my proudest projects have been created with this library, so explore and become inspired!
+            </p>
+        </section>
 
-    <section class="about">
-        <h2>About Me</h2>
-        <p>
-            I'm a front-end developer who loves crafting clean, interactive experiences with JavaScript, HTML, and CSS. I’m passionate about minimalist design and writing code that’s both beautiful and functional. Currently focused on building personal tools and
-            creative web apps.
-        </p>
-    </section>
+        <section id="skills" class="skills">
+            <h2>Skills</h2>
+            <div class="skill-tags">
+                <span class="tag">JavaScript ES6+</span>
+                <span class="tag">HTML 5</span>
+                <span class="tag">CSS 3</span>
+                <span class="tag">Git & Version Control</span>
+                <span class="tag">p5.js</span>
 
-    <section class="skills">
-        <h2>Skills</h2>
-        <div class="skill-tags">
-            <span class="tag">JavaScript (ES6+)</span>
-            <span class="tag">HTML5</span>
-            <span class="tag">CSS3</span>
-            <span class="tag">Responsive Design</span>
-            <span class="tag">Git & GitHub</span>
-            <span class="tag">p5.js</span>
-            <span class="tag">localStorage</span>
-        </div>
-    </section>
+                <span class="tag">Newtonian Simulations</span>
+                <span class="tag">Cellular Automaton</span>
+                <span class="tag">Recursive Search Algorithms</span>
+                <span class="tag">Monte Carlo Simulation</span>
+                <span class="tag">Boid / Flocking Behaviours</span>
+                <span class="tag">Evolutionary Machine Learning</span>
+            </div>
+        </section>
 
-    <section class="experience">
-        <h2>Experience</h2>
+        <section id="experience" class="experience">
+            <h2>Experience</h2>
+            <div class="experience-scroll">
+                <ul class="experience-list">
+                    <li>
+                        <div class="exp-header">
+                            <strong>Experience 1 – Experience 1</strong>
+                            <span>2025</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                    </li>
 
-        <ul class="experience-list">
-            <li>
-                <div class="exp-header">
-                    <strong>Personal Project – Water Sort Game</strong>
-                    <span>2024</span>
-                </div>
-                <p>Built an interactive puzzle game using JavaScript and p5.js.</p>
-            </li>
+                    <li>
+                        <div class="exp-header">
+                            <strong>Experience 2 – Experience 2</strong>
+                            <span>2025</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                    </li>
 
-            <li>
-                <div class="exp-header">
-                    <strong>Freelance – Portfolio Website</strong>
-                    <span>2024</span>
-                </div>
-                <p>Designed and developed a responsive portfolio using HTML, CSS, and JavaScript.</p>
-            </li>
+                    <li>
+                        <div class="exp-header">
+                            <strong>Experience 3 – Experience 3</strong>
+                            <span>2025</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                    </li>
 
-            <li>
-                <div class="exp-header">
-                    <strong>Open Source – UI Components</strong>
-                    <span>2023</span>
-                </div>
-                <p>Contributed UI components and bug fixes to small community-driven JavaScript tools.</p>
-            </li>
-        </ul>
-    </section>
+                    <li>
+                        <div class="exp-header">
+                            <strong>Experience 4 – Experience 4</strong>
+                            <span>2025</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                    </li>
+
+                    <li>
+                        <div class="exp-header">
+                            <strong>Experience 5 – Experience 5</strong>
+                            <span>2025</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                    </li>
+
+                    <li>
+                        <div class="exp-header">
+                            <strong>Experience 6 – Experience 6</strong>
+                            <span>2025</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
 
 
-    <section class="projects">
-        <h2>Projects</h2>
-        <div class="project-grid">
-            <a class="card" href="projects/water-sort.html">
-                <h3>Water Sort Game</h3>
-                <p>A puzzle game made with JavaScript and p5.js.</p>
-            </a>
-            <a class="card" href="projects/todo-app.html">
-                <h3>Todo App</h3>
-                <p>A minimal to-do app using localStorage.</p>
-            </a>
-            <!-- Add more projects here -->
-        </div>
-    </section>
+        <section id="projects" class="projects">
+            <h2>Projects</h2>
+            <div class="project-grid">
+                <a class="card" href="projects/water-sort.html">
+                    <h3>Project 1 Name</h3>
+                    <p>Project 1 Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </a>
 
-    <section class="contact">
-        <h2>Let's Connect</h2>
-        <p>
-            I'm always open to chatting about creative projects or collaborations. You can reach me via:
-        </p>
-        <ul class="contact-list">
-            <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
-            <li>GitHub: <a href="https://github.com/yourusername">yourusername</a></li>
-            <li>LinkedIn: <a href="#">Your LinkedIn</a></li>
-        </ul>
-    </section>
+                <a class="card" href="projects/water-sort.html">
+                    <h3>Project 2 Name</h3>
+                    <p>Project 2 Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </a>
 
-    <footer>
-        <p>© 2025 [Your Name] — <a href="https://github.com/yourusername">GitHub</a></p>
-    </footer>
+                <a class="card" href="projects/water-sort.html">
+                    <h3>Project 3 Name</h3>
+                    <p>Project 3 Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </a>
 
-    <script src="script.js"></script>
+                <a class="card" href="projects/water-sort.html">
+                    <h3>Project 4 Name</h3>
+                    <p>Project 4 Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </a>
+
+                <a class="card" href="projects/water-sort.html">
+                    <h3>Project 5 Name</h3>
+                    <p>Project 5 Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </a>
+
+                <a class="card" href="projects/water-sort.html">
+                    <h3>Project 6 Name</h3>
+                    <p>Project 6 Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Let's Connect!</h2>
+            <p>
+                Open to collaborations, you can reach me here
+            </p>
+
+            <ul class="contact-list">
+                <li>Email: <a href="mailto:daniel.litvak.64@gmail.com">daniel.litvak.64@gmail.com</a></li>
+                <li>GitHub: <a href="https://github.com/danlitvak">danlitvak</a></li>
+                <li>LinkedIn: <a href="https://www.linkedin.com/in/daniel-litvak-837224313/">Daniel Litvak</a></li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>© 2025 [Daniel Litvak] — <a href="https://github.com/danlitvak">GitHub</a></p>
+        </footer>
+
+        <script src="script.js"></script>
+    </main>
 </body>
 
 </html>
