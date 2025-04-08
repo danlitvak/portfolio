@@ -1,4 +1,53 @@
-/* Reset and base */
+/* === THEME VARIABLES === */
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000;
+    --muted-text: #555;
+    --accent-color: #007acc;
+    --card-bg: #f7f7f7;
+    --border-color: #eaeaea;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --hero-bg: linear-gradient(to bottom, rgba(240, 240, 240, 0.9), transparent 90%);
+    --cursor-color: #aaa;
+    --chevron-color: #888;
+    --chevron-hover: #444;
+    --hover-bg: #eaeaea;
+    --scrollbar-thumb: #ccc;
+    --card-bg: #fff;
+    --hover-bg: #ccc;
+    --accent-color: #007acc;
+    --muted-text: #999;
+    --text-muted: #666;
+    --navbar-bg: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode {
+    --bg-color: #111;
+    --text-color: #f4f4f4;
+    --muted-text: #ccc;
+    --accent-color: #66ccff;
+    --card-bg: #1a1a1a;
+    --border-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --hero-bg: linear-gradient(to bottom, rgba(40, 40, 40, 0.9), transparent 90%);
+    --cursor-color: #ccc;
+    --chevron-color: #aaa;
+    --chevron-hover: #fff;
+    --hover-bg: #333;
+    /* or something subtle for dark hover */
+    --scrollbar-thumb: #444;
+    --card-bg: #1e1e1e;
+    --hover-bg: #555;
+    --accent-color: #66ccff;
+    --muted-text: #bbb;
+    --text-muted: #999;
+    --navbar-bg: rgba(20, 20, 20, 0.9);
+    /* or something darker like rgba(30,30,30,0.85) */
+}
+
+
+/* === RESET & BASE === */
 
 * {
     margin: 0;
@@ -6,25 +55,26 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
-    background-color: #ffffff;
-    color: #000;
-    line-height: 1.6;
-    padding: 0;
-    margin: 0;
-}
-
 html {
     scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .page-content {
     max-width: 800px;
     margin: 0 auto;
     padding: 0 1rem;
-    /* horizontal padding on all screens */
 }
+
+
+/* === FADE-IN ON LOAD === */
 
 .fade-in {
     opacity: 0;
@@ -39,6 +89,9 @@ html {
     }
 }
 
+
+/* === FADE-IN ON SCROLL === */
+
 .fade-in-on-scroll {
     opacity: 0;
     transform: translateY(20px);
@@ -51,32 +104,32 @@ html {
 }
 
 
-/* Navbar */
+/* === NAVBAR === */
 
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--navbar-bg);
+    /* Optional: make this variable later if needed */
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     z-index: 1000;
 }
 
 .nav-content {
-    max-width: 960px;
-    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     padding: 1rem;
 }
 
 .nav-logo a {
     font-weight: 600;
     font-size: 1.1rem;
-    color: #111;
+    color: var(--text-color);
     text-decoration: none;
 }
 
@@ -90,28 +143,65 @@ html {
 
 .nav-links a {
     text-decoration: none;
-    color: #666;
+    color: var(--text-muted, #666);
     font-size: 0.95rem;
     transition: color 0.2s;
 }
 
 .nav-links a:hover {
-    color: #000;
+    color: var(--text-color);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 
-/* Toggle button (hamburger) */
+/* === NAV TOGGLE (HAMBURGER) === */
 
 .nav-toggle {
     display: none;
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: #333;
+    color: var(--text-color);
 }
 
 
-/* Responsive styles */
+/* === DARK MODE BUTTON === */
+
+#darkModeToggle {
+    background: none;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    font-size: 1.05rem;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-muted, #666);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+#darkModeToggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
+    transform: scale(1.05);
+}
+
+#darkModeToggle:active {
+    transform: scale(0.97);
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+
+/* === RESPONSIVE NAV === */
 
 @media (max-width: 500px) {
     .nav-toggle {
@@ -125,10 +215,10 @@ html {
         position: absolute;
         top: 100%;
         right: 1rem;
-        background: white;
-        border: 1px solid #eee;
+        background: var(--bg-color);
+        border: 1px solid var(--border-color);
         padding: 1rem;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 12px var(--shadow-color);
         transition: opacity 0.2s ease, visibility 0.15s ease;
     }
     .nav-links.show {
@@ -146,7 +236,7 @@ html {
 }
 
 
-/* Header */
+/* === HEADER === */
 
 header {
     text-align: center;
@@ -157,24 +247,26 @@ header h1 {
     font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    color: var(--text-color);
 }
 
 header p {
     font-size: 1.2rem;
-    color: #555;
+    color: var(--muted-text);
 }
 
 
-/* Sections */
+/* === SECTIONS === */
 
 section {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem 0;
+    color: var(--text-color);
 }
 
 
-/* Section Headings */
+/* === SECTION HEADINGS === */
 
 .about h2,
 .skills h2,
@@ -184,20 +276,21 @@ section {
     font-size: 1.75rem;
     margin-bottom: 1rem;
     font-weight: 500;
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 0.5rem;
+    color: var(--text-color);
 }
 
 
-/* hero title */
+/* === HERO TITLE === */
 
 .hero {
     width: 100%;
-    background: linear-gradient(to bottom, rgba(240, 240, 240, 0.9), transparent 90%);
+    background: var(--hero-bg);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     padding: 6rem 1rem 4rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
 
 .hero-content {
@@ -212,43 +305,42 @@ section {
     font-size: 3rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #111;
+    color: var(--text-color);
 }
 
 .hero-content p {
     font-size: 1.25rem;
-    color: #555;
+    color: var(--muted-text);
 }
 
-/* hero subtext */
+
+/* === HERO SUBTEXT (TYPING EFFECT) === */
 
 #trailing-words::after {
     content: '_';
     animation: blink 1s infinite;
     margin-left: 2px;
-    color: #aaa;
-  }
-  
-  @keyframes blink {
-    0%, 49% {
-      opacity: 1;
+    color: var(--cursor-color);
+}
+
+@keyframes blink {
+    0%,
+    49% {
+        opacity: 1;
     }
-    50%, 100% {
-      opacity: 0;
+    50%,
+    100% {
+        opacity: 0;
     }
-  }
+}
 
 
-/* hero arrow */
+/* === HERO ARROW (CHEVRON) === */
 
 .scroll-indicator {
     text-align: center;
     margin-top: 1rem;
     user-select: none;
-}
-
-.chevron-hover:hover svg {
-    animation: bounce 0.8s ease-in-out infinite;
 }
 
 .chevron-hover {
@@ -257,25 +349,21 @@ section {
     align-items: center;
     width: fit-content;
     margin: 0 auto;
-}
-
-.chevron-hover {
     padding: 0.5rem;
     border-radius: 50%;
 }
 
-.scroll-indicator svg {
-    stroke: #888;
-    transition: stroke 0.3s;
+.chevron-hover:hover svg {
+    animation: bounce 0.8s ease-in-out infinite;
 }
 
 .scroll-indicator svg {
-    stroke: #888;
+    stroke: var(--chevron-color);
     transition: stroke 0.3s;
 }
 
 .scroll-indicator:hover svg {
-    stroke: #444;
+    stroke: var(--chevron-hover);
 }
 
 @keyframes bounce {
@@ -289,7 +377,7 @@ section {
 }
 
 
-/* Skills list */
+/* === SKILLS SECTION === */
 
 .skill-list {
     display: flex;
@@ -301,8 +389,8 @@ section {
 }
 
 .skill-list li {
-    background: #f7f7f7;
-    border: 1px solid #eaeaea;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     padding: 0.5rem 1rem;
     font-size: 0.95rem;
 }
@@ -315,29 +403,32 @@ section {
 }
 
 .tag {
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: var(--card-bg);
+    color: var(--text-color);
     padding: 0.4rem 0.9rem;
     font-size: 0.85rem;
     border-radius: 4px;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     transform: scale(1);
-  }
-  
-  .tag:hover {
-    background-color: #eaeaea;
+}
+
+.tag:hover {
+    background-color: var(--hover-bg, #eaeaea);
     transform: scale(1.06);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  }
-
-/* Experience Section Wrapper */
-
-.experience {
-    position: relative;
+    box-shadow: 0 2px 6px var(--shadow-color);
 }
 
 
-/* Scrollable Area */
+/* === EXPERIENCE SECTION WRAPPER === */
+
+.experience {
+    position: relative;
+    color: var(--text-color);
+    /* ensures dark mode compatibility */
+}
+
+
+/* === EXPERIENCE SCROLLABLE AREA === */
 
 .experience-scroll {
     position: relative;
@@ -350,19 +441,19 @@ section {
 }
 
 
-/* Scrollbar styling */
+/* === SCROLLBAR STYLING === */
 
 .experience-scroll::-webkit-scrollbar {
     width: 6px;
 }
 
 .experience-scroll::-webkit-scrollbar-thumb {
-    background-color: #ccc;
+    background-color: var(--scrollbar-thumb);
     border-radius: 4px;
 }
 
 
-/* Experience List */
+/* === EXPERIENCE LIST === */
 
 .experience-list {
     list-style: none;
@@ -373,13 +464,13 @@ section {
     gap: 1.5rem;
 }
 
-
-/* Experience Item */
-
 .experience-list li {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 1rem;
 }
+
+
+/* === EXPERIENCE ITEM HEADER === */
 
 .exp-header {
     display: flex;
@@ -391,34 +482,22 @@ section {
 
 .exp-header strong {
     font-weight: 500;
-    color: #111;
+    color: var(--text-color);
 }
 
 .exp-header span {
     font-size: 0.9rem;
-    color: #999;
+    color: var(--muted-text);
 }
 
 .experience-list p {
     font-size: 0.95rem;
-    color: #555;
+    color: var(--muted-text);
     margin: 0;
 }
 
 
-/* Optional: match existing scrollbar tweaks */
-
-.experience-scroll::-webkit-scrollbar {
-    width: 6px;
-}
-
-.experience-scroll::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-}
-
-
-/* Projects grid */
+/* === PROJECT GRID === */
 
 .project-grid {
     display: grid;
@@ -428,36 +507,37 @@ section {
 }
 
 
-/* Project cards */
+/* === PROJECT CARD === */
 
 .card {
-    background-color: #fff;
+    background-color: var(--card-bg);
     padding: 1.5rem;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 0 0 transparent;
-    transition: all 0.2s ease-in-out;
+    box-shadow: none;
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
 .card h3 {
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
+    color: var(--text-color);
 }
 
 .card p {
     font-size: 0.95rem;
-    color: #666;
+    color: var(--muted-text);
 }
 
 .card:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-    border-color: #ccc;
+    box-shadow: 0 6px 12px var(--shadow-color);
+    border-color: var(--hover-bg, #ccc);
 }
 
 
-/* Contact list */
+/* === CONTACT LIST === */
 
 .contact-list {
     list-style: none;
@@ -470,7 +550,7 @@ section {
 }
 
 .contact-list a {
-    color: #007acc;
+    color: var(--accent-color);
     text-decoration: none;
 }
 
@@ -479,17 +559,17 @@ section {
 }
 
 
-/* Footer */
+/* === FOOTER === */
 
 footer {
     text-align: center;
     font-size: 0.9rem;
-    color: #999;
+    color: var(--muted-text);
     padding: 2rem 0;
 }
 
 footer a {
-    color: #666;
+    color: var(--text-muted, #666);
     text-decoration: none;
 }
 

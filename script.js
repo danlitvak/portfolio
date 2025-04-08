@@ -52,38 +52,56 @@ let isDeleting = false;
 const display = document.getElementById("trailing-words");
 
 function pickRandomPhrase(exclude) {
-  let next;
-  do {
-    next = phrases[Math.floor(Math.random() * phrases.length)];
-  } while (next === exclude); // prevent repeating the same one
-  return next;
+    let next;
+    do {
+        next = phrases[Math.floor(Math.random() * phrases.length)];
+    } while (next === exclude); // prevent repeating the same one
+    return next;
 }
 
 function typeLoop() {
-  const fullText = currentPhrase;
+    const fullText = currentPhrase;
 
-  if (isDeleting) {
-    currentChar--;
-  } else {
-    currentChar++;
-  }
+    if (isDeleting) {
+        currentChar--;
+    } else {
+        currentChar++;
+    }
 
-  display.textContent = fullText.substring(0, currentChar);
+    display.textContent = fullText.substring(0, currentChar);
 
-  let delay = isDeleting ? 180 : 360;
+    let delay = isDeleting ? 180 : 360;
 
-  if (!isDeleting && currentChar === fullText.length) {
-    delay = 2000; // pause after finishing
-    isDeleting = true;
-  } else if (isDeleting && currentChar === 0) {
-    isDeleting = false;
-    currentPhrase = pickRandomPhrase(currentPhrase); // pick new one
-    delay = 1000; // pause before typing new
-  }
+    if (!isDeleting && currentChar === fullText.length) {
+        delay = 2000; // pause after finishing
+        isDeleting = true;
+    } else if (isDeleting && currentChar === 0) {
+        isDeleting = false;
+        currentPhrase = pickRandomPhrase(currentPhrase); // pick new one
+        delay = 1000; // pause before typing new
+    }
 
-  setTimeout(typeLoop, delay);
+    setTimeout(typeLoop, delay);
 }
 
 // Start with a random one
 currentPhrase = pickRandomPhrase("");
 typeLoop();
+
+const darkToggle = document.getElementById("darkModeToggle");
+
+darkToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    // Save the current mode to localStorage
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+});
+
+// On page load, check for saved preference
+window.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
