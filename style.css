@@ -14,7 +14,7 @@
     --chevron-hover: #444;
     --hover-bg: #eaeaea;
     --scrollbar-thumb: #ccc;
-    --card-bg: #fff;
+    --card-bg: #fafafa;
     --hover-bg: #ccc;
     --accent-color: #007acc;
     --muted-text: #999;
@@ -95,7 +95,7 @@ body {
 .fade-in-on-scroll {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: opacity 1s ease-out, transform 0.5s ease-out;
 }
 
 .fade-in-on-scroll.visible {
@@ -113,7 +113,7 @@ body {
     right: 0;
     background: var(--navbar-bg);
     /* Optional: make this variable later if needed */
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     border-bottom: 1px solid var(--border-color);
     z-index: 1000;
 }
@@ -131,6 +131,7 @@ body {
     font-size: 1.1rem;
     color: var(--text-color);
     text-decoration: none;
+    padding-left: 0.5rem;
 }
 
 .nav-links {
@@ -171,7 +172,16 @@ body {
     display: none;
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 2rem;
+    color: var(--text-muted);
+    /* for pixle alignment */
+    margin-bottom: 3px;
+    transition: background-color 0.2s ease, transform 0.15s ease, color 0.2s ease;
+}
+
+.nav-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.05);
     color: var(--text-color);
 }
 
@@ -203,7 +213,7 @@ body {
 
 #darkModeToggle i {
     font-size: 1.2rem;
-    color: var(--text-muted, #666);
+    color: var(--text-muted);
     line-height: 1;
     vertical-align: middle;
     transition: color 0.3s ease, transform 0.2s ease;
@@ -214,8 +224,8 @@ body {
 
 #darkModeToggle:hover i {
     color: var(--text-color);
-    transform: scale(1.1);
     /* 👈 Just a subtle zoom */
+    transform: scale(1.1);
 }
 
 
@@ -314,7 +324,7 @@ section {
 .hero-content {
     max-width: 800px;
     margin: 0 auto;
-    padding: 3rem;
+    padding: 0rem;
     border-radius: 1.5rem;
     text-align: center;
 }
@@ -329,6 +339,10 @@ section {
 .hero-content p {
     font-size: 1.25rem;
     color: var(--muted-text);
+}
+
+.title-line {
+    height: 2em;
 }
 
 
@@ -589,6 +603,10 @@ footer {
 footer a {
     color: var(--text-muted, #666);
     text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
 
 footer a:hover {
