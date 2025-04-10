@@ -15,10 +15,11 @@
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular/css/uicons-regular.css">
 
+    <!-- Libraries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
-
     <nav class="navbar fade-in-on-scroll">
         <div class="nav-content">
             <div class="nav-logo">
@@ -151,10 +152,9 @@
             </div>
         </section>
 
-        <!-- IDEA: carrosel of verticle project cards, clickable to head to project -->
-
+        <!-- old projects section -->
         <section id="projects" class="projects fade-in-on-scroll">
-            <h2>Projects</h2>
+            <h2>Featured Projects</h2>
             <div class="project-grid">
                 <a class="card" href="projects/water-sort.html">
                     <h3>Project 1 Name</h3>
@@ -188,6 +188,41 @@
             </div>
         </section>
 
+        <!-- swiper carrosel -->
+        <section id="carousel-projects" class="projects fade-in-on-scroll">
+            <h2>More Projects</h2>
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <h3>Project 1</h3>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>Project 2</h3>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>Project 3</h3>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>Project 1</h3>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>Project 2</h3>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <h3>Project 3</h3>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                </div>
+
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
         <section id="contact" class="contact fade-in-on-scroll">
             <h2>Let's Connect!</h2>
             <p>
@@ -206,8 +241,11 @@
             <p>Made with gen AI</p>
         </footer>
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script src="script.js"></script>
     </main>
+
 </body>
 
 </html>

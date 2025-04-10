@@ -529,6 +529,131 @@ section {
 }
 
 
+/* swiper */
+
+
+/* Base bullet color */
+
+.swiper-pagination-bullet {
+    background: var(--muted-text);
+    /* or any color you want */
+    opacity: 0.5;
+}
+
+
+/* Active bullet (current slide) */
+
+.swiper-pagination-bullet-active {
+    background: var(--text-color);
+    /* your highlight color */
+    opacity: 1;
+}
+
+.swiper {
+    height: 30vh;
+    /* full screen height */
+}
+
+.swiper-slide {
+    width: 100%;
+    /* now full width */
+    height: 420px;
+    /* portrait height still */
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease;
+}
+
+.swiper-slide:hover {
+    transform: scale(1.03);
+}
+
+.swiper-slide h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.swiper-slide p {
+    font-size: 1rem;
+    color: var(--muted-text);
+}
+
+
+/* === PROJECT CAROUSEL === */
+
+.carousel-container {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
+    margin: 0;
+    cursor: grab;
+    user-select: none;
+}
+
+.carousel-container.dragging {
+    cursor: grabbing;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.carousel-track .carousel-card {
+    flex: 0 0 40%;
+    height: 400px;
+    margin: 0;
+    scroll-snap-align: start;
+    background-color: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.05s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    will-change: transform;
+}
+
+.carousel-track .carousel-card:hover {
+    transform: scale(1.03);
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.carousel-card p {
+    font-size: 1rem;
+    color: var(--muted-text);
+}
+
+@media (max-width: 600px) {
+    .carousel-track .carousel-card {
+        flex: 0 0 80%;
+        /* more room to breathe on mobile */
+    }
+}
+
+
 /* === PROJECT GRID === */
 
 .project-grid {

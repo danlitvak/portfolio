@@ -106,3 +106,18 @@ window.addEventListener("DOMContentLoaded", () => {
     const savedTheme = localStorage.getItem("theme");
     setTheme(savedTheme === "dark");
 });
+
+// swiper
+window.addEventListener("DOMContentLoaded", () => {
+    const swiper = new Swiper(".swiper", {
+        direction: "vertical",
+        slidesPerView: "auto",
+        spaceBetween: 16,
+        grabCursor: true,
+        mousewheel: true,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+});
