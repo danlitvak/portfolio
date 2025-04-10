@@ -4,4 +4,4 @@ https://danlitvak.github.io/portofolio_test_2/
 2) Change the light mode icon, looks weird on phone
 3) Make elements fade in not the whole body ✅
 4) Fixed subtitle text height ✅
-5) add carousel 
+5) add carousel ✅
