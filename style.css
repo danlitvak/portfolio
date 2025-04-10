@@ -64,7 +64,10 @@ html {
 }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: "Nunito", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
@@ -329,7 +332,8 @@ section {
 .hero {
     width: 100%;
     background: var(--hero-bg);
-    backdrop-filter: blur(8px);
+    background-blend-mode: overlay;
+    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(8px);
     padding: 6rem 1rem 4rem;
     box-shadow: 0 4px 10px var(--shadow-color);
@@ -674,9 +678,11 @@ section {
 
 footer {
     text-align: center;
+    padding: 0.25rem;
     font-size: 0.9rem;
     color: var(--muted-text);
-    padding: 2rem 0;
+    background: var(--card-bg);
+    width: 100%;
 }
 
 footer a {
