@@ -20,6 +20,8 @@
     --muted-text: #999;
     --text-muted: #666;
     --navbar-bg: rgba(255, 255, 255, 0.9);
+    --toggle-bg-hover: rgba(0, 0, 0, 0.05);
+    --toggle-bg-active: rgba(0, 0, 0, 0.08);
 }
 
 body.dark-mode {
@@ -44,6 +46,8 @@ body.dark-mode {
     --text-muted: #999;
     --navbar-bg: rgba(20, 20, 20, 0.9);
     /* or something darker like rgba(30,30,30,0.85) */
+    --toggle-bg-hover: rgba(255, 255, 255, 0.08);
+    --toggle-bg-active: rgba(255, 255, 255, 0.12);
 }
 
 
@@ -206,6 +210,22 @@ body {
     transform: scale(1.05);
 }
 
+#darkModeToggle:hover {
+    background-color: var(--toggle-bg-hover);
+    transform: scale(1.05);
+}
+
+#darkModeToggle:active {
+    background-color: var(--toggle-bg-active);
+    transform: scale(0.97);
+}
+
+#darkModeToggle:hover i {
+    color: var(--text-color);
+    /* 👈 Just a subtle zoom */
+    transform: scale(1.1);
+}
+
 #darkModeToggle:active {
     transform: scale(0.97);
     background-color: rgba(0, 0, 0, 0.08);
@@ -220,12 +240,6 @@ body {
     position: relative;
     top: 2px;
     /* Manual vertical nudge */
-}
-
-#darkModeToggle:hover i {
-    color: var(--text-color);
-    /* 👈 Just a subtle zoom */
-    transform: scale(1.1);
 }
 
 
@@ -559,7 +573,7 @@ section {
 }
 
 .swiper {
-    height: 30vh;
+    height: 20vh;
     /* full screen height */
 }
 

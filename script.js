@@ -93,7 +93,7 @@ const icon = darkToggle.querySelector("i");
 
 function setTheme(isDark) {
     document.body.classList.toggle("dark-mode", isDark);
-    icon.className = isDark ? "fi fi-rr-sun" : "fi fi-rr-moon-stars";
+    icon.className = isDark ? "fi fi-ss-sun" : "fi fi-rr-moon-stars";
     localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
