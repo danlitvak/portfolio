@@ -248,7 +248,7 @@ body {
 
 /* === RESPONSIVE NAV === */
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
     .nav-toggle {
         display: block;
     }

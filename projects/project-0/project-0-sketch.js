@@ -3,12 +3,29 @@ let s = 0.5;
 let w = 50;
 let h = 50;
 
+let canvasHeight = 400;
+let canvasWidth = 400;
+
 function setup() {
-    createCanvas(600, 600, WEBGL);
+    container = document.getElementById('canvas-container');
+    // canvasWidth = container.getBoundingClientRect().width;
+
+    const canvas = createCanvas(canvasWidth, canvasHeight, WEBGL);
+    canvas.parent(container);
+
+    windowResized();
+
     orbitControl();
     cols = w / s;
     rows = h / s;
     background(0);
+}
+
+function windowResized() {
+    container = document.getElementById('canvas-container');
+    canvasWidth = container.getBoundingClientRect().width;
+
+    resizeCanvas(canvasWidth, canvasHeight);
 }
 
 function surfaceFunction(x, z) {
@@ -17,15 +34,14 @@ function surfaceFunction(x, z) {
 }
 
 function draw() {
+    ambientLight(50);
     background(0);
-    orbitControl();
+    fill(100);
     scale(5)
+    orbitControl();
+    noStroke()
     directionalLight(255, 255, 255, -1, -1, -1);
     directionalLight(128, 128, 128, 1, 1, 1);
-    ambientLight(50);
-    fill(100);
-
-    noStroke()
 
     for (let z = 0; z < rows - 1; z++) {
         beginShape(TRIANGLE_STRIP);
@@ -39,6 +55,7 @@ function draw() {
             let nx = xPos / sqrt(xPos * xPos + zPos * zPos + 1);
             let ny = 1;
             let nz = zPos / sqrt(xPos * xPos + zPos * zPos + 1);
+
             normal(nx, ny, nz);
             vertex(xPos, y1, zPos);
             normal(nx, ny, nz);
