@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Daniel Litvak - Conway's Game of Life</title>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular/css/uicons-regular.css">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=VT323&display=swap" rel="stylesheet" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../project-3/project-3-style.css" />
+    <link rel="stylesheet" href="../../style.css" />
+
+    <!-- p5.js Libraries -->
+    <script src="../../libraries/p5.min.js"></script>
+    <script src="../../libraries/p5.sound.min.js"></script>
+</head>
+
+<body class="project-page dark-mode" oncontextmenu="return false;">
+    <!-- Navbar -->
+    <nav class="navbar fade-in-on-scroll">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="../../index.html">[Daniel Litvak]</a>
+            </div>
+            <div class="nav-right">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="#canvas-container">Project</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"> &#9776; </button>
+                    <button id="darkModeToggle" aria-label="Toggle dark mode">
+            <i class="fi fi-rr-moon-stars"></i>
+        </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- spacer -->
+    <div style="height: 50px;"></div>
+
+    <main class="page-content">
+
+        <!-- Introduction Section -->
+        <section class="introduction fade-in-on-scroll" id="introduction">
+            <h2> Description </h2>
+            <div style="text-align: left; padding-bottom: 0px; color: var(--h-text-color);">
+                <details class="dropdown" open>
+                    <summary> Introduction </summary>
+                    <p>
+                        intro ...
+                    </p>
+                </details>
+
+                <details class="dropdown" open>
+                    <summary> Implementation </summary>
+                    <p>
+                        implementation ...
+                    </p>
+                </details>
+
+                <details class="dropdown" open>
+                    <summary> What I Learned </summary>
+                    <p>
+                        learning ...
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <!-- Instruction Section -->
+        <div class="instruction-section fade-in-on-scroll">
+            <h2>Instructions:</h2>
+            <ul>
+                <li><span class="key">• Mouse Click:</span> Add/Remove Cells</li>
+                <li><span class="key">• R:</span> Randomize Grid </li>
+                <li><span class="key">• S:</span> Open Statistics </li>
+                <li><span class="key">• Spacebar:</span> Pause/Play </li>
+                <li><span class="key">• Mousewheel:</span> Speed </li>
+            </ul>
+        </div>
+
+        <div class="instruction-section">
+            <h2>Conway's Game of Life</h2>
+        </div>
+
+        <div class="fade-in-on-scroll" id="canvas-container"></div>
+    </main>
+
+    <!-- spacer -->
+    <div style="height: 2rem;"></div>
+
+    <!-- Footer -->
+    <footer class="fade-in-on-scroll">
+        <p>[Daniel Litvak] - 2025</p>
+        <p>Hosted free with GitHub</p>
+        <p>© Powered by AI</p>
+    </footer>
+
+    <!-- Project Sketch -->
+    <script src="project-3-sketch.js"></script>
+    <script src="../project-3/project-3-classes/bound.js"></script>
+    <script src="../project-3/project-3-classes/quadtree.js"></script>
+
+    <!-- script -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="../../script.js"></script>
+</body>
+
+</html>
