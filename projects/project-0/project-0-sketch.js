@@ -3,17 +3,25 @@ let s = 0.5;
 let w = 50;
 let h = 50;
 
+// integration starts here
+// variables to keep track
 let canvasHeight = 400;
 let canvasWidth = 400;
 
-function setup() {
+// function for resizing
+function windowResized() {
     container = document.getElementById('canvas-container');
-    // canvasWidth = container.getBoundingClientRect().width;
+    canvasWidth = container.getBoundingClientRect().width;
+    resizeCanvas(canvasWidth, canvasHeight);
+}
 
+function setup() {
+    // start up
+    container = document.getElementById('canvas-container');
     const canvas = createCanvas(canvasWidth, canvasHeight, WEBGL);
     canvas.parent(container);
-
     windowResized();
+    // integration ends here
 
     orbitControl();
     cols = w / s;
@@ -21,12 +29,7 @@ function setup() {
     background(0);
 }
 
-function windowResized() {
-    container = document.getElementById('canvas-container');
-    canvasWidth = container.getBoundingClientRect().width;
 
-    resizeCanvas(canvasWidth, canvasHeight);
-}
 
 function surfaceFunction(x, z) {
     let r = sqrt(x * x + z * z);

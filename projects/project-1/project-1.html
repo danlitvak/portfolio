@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=VT323&display=swap" rel="stylesheet" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="project-0-style.css" />
+    <link rel="stylesheet" href="../project-1/project-1-style.css" />
     <link rel="stylesheet" href="../../style.css" />
 
     <!-- p5.js Libraries -->
@@ -61,31 +61,21 @@
                 <details class="dropdown" open>
                     <summary> Introduction </summary>
                     <p>
-                        The difficulty of sorting vectors is a position many developers have found themselves in, including me. The naive approach would be to loop through every point then returning desired values, this would run in a time complexity of the length of the array.
-                    </p>
-
-                    <p>
-                        A quad tree is a sollution to store vectors of any length and search for them extremely quickly. In the beginning one Quad Tree object is created and when another vector needs to be stored it is pushed to the Quad Tree. If the current Quad Tree is storing
-                        too many vectors a subdivision occurs and the vectors are pushed further down the tree. To querry the tree, a recursion efficiently finds the desired points.
-                    </p>
-
-                    <p>
-                        The key benifet of a Quad Tree is that when a small area is querried, very few position searches are performed, increasing the performance and reducing the time complexity.
+                        intro ...
                     </p>
                 </details>
 
                 <details class="dropdown" open>
                     <summary> Implementation </summary>
                     <p>
-                        This implementation lets users place points by clicking, and they are represented by a small red circle. The area in which the querry happens is the green square around the users mouse. A Quad Tree which has returned its points has a grey background and
-                        a black background if did not. From this it is clear to see how a Quad Tree is an optimal solution.
+                        implementation ...
                     </p>
                 </details>
 
                 <details class="dropdown" open>
                     <summary> What I Learned </summary>
                     <p>
-                        From this project I learned how to implement recursion algorithms and Axis Aligned Bounding Boxs (AABB).
+                        learning ...
                     </p>
                 </details>
             </div>
@@ -95,15 +85,16 @@
         <div class="instruction-section fade-in-on-scroll">
             <h2>Instructions:</h2>
             <ul>
-                <li><span class="key">• Mouse Drag:</span> Orbit </li>
-                <li><span class="key">• Mouse Scroll:</span> Zoom </li>
+                <li><span class="key">• F:</span> Show/Hide Frame </li>
+                <li><span class="key">• Mouse Click:</span> Grab Birds </li>
+                <li><span class="key">• Spacebar:</span> Debug </li>
             </ul>
         </div>
 
 
 
         <div class="instruction-section">
-            <h2>3D Test Project</h2>
+            <h2>Flocking Birds</h2>
         </div>
 
         <div class="fade-in-on-scroll" id="canvas-container"></div>
@@ -120,7 +111,9 @@
     </footer>
 
     <!-- Project Sketch -->
-    <script src="project-0-sketch.js"></script>
+    <script src="project-1-sketch.js"></script>
+    <script src="../project-1/project-1-classes/bound.js"></script>
+    <script src="../project-1/project-1-classes/quadtree.js"></script>
 
     <!-- script -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
