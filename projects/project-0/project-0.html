@@ -49,14 +49,70 @@
 
 
     <!-- spacer -->
-    <div style="height: 100px;"></div>
+    <div style="height: 50px;"></div>
 
-    <main class="page-content fade-in-on-scroll">
-        <div id="canvas-container"></div>
+    <main class="page-content">
+
+        <!-- Introduction Section -->
+        <section class="introduction fade-in-on-scroll" id="introduction">
+            <h2> Description </h2>
+            <div style="text-align: left; padding-bottom: 0px; color: var(--h-text-color);">
+                <details class="dropdown" open>
+                    <summary> Introduction </summary>
+                    <p>
+                        The difficulty of sorting vectors is a position many developers have found themselves in, including me. The naive approach would be to loop through every point then returning desired values, this would run in a time complexity of the length of the array.
+                    </p>
+
+                    <p>
+                        A quad tree is a sollution to store vectors of any length and search for them extremely quickly. In the beginning one Quad Tree object is created and when another vector needs to be stored it is pushed to the Quad Tree. If the current Quad Tree is storing
+                        too many vectors a subdivision occurs and the vectors are pushed further down the tree. To querry the tree, a recursion efficiently finds the desired points.
+                    </p>
+
+                    <p>
+                        The key benifet of a Quad Tree is that when a small area is querried, very few position searches are performed, increasing the performance and reducing the time complexity.
+                    </p>
+                </details>
+
+                <details class="dropdown" open>
+                    <summary> Implementation </summary>
+                    <p>
+                        This implementation lets users place points by clicking, and they are represented by a small red circle. The area in which the querry happens is the green square around the users mouse. A Quad Tree which has returned its points has a grey background and
+                        a black background if did not. From this it is clear to see how a Quad Tree is an optimal solution.
+                    </p>
+                </details>
+
+                <details class="dropdown" open>
+                    <summary> What I Learned </summary>
+                    <p>
+                        From this project I learned how to implement recursion algorithms and Axis Aligned Bounding Boxs (AABB).
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <!-- Instruction Section -->
+        <div class="instruction-section fade-in-on-scroll">
+            <h2>Instructions:</h2>
+            <ul>
+                <li><span class="key">• R:</span> Reset</li>
+                <li><span class="key">• Mouse Scroll:</span> Change Range Size</li>
+                <li><span class="key">• Mouse Click:</span> Insert Point</li>
+                <li><span class="key">• Q:</span> Change Query Mode</li>
+                <li><span class="key">• Space:</span> Change Query Type</li>
+            </ul>
+        </div>
+
+
+
+        <div class="instruction-section">
+            <h2>3D Test Project</h2>
+        </div>
+
+        <div class="fade-in-on-scroll" id="canvas-container"></div>
     </main>
 
     <!-- spacer -->
-    <div style="height: 100px;"></div>
+    <div style="height: 2rem;"></div>
 
     <!-- Footer -->
     <footer class="fade-in-on-scroll">

@@ -317,7 +317,9 @@ section {
 .skills h2,
 .projects h2,
 .contact h2,
-.experience h2 {
+.experience h2,
+.introduction h2,
+.instruction-section h2 {
     font-size: 1.75rem;
     margin-bottom: 1rem;
     font-weight: 500;
@@ -424,6 +426,91 @@ section {
     50% {
         transform: translateY(3px);
     }
+}
+
+
+/* === INTRODUCTION SECTION (no outer box, clean inner styling) === */
+
+.introduction {
+    max-width: 800px;
+    padding: 0;
+    margin: 2rem auto;
+    color: var(--text-color);
+    font-family: inherit;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.introduction h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+
+/* <details> Dropdowns */
+
+.dropdown {
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border-color);
+}
+
+.dropdown summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    outline: none;
+}
+
+.dropdown[open] summary {
+    color: var(--text-color);
+}
+
+.dropdown p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+    color: var(--muted-text);
+}
+
+
+/* === INSTRUCTION SECTION (left-aligned, clean style) === */
+
+.instruction-section {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1 0rem;
+    color: var(--text-color);
+    font-family: inherit;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.instruction-section p {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.instruction-section ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.instruction-section li {
+    margin-bottom: 0.5rem;
+    color: var(--muted-text);
+}
+
+.instruction-section .key {
+    color: var(--text-color);
+    font-weight: bold;
 }
 
 

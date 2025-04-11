@@ -30,6 +30,7 @@ window.addEventListener('resize', () => {
     }
 });
 
+// Fade elements
 const fadeEls = document.querySelectorAll('.fade-in-on-scroll');
 
 const observer = new IntersectionObserver((entries) => {
