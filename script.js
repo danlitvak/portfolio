@@ -23,14 +23,14 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// ✅ Fix: Remove menu state on resize to larger screens
+// Remove menu state on resize to larger screens (not working ❌)
 window.addEventListener('resize', () => {
     if (window.innerWidth > 768) {
         navLinks.classList.remove('show');
     }
 });
 
-// Fade elements
+// Fade elements on scroll
 const fadeEls = document.querySelectorAll('.fade-in-on-scroll');
 
 const observer = new IntersectionObserver((entries) => {
@@ -47,58 +47,75 @@ const observer = new IntersectionObserver((entries) => {
 fadeEls.forEach(el => observer.observe(el));
 
 
-// chevron scroll
-document.getElementById("scrollChevron").addEventListener("click", (e) => {
-    e.preventDefault(); // prevent any default link behavior
+// Chevron scroll
+document.addEventListener("DOMContentLoaded", () => {
+    const chevron = document.getElementById("scrollChevron");
 
-    const target = document.getElementById("about");
-    const offset = 50;
+    if (chevron) {
+        chevron.addEventListener("click", (e) => {
+            e.preventDefault();
 
-    if (target) {
-        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            const target = document.getElementById("about");
+            const offset = 50;
 
-        window.scrollTo({
-            top: top,
-            behavior: "smooth"
+            if (target) {
+                const top = target.getBoundingClientRect().top + window.scrollY - offset;
+
+                window.scrollTo({
+                    top: top,
+                    behavior: "smooth"
+                });
+            }
         });
     }
 });
 
-// word shining efect
+// Text glow effect
+document.addEventListener("DOMContentLoaded", () => {
+    const text = "Featured Projects";
+    const container = document.getElementById("glowTarget");
 
-const text = "Featured Projects";
-const container = document.getElementById("glowTarget");
-container.innerHTML = "";
+    if (!container) return;
 
-text.split("").forEach((char, index) => {
-    const span = document.createElement("span");
-    span.textContent = char === " " ? "\u00A0" : char; // non-breaking space
-    span.classList.add("glow-letter");
-    span.dataset.index = index;
-    container.appendChild(span);
-});
+    container.innerHTML = "";
 
-function animateGlow(time) {
-    const letters = document.querySelectorAll(".glow-letter");
+    text.split("").forEach((char, index) => {
+        const span = document.createElement("span");
+        span.textContent = char === " " ? "\u00A0" : char; // non-breaking space
+        span.classList.add("glow-letter");
+        span.dataset.index = index;
+        container.appendChild(span);
+    });
 
-    // Grab current --text-muted from computed styles
-    const glowColor = getComputedStyle(document.documentElement).getPropertyValue("--letter-glow").trim();
+    function animateGlow(time) {
+        const letters = document.querySelectorAll(".glow-letter");
 
-    letters.forEach((el, i) => {
-                const phase = i * 0.1;
-                const glow = 1.3 * Math.sin(time / 600 - phase);
-                const intensity = Math.max(glow, 0);
+        const glowColor = getComputedStyle(document.documentElement)
+            .getPropertyValue("--letter-glow")
+            .trim();
 
-                const blur = intensity * 12;
-                const alpha = 0.4 + intensity * 0.6;
+        letters.forEach((el, i) => {
+            const phase = i * 0.1;
+            const glow = 1.3 * Math.sin(time / 600 - phase);
+            const intensity = Math.max(glow, 0);
 
-                el.style.textShadow = `0 0 ${blur}px ${glowColor.replace(")", `, ${alpha})`).replace("rgb", "rgba")}`;
-    }); 
+            const blur = intensity * 12;
+            const alpha = 0.4 + intensity * 0.6;
+
+            // Ensure rgb -> rgba conversion is safe
+            const rgbaColor = glowColor.startsWith("rgb(") ?
+                glowColor.replace("rgb", "rgba").replace(")", `, ${alpha})`) :
+                glowColor; // fallback in case of unexpected format
+
+            el.style.textShadow = `0 0 ${blur}px ${rgbaColor}`;
+        });
+
+        requestAnimationFrame(animateGlow);
+    }
 
     requestAnimationFrame(animateGlow);
-}
+});
 
-requestAnimationFrame(animateGlow);
 
 
 const display = document.getElementById("trailing-words");
