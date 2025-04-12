@@ -22,6 +22,7 @@
     --navbar-bg: rgba(255, 255, 255, 0.9);
     --toggle-bg-hover: rgba(0, 0, 0, 0.05);
     --toggle-bg-active: rgba(0, 0, 0, 0.08);
+    --letter-glow: #aaa
 }
 
 body.dark-mode {
@@ -48,6 +49,7 @@ body.dark-mode {
     /* or something darker like rgba(30,30,30,0.85) */
     --toggle-bg-hover: rgba(255, 255, 255, 0.08);
     --toggle-bg-active: rgba(255, 255, 255, 0.12);
+    --letter-glow: #ccc
 }
 
 
@@ -699,12 +701,21 @@ section {
 }
 
 
+/* Glowy Text */
+
+.glow-letter {
+    display: inline-block;
+    color: var(--text-color);
+    transition: text-shadow 0.1s;
+}
+
+
 /* === PROJECT GRID === */
 
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem;
     margin-top: 1rem;
 }
 

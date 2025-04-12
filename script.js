@@ -47,6 +47,59 @@ const observer = new IntersectionObserver((entries) => {
 fadeEls.forEach(el => observer.observe(el));
 
 
+// chevron scroll
+document.getElementById("scrollChevron").addEventListener("click", (e) => {
+    e.preventDefault(); // prevent any default link behavior
+
+    const target = document.getElementById("about");
+    const offset = 50;
+
+    if (target) {
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+
+        window.scrollTo({
+            top: top,
+            behavior: "smooth"
+        });
+    }
+});
+
+// word shining efect
+
+const text = "Featured Projects";
+const container = document.getElementById("glowTarget");
+container.innerHTML = "";
+
+text.split("").forEach((char, index) => {
+    const span = document.createElement("span");
+    span.textContent = char === " " ? "\u00A0" : char; // non-breaking space
+    span.classList.add("glow-letter");
+    span.dataset.index = index;
+    container.appendChild(span);
+});
+
+function animateGlow(time) {
+    const letters = document.querySelectorAll(".glow-letter");
+
+    // Grab current --text-muted from computed styles
+    const glowColor = getComputedStyle(document.documentElement).getPropertyValue("--letter-glow").trim();
+
+    letters.forEach((el, i) => {
+                const phase = i * 0.1;
+                const glow = 1.3 * Math.sin(time / 600 - phase);
+                const intensity = Math.max(glow, 0);
+
+                const blur = intensity * 12;
+                const alpha = 0.4 + intensity * 0.6;
+
+                el.style.textShadow = `0 0 ${blur}px ${glowColor.replace(")", `, ${alpha})`).replace("rgb", "rgba")}`;
+    }); 
+
+    requestAnimationFrame(animateGlow);
+}
+
+requestAnimationFrame(animateGlow);
+
 
 const display = document.getElementById("trailing-words");
 if (display) {
