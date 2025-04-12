@@ -7,3 +7,4 @@ https://danlitvak.github.io/portofolio_test_2/
 5) add carousel ✅
 6) added chevron scroll functionality ✅
 7) added cool glow to featured projects ✅
+8) fixed poor spacer placement ✅
