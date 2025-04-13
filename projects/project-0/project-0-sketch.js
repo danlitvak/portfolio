@@ -7,6 +7,8 @@ let h = 50;
 // variables to keep track
 let canvasHeight = 400;
 let canvasWidth = 400;
+let darkMode = document.body.classList.contains("dark-mode");
+let currentBackground = 0;
 
 // function for resizing
 function windowResized() {
@@ -27,6 +29,9 @@ function setup() {
     cols = w / s;
     rows = h / s;
     background(0);
+
+    console.log("dark mode detection test: " + document.body.classList.contains("dark-mode"));
+    console.log("hello");
 }
 
 
@@ -38,7 +43,15 @@ function surfaceFunction(x, z) {
 
 function draw() {
     ambientLight(50);
-    background(0);
+
+    darkMode = document.body.classList.contains("dark-mode");
+    if (darkMode) {
+        currentBackground = lerp(currentBackground, 0, 0.1);
+    } else {
+        currentBackground = lerp(currentBackground, 200, 0.1);
+    }
+
+    background(currentBackground);
     fill(100);
     scale(5)
     orbitControl();
