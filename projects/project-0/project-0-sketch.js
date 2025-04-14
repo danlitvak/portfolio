@@ -28,10 +28,6 @@ function setup() {
     orbitControl();
     cols = w / s;
     rows = h / s;
-    background(0);
-
-    console.log("dark mode detection test: " + document.body.classList.contains("dark-mode"));
-    console.log("hello");
 }
 
 
