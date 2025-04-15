@@ -13,6 +13,8 @@ function windowResized() {
 }
 
 let pong;
+let net;
+let b_n;
 
 function setup() {
     // start up
@@ -22,16 +24,26 @@ function setup() {
     windowResized();
     // integration ends here
 
-    pong = new pongSimulation(new bound(50, 50, 300, 300));
     textAlign(CENTER, CENTER);
+
+    let b = new bound(50, 50, 300, 300)
+    b_n = new bound(400, 50, 300, 300);
+    pong = new pongSimulation(b);
+
+    net = new NeuralNetwork([11, 8, 4, 2, 1]);
 }
 
 
 function draw() {
     background(0);
-    pong.left_paddle_pos = pong.ball_pos.y - pong.paddle_height / 2;
-    pong.right_paddle_pos = mouseY - pong.bound.y - pong.paddle_height / 2;
+
+    pong.move_right_paddle(pong.ball_pos.y - pong.paddle_height / 2)
+    pong.move_left_paddle(mouseY - pong.bound.y - pong.paddle_height / 2);
+    
     pong.clamp_paddles();
     pong.show();
     pong.update();
+
+    net.forward_propagate(pong.return_state());
+    net.show(b_n);
 }

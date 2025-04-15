@@ -6,12 +6,17 @@ class pongSimulation {
         //  paddle constants (maybe should convert to percentages)
         this.paddle_offest = 0.04 * this.bound.w; // offset units relative to respective wall
         this.paddle_width = 0.02 * this.bound.w; // unit width of the paddles
-        this.paddle_height = 0.4 * this.bound.w; // unit height of the paddles
+        this.paddle_height = 0.3 * this.bound.w; // unit height of the paddles
+        this.paddle_max_vel = 0.02 * this.bound.h; // max velocity of the paddles
         // paddle variables
+        // left paddle
         this.left_paddle_pos = 0; // top of the right paddle
         this.left_paddle_edge = this.paddle_offest + this.paddle_width; // right edge of left paddle (const)
+        this.left_paddle_vel = 0; // velocity of the left paddle
+        // right paddle
         this.right_paddle_pos = 0; // top of the left paddle
         this.right_paddle_edge = this.bound.w - (this.paddle_offest + this.paddle_width); // left edge of right paddle (const)
+        this.right_paddle_vel = 0; // velocity of the right paddle
 
         // ball constants
         this.ball_diameter = 0.02 * this.bound.w;
@@ -26,6 +31,38 @@ class pongSimulation {
         // game variables
         this.left_score = 0; // left player score
         this.right_score = 0; // right player score
+
+        this.reset_game(); // reset game to start
+    }
+
+    // Move the left paddle up or down to a target position
+    move_left_paddle(target_pos) {
+        // Calculate the distance to the target position
+        let dist = target_pos - this.left_paddle_pos;
+
+        // Move the paddle towards the target position
+        if (dist > 0) {
+            this.left_paddle_vel = min(this.paddle_max_vel, dist);
+            this.left_paddle_pos += this.left_paddle_vel;
+        } else {
+            this.left_paddle_vel = max(-this.paddle_max_vel, dist);
+            this.left_paddle_pos += this.left_paddle_vel;
+        }
+    }
+
+    // Move the right paddle up or down to a target position
+    move_right_paddle(target_pos) {
+        // Calculate the distance to the target position
+        let dist = target_pos - this.right_paddle_pos;
+
+        // Move the paddle towards the target position
+        if (dist > 0) {
+            this.right_paddle_vel = min(this.paddle_max_vel, dist);
+            this.right_paddle_pos += this.right_paddle_vel;
+        } else {
+            this.right_paddle_vel = max(-this.paddle_max_vel, dist);
+            this.right_paddle_pos += this.right_paddle_vel;
+        }
     }
 
     return_state() {
@@ -75,7 +112,13 @@ class pongSimulation {
             stroke(255);
             strokeWeight(2);
             state.forEach((val, i) => {
-                fill(val * 255);
+                if(val == 1){
+                    fill(0, 0, 255);
+                }else if(val == 0){
+                    fill(255, 0, 0);
+                }else{
+                    fill(val * 255);
+                }
                 rect(i * state_width, 0, state_width, state_width);
             });
             pop();
@@ -90,14 +133,14 @@ class pongSimulation {
             text(
                 `${this.left_score}`, // Left player's score
                 this.bound.w / 4, // Center of the left half
-                0.5 * this.bound.h // Near the top
+                (1/3) * this.bound.h // Near the top
             );
 
             // Right score (centered in the right half)
             text(
                 `${this.right_score}`, // Right player's score
                 (3 * this.bound.w) / 4, // Center of the right half
-                0.5 * this.bound.h // Near the top
+                (1/3) * this.bound.h // Near the top
             );
             pop();
 
@@ -117,6 +160,30 @@ class pongSimulation {
             fill(255);
             noStroke();
             rect(this.right_paddle_edge, this.right_paddle_pos, this.paddle_width, this.paddle_height);
+
+            // draw paddle direction
+            push();
+            // Draw paddle direction for the left paddle
+            push();
+            translate(this.paddle_offest + this.paddle_width / 2, this.left_paddle_pos + this.paddle_height / 2);
+            if (this.debug) {
+                stroke(255, 0, 0);
+                strokeWeight(2);
+                line(0, 0, 0, this.left_paddle_vel * ((this.paddle_height / 2) / this.paddle_max_vel));
+            }
+            pop();
+
+            // Draw paddle direction for the right paddle
+            push();
+            translate(this.right_paddle_edge + this.paddle_width / 2, this.right_paddle_pos + this.paddle_height / 2);
+            if (this.debug) {
+                stroke(0, 0, 255);
+                strokeWeight(2);
+                line(0, 0, 0, this.right_paddle_vel * ((this.paddle_height / 2) / this.paddle_max_vel));
+            }
+            pop();
+
+            pop();
 
             // draw ball
             push();
@@ -178,7 +245,6 @@ class pongSimulation {
             this.ball_pos.x = r;
             this.ball_vel.x *= -1;
             bounced = true;
-            console.log("Right Score");
             this.right_score++;
             this.reset_game();
         }
@@ -188,7 +254,6 @@ class pongSimulation {
             this.ball_pos.x = this.bound.w - r;
             this.ball_vel.x *= -1;
             bounced = true;
-            console.log("Left Score");
             this.left_score++;
             this.reset_game();
         }
