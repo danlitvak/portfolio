@@ -1,6 +1,7 @@
 class NeuralNetwork {
-    constructor(layerSizes) {
+    constructor(layerSizes, bound) {
         this.network = new Array(layerSizes.length);
+        this.bound = bound;
         
         for (let i = 0; i < layerSizes.length; i++) {
             this.network[i] = new Array(layerSizes[i]);
@@ -12,6 +13,11 @@ class NeuralNetwork {
                 ]
             }
         }
+    }
+
+    // return the output of the neural network after propagating the input
+    output() {
+        return max(min(this.network[this.network.length - 1][0][2], 1), 0);
     }
 
     forward_propagate(input) {
@@ -36,46 +42,43 @@ class NeuralNetwork {
         }
     }
 
-   
-
-    show(bound) {
+    show() {
         push();
-        translate(bound.x, bound.y);
+        translate(this.bound.x, this.bound.y);
         noFill();
         stroke(255);
         strokeWeight(2);
-        rect(0, 0, bound.w, bound.h);
 
-        // make each layer centered within the bound
-        let xSpacing = bound.w / (this.network.length + 1);
+        let xSpacing = this.bound.w / (this.network.length + 1);
 
         // Draw connections first
         for (let x = 0; x < this.network.length - 1; x++) {
             let layer = this.network[x];
             let nextLayer = this.network[x + 1];
-            let ySpacing = bound.h / (layer.length + 1);
-            let nextYSpacing = bound.h / (nextLayer.length + 1);
+            let ySpacing = this.bound.h / layer.length;
+            let nextYSpacing = this.bound.h / nextLayer.length;
 
             for (let y = 0; y < layer.length; y++) {
-            let node = layer[y];
-            let w = node[0];
+                let node = layer[y];
+                let w = node[0];
 
-            let nodeX = (x + 1) * xSpacing;
-            let nodeY = (y + 1) * ySpacing;
+                let nodeX = (x + 1) * xSpacing;
+                let nodeY = y * ySpacing + ySpacing / 2;
 
-            for (let i = 0; i < w.length; i++) {
-                let nextNodeY = (i + 1) * nextYSpacing;
-                let weight = w[i];
-                stroke(0, 255, 0, weight * 255); // Set opacity proportional to weight
-                line(nodeX, nodeY, (x + 2) * xSpacing, nextNodeY);
-            }
+                for (let i = 0; i < w.length; i++) {
+                    let nextNodeY = i * nextYSpacing + nextYSpacing / 2;
+                    let weight = w[i];
+                    stroke(0, 255, 0, weight * 255); // Set opacity proportional to weight
+                    line(nodeX, nodeY, (x + 2) * xSpacing, nextNodeY);
+                }
             }
         }
 
         // Draw nodes
         for (let x = 0; x < this.network.length; x++) {
             let layer = this.network[x];
-            let ySpacing = bound.h / (layer.length + 1);
+            let ySpacing = this.bound.h / layer.length;
+            let rectHeight = ySpacing * 1; // Ensure rectangles fit within the bound height
 
             for (let y = 0; y < layer.length; y++) {
                 let node = layer[y];
@@ -83,22 +86,27 @@ class NeuralNetwork {
                 let bias = node[1];
 
                 let nodeX = (x + 1) * xSpacing;
-                let nodeY = (y + 1) * ySpacing;
+                let nodeY = y * ySpacing + ySpacing / 2;
                 
                 // Map bias to stroke color range
                 let biasColorValue = map(bias, -1, 1, 0, 255);
-                fill(0);
+                fill(0, 128);
                 stroke(biasColorValue); // Set stroke color based on bias
                 strokeWeight(2); // Set stroke weight to 2
-                circle(nodeX, nodeY, 20);
+                rectMode(CENTER); // Set rectangle mode to center
+                rect(nodeX, nodeY, 20, rectHeight); // Draw rectangle for neuron
 
                 let colorValue = o * 255; // Map output value to color range
                 noStroke();
                 fill(255);
+
+                // Adjust text size to fit within the rectangle
+                let textSizeValue = Math.min(12, rectHeight * 0.5); // Scale text size based on rectangle height
+                textSize(textSizeValue);
+                textAlign(CENTER, CENTER); // Center-align text
                 text(o.toFixed(2), nodeX, nodeY);
             }
         }
-
         pop();
     }
 

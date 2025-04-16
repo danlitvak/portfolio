@@ -31,8 +31,31 @@ class pongSimulation {
         // game variables
         this.left_score = 0; // left player score
         this.right_score = 0; // right player score
+        this.last_accuracy = 0; // last accuracy of the left paddle
 
         this.reset_game(); // reset game to start
+    }
+
+    // Calculate the score for the left paddle
+    calculate_left_paddle_score() {
+        // Reward based on the vertical distance between the ball and the center of the left paddle
+        const paddle_center = this.left_paddle_pos + this.paddle_height / 2;
+        const vertical_distance = Math.abs(this.ball_pos.y - paddle_center);
+
+        // Normalize the vertical distance
+        const normalized_vertical_distance = 1 - (vertical_distance / this.bound.h); // Closer = higher score
+
+        // Calculate the horizontal distance to the paddle
+        const horizontal_distance = Math.max(0, this.left_paddle_edge - this.ball_pos.x);
+
+        // Normalize the horizontal distance
+        const normalized_horizontal_distance = 1 - (horizontal_distance / this.bound.w); // Closer = higher weight
+
+        // Weight the vertical distance score based on the horizontal distance
+        const weighted_vertical_score = normalized_vertical_distance * normalized_horizontal_distance;
+
+        this.last_accuracy = weighted_vertical_score; // Store the last accuracy for debugging
+        return weighted_vertical_score;
     }
 
     // Move the left paddle up or down to a target position
@@ -126,6 +149,7 @@ class pongSimulation {
             // Show scores in two separate text boxes
             push();
             textAlign(CENTER, CENTER);
+            noStroke();
             textSize(0.05 * this.bound.w); // Adjust text size relative to game width
             fill(255);
 
@@ -141,6 +165,14 @@ class pongSimulation {
                 `${this.right_score}`, // Right player's score
                 (3 * this.bound.w) / 4, // Center of the right half
                 (1/3) * this.bound.h // Near the top
+            );
+
+            // Draw the last accuracy in the middle
+            textSize(0.04 * this.bound.w); // Adjust text size relative to game width
+            text(
+                `Accuracy: ${this.last_accuracy.toFixed(2)}`, // Last accuracy
+                this.bound.w / 2, // Center of the canvas
+                (1/3) * this.bound.h // Near the bottom
             );
             pop();
 
