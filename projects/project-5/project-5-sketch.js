@@ -7,14 +7,9 @@ let canvasWidth = 400;
 function windowResized() {
     container = document.getElementById('canvas-container');
     canvasWidth = container.getBoundingClientRect().width;
-    canvasHeight = canvasWidth;
-
-    resizeCanvas(canvasWidth, canvasHeight);
+    canvasHeight = canvasWidth; // square canvas
+    resizeCanvas(canvasWidth, canvasHeight); // run resizeCanvas
 }
-
-let pong;
-let net;
-let b_n;
 
 let pongs;
 let w, h, margin; // width and height of the individual pong simulation
@@ -46,27 +41,38 @@ function setup() {
 function draw() {
     background(0);
 
+    // sort the pongs by fitness every 60 frames
     if(frameCount % 60 == 0) {
         sort_pongs();
     }
 
-    pongs.forEach((pong, i) => {
+    // update and draw the pong simulations
+    pongs.forEach((pong) => {
         push();
         pong.update(); // main update loop, update the pong simulation and neural network
-        // outline best pong simulation
-        push();
-        stroke(255);
-        strokeWeight(2);
-        fill(255, 0, 0, map(i, 0, pongs.length, -500, 255)); // red outline
-        rect(pong.bound.x, pong.bound.y, pong.bound.w, pong.bound.h); // outline the pong simulation
-        pop();
         pong.show(); // show the pong simulation and neural network
-
         pop();
     });
 
+    highlightBestPong(); // highlight the best pong simulation
+    informationDisplay(); // show the information display
+}
+
+function highlightBestPong() {
+    pongs.forEach((pong, i) => {
+        push();
+        stroke(255);
+        strokeWeight(2);
+        fill(255, 0, 0, map(i, 0, pongs.length, -256, 128)); // red outline
+        rect(pong.bound.x, pong.bound.y, pong.bound.w, pong.bound.h); // outline the pong simulation
+        pop();
+    });
+}
+
+function informationDisplay() {
     // information display
     push();
+
     noFill();
     stroke(255);
     strokeWeight(2);
@@ -122,5 +128,5 @@ function sort_pongs() {
         return b.total_fitness - a.total_fitness; // sort by fitness
     });
 
-    console.log("Sorted by fitness, best: ", pongs[0].total_fitness); // log the best fitness
+    // console.log("Sorted by fitness, best: ", pongs[0].total_fitness); // log the best fitness
 }

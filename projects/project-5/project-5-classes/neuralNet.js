@@ -1,16 +1,24 @@
 class NeuralNetwork {
     constructor(layerSizes, bound) {
-        this.network = new Array(layerSizes.length);
-        this.bound = bound;
+        this.layerSizes = layerSizes; // array of layer sizes
+        this.bound = bound; // store the bound for drawing
         
-        for (let i = 0; i < layerSizes.length; i++) {
-            this.network[i] = new Array(layerSizes[i]);
-            for (let j = 0; j < layerSizes[i]; j++) {
+        this.rand_reset_network(); // initialize the network with random weights and biases
+    }
+
+    // reset the network with random weights, biases and value of 0
+    rand_reset_network() {
+        this.network = new Array(this.layerSizes.length);
+        for (let i = 0; i < this.layerSizes.length; i++) {
+            this.network[i] = new Array(this.layerSizes[i]);
+            for (let j = 0; j < this.layerSizes[i]; j++) {
                 this.network[i][j] = [
-                    new Array(layerSizes[i + 1]).fill(0).map(() => this.rand(-1, 1)), // weights
-                    this.rand(-1, 1), // bias
-                    0 // output
-                ]
+                    i < this.layerSizes.length - 1
+                        ? new Array(this.layerSizes[i + 1]).fill(0).map(() => Math.random(-1, 1)) // Random weights for non-output layers
+                        : [], // No weights for the output layer
+                        Math.random(-1, 1), // Random bias
+                    0 // Reset output to 0
+                ];
             }
         }
     }
@@ -20,6 +28,7 @@ class NeuralNetwork {
         return max(min(this.network[this.network.length - 1][0][2], 1), 0);
     }
 
+    // propagate the input through the network
     forward_propagate(input) {
         // Set the input layer's output to the input values
         for (let i = 0; i < this.network[0].length; i++) {
@@ -42,6 +51,7 @@ class NeuralNetwork {
         }
     }
 
+    // show the neural network
     show() {
         push();
         translate(this.bound.x, this.bound.y);
@@ -110,23 +120,110 @@ class NeuralNetwork {
         pop();
     }
 
+    // Set the neural network from a JSON object
+    set_network_from_json(json) {
+        for (let i = 0; i < json.length; i++) {
+            let layerJson = json[i];
+            let layer = this.network[i];
+            for (let j = 0; j < layerJson.length; j++) {
+                let nodeJson = layerJson[j];
+                let node = layer[j];
+                node[0] = nodeJson.weights.slice(); // Copy weights
+                node[1] = nodeJson.bias; // Set bias
+                node[2] = nodeJson.output; // Set output
+            }
+        }
+    }
+
+    // Convert the neural network to a JSON object
+    jsonify_network() {
+        let json = [];
+        for (let i = 0; i < this.network.length; i++) {
+            let layer = this.network[i];
+            let layerJson = [];
+            for (let j = 0; j < layer.length; j++) {
+                let node = layer[j];
+                layerJson.push({
+                    weights: node[0],
+                    bias: node[1],
+                    output: node[2]
+                });
+            }
+            json.push(layerJson);
+        }
+        console.log(JSON.stringify(json));
+    }
+
+    // Print the neural network to the console
+    print_network() {
+        for (let i = 0; i < this.network.length; i++) {
+            let layer = this.network[i];
+            console.log(`Layer ${i}:`);
+            for (let j = 0; j < layer.length; j++) {
+                let node = layer[j];
+                console.log(`  Node ${j}:`);
+                console.log(`    Weights: ${node[0]}`);
+                console.log(`    Bias: ${node[1]}`);
+                console.log(`    Output: ${node[2]}`);
+            }
+        }
+        console.log("---------------");
+    }
+
+    // Clone the neural network from another two neural networks
+    set_from_crossover(network1, network2) {
+        for (let i = 0; i < this.network.length; i++) {
+            for (let j = 0; j < this.network[i].length; j++) {
+                let node = this.network[i][j];
+                let newNode1 = network1[i][j];
+                let newNode2 = network2[i][j];
+
+                // Crossover weights
+                for (let k = 0; k < node[0].length; k++) {
+                    node[0][k] = Math.random() < 0.5 ? newNode1[0][k] : newNode2[0][k];
+                }
+                // Crossover bias
+                node[1] = Math.random() < 0.5 ? newNode1[1] : newNode2[1];
+            }
+        }
+    }
+
+    // Clone the neural network from another neural network
+    copy_network(network){
+        for (let i = 0; i < this.network.length; i++) {
+            for (let j = 0; j < this.network[i].length; j++) {
+                let node = this.network[i][j];
+                let newNode = network[i][j];
+                node[0] = newNode[0].slice();
+                node[1] = newNode[1];
+            }
+        }
+    }
+
+    // Mutate the neural network by a given mutation rate
+    mutate(mutationRate) {
+        for (let i = 0; i < this.network.length; i++) {
+            for (let j = 0; j < this.network[i].length; j++) {
+                let node = this.network[i][j];
+                // Mutate weights
+                for (let k = 0; k < node[0].length; k++) {
+                    if (Math.random() < mutationRate) {
+                        node[0][k] += Math.random(-1, 1);
+                    }
+                }
+                // Mutate bias
+                if (Math.random() < mutationRate) {
+                    node[1] += Math.random(-1, 1);
+                }
+            }
+        }
+    }
+
     sigmoid(x) {
         return 1 / (1 + Math.exp(-x));
     }
 
     relu(x) {
         return Math.max(0, x);
-    }
-
-    rand(min, max) {
-        return Math.random() * (max - min) + min;
-    }
-
-    dot_arr(arr1, arr2){
-        let result = 0;
-        for (let i = 0; i < arr1.length; i++) {
-            result += arr1[i] * arr2[i];
-        }
-        return result;
     }
 }
