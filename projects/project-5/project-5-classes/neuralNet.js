@@ -47,7 +47,7 @@ class NeuralNetwork {
         translate(this.bound.x, this.bound.y);
         noFill();
         stroke(255);
-        strokeWeight(2);
+        strokeWeight(1);
 
         let xSpacing = this.bound.w / (this.network.length + 1);
 
@@ -92,7 +92,7 @@ class NeuralNetwork {
                 let biasColorValue = map(bias, -1, 1, 0, 255);
                 fill(0, 128);
                 stroke(biasColorValue); // Set stroke color based on bias
-                strokeWeight(2); // Set stroke weight to 2
+                strokeWeight(1); // Set stroke weight to 1
                 rectMode(CENTER); // Set rectangle mode to center
                 rect(nodeX, nodeY, 20, rectHeight); // Draw rectangle for neuron
 
@@ -101,7 +101,7 @@ class NeuralNetwork {
                 fill(255);
 
                 // Adjust text size to fit within the rectangle
-                let textSizeValue = Math.min(12, rectHeight * 0.5); // Scale text size based on rectangle height
+                let textSizeValue = Math.min(8, rectHeight * 0.7); // Scale text size based on rectangle height
                 textSize(textSizeValue);
                 textAlign(CENTER, CENTER); // Center-align text
                 text(o.toFixed(2), nodeX, nodeY);

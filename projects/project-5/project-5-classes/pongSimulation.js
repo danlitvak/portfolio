@@ -1,7 +1,9 @@
 class pongSimulation {
-    constructor(bound) {
+    constructor(bound, net, debug, id) {
         this.bound = bound;
-        this.debug = false;
+        this.net = net; // neural network for the left paddle
+        this.debug = debug; // debug mode
+        this.id = id; // id of the pong simulation
 
         //  paddle constants (maybe should convert to percentages)
         this.paddle_offest = 0.04 * this.bound.w; // offset units relative to respective wall
@@ -19,14 +21,16 @@ class pongSimulation {
         this.right_paddle_vel = 0; // velocity of the right paddle
 
         // ball constants
-        this.ball_diameter = 0.02 * this.bound.w;
+        this.ball_diameter = 0.03 * this.bound.w;
         this.ball_speed = 0.015 * this.bound.w; 
         // ball variables
         this.ball_pos = new p5.Vector(this.bound.w / 2, this.bound.h / 2);
-        let side = random() < 0.5 ? 1 : -1; // launch left or right
-        let angleOffset = radians(random(-60, 60)); // convert degrees to radians
-        let angle = side * angleOffset;
-        this.ball_vel = p5.Vector.fromAngle(angle).mult(this.ball_speed);
+        // Randomize ball direction (left or right)
+        let angleOffset = radians(random() * 120 - 60); // convert degrees to radians
+        if(random() < 0.5){
+            angleOffset += PI; // flip direction
+        }
+        this.ball_vel = p5.Vector.fromAngle(angleOffset).mult(this.ball_speed);
 
         // Game constants
         this.punishment = 500; // punishment for missing the ball
@@ -99,6 +103,7 @@ class pongSimulation {
         }
     }
 
+    // Return the current state of the game as a normalized array of values
     return_state() {
         // Outputs the current state of the game as a normalized array of values
         return [
@@ -116,8 +121,27 @@ class pongSimulation {
         ];
     }
 
+    // Show the pong simulation and neural network
     show() {
+        if (this.debug) {
+            push();
+            this.net.show(); // Show the neural network
+            pop();
+        }
+
         translate(this.bound.x, this.bound.y); // translate to top left corner
+
+        // show ID near top left corner
+        push();
+            noStroke();
+            fill(255);
+            textSize(0.06 * this.bound.w); // Adjust text size relative to game width
+            text(
+                `ID: ${this.id}`, // ID of the pong simulation
+                0.08 * this.bound.w, // Left
+                0.04 * this.bound.w // Top
+            );
+        pop();
 
         // draw center line
         stroke(128);
@@ -177,9 +201,11 @@ class pongSimulation {
                     line(x1, y1, x2, y2);
                 }
             pop();
-
-            push();
+        }
+        
+        push();
             noStroke();
+            fill(255);
             // Draw the last accuracy in the middle
             textSize(0.04 * this.bound.w); // Adjust text size relative to game width
             text(
@@ -195,30 +221,7 @@ class pongSimulation {
                 this.bound.w / 2, // Center of the canvas
                 (1/3 + 0.04) * this.bound.h
             );
-            pop();
-
-            // draw paddle direction
-            push();
-            // Draw paddle direction for the left paddle
-            push();
-            translate(this.paddle_offest + this.paddle_width / 2, this.left_paddle_pos + this.paddle_height / 2);
-            if (this.debug) {
-                stroke(255, 0, 0);
-                strokeWeight(2);
-                line(0, 0, 0, this.left_paddle_vel * ((this.paddle_height / 2) / this.paddle_max_vel));
-            }
-            pop();
-
-            // Draw paddle direction for the right paddle
-            push();
-            translate(this.right_paddle_edge + this.paddle_width / 2, this.right_paddle_pos + this.paddle_height / 2);
-            if (this.debug) {
-                stroke(0, 0, 255);
-                strokeWeight(2);
-                line(0, 0, 0, this.right_paddle_vel * ((this.paddle_height / 2) / this.paddle_max_vel));
-            }
-            pop();
-        }
+        pop();
 
         // draw bounding box of game
         noFill();
@@ -235,6 +238,29 @@ class pongSimulation {
         fill(255);
         noStroke();
         rect(this.right_paddle_edge, this.right_paddle_pos, this.paddle_width, this.paddle_height);
+
+        if(this.debug) {
+            // draw paddle directions
+            // Draw paddle direction for the left paddle
+            push();
+            translate(this.paddle_offest + this.paddle_width / 2, this.left_paddle_pos + this.paddle_height / 2);
+            if (this.debug) {
+                stroke(128, 0, 0);
+                strokeWeight(1);
+                line(0, 0, 0, this.left_paddle_vel * ((this.paddle_height / 2) / this.paddle_max_vel));
+            }
+            pop();
+
+            // Draw paddle direction for the right paddle
+            push();
+            translate(this.right_paddle_edge + this.paddle_width / 2, this.right_paddle_pos + this.paddle_height / 2);
+            if (this.debug) {
+                stroke(0, 0, 128);
+                strokeWeight(1);
+                line(0, 0, 0, this.right_paddle_vel * ((this.paddle_height / 2) / this.paddle_max_vel));
+            }
+            pop();
+        }
 
         // draw ball
         push();
@@ -269,8 +295,11 @@ class pongSimulation {
                 (1/3) * this.bound.h // Near the top
             );
         pop();
+
+        
     }
 
+    // Clamp the paddle positions to within the bounds of the game
     clamp_paddles() {
         this.left_paddle_pos = max(0, min(this.left_paddle_pos, this.bound.h - this.paddle_height));
         this.right_paddle_pos = max(0, min(this.right_paddle_pos, this.bound.h - this.paddle_height));
@@ -278,6 +307,14 @@ class pongSimulation {
 
     // Update the ball position and check for collisions
     update() {
+        this.net.forward_propagate(this.return_state()); // propagate the neural network with the pong state
+        let output = this.net.output(); // get the output of the neural network
+        this.move_left_paddle(output * (this.bound.h - this.paddle_height)); // move left paddle to network output
+        this.move_right_paddle(this.ball_pos.y - this.paddle_height / 2); // move right paddle to ball position (perfect play)
+        this.clamp_paddles(); // clamp paddles to withen the bounds
+        this.calculate_left_paddle_score();
+        
+
         // add fitness to history
         this.fitness_history.push(this.total_fitness);
         if (this.fitness_history.length > 500) {
@@ -372,10 +409,11 @@ class pongSimulation {
         this.ball_pos = new p5.Vector(this.bound.w / 2, this.bound.h / 2);
     
         // Randomize ball direction (left or right)
-        let side = random() < 0.5 ? 1 : -1; // launch left or right
-        let angleOffset = radians(random(-60, 60)); // convert degrees to radians
-        let angle = side * angleOffset;
-        this.ball_vel = p5.Vector.fromAngle(angle).mult(this.ball_speed);
+        let angleOffset = radians(random() * 120 - 60); // convert degrees to radians
+        if(random() < 0.5){
+            angleOffset += PI; // flip direction
+        }
+        this.ball_vel = p5.Vector.fromAngle(angleOffset).mult(this.ball_speed);
     
         // Reset paddle positions
         this.left_paddle_pos = (this.bound.h - this.paddle_height) / 2; // Center left paddle vertically

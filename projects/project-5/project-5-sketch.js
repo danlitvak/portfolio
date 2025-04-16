@@ -16,6 +16,9 @@ let pong;
 let net;
 let b_n;
 
+let pongs;
+let w, h, margin; // width and height of the individual pong simulation
+
 
 function setup() {
     // start up
@@ -27,46 +30,97 @@ function setup() {
 
     textAlign(CENTER, CENTER);
 
-    let b = new bound(50, 50, 300, 300); // pong bound
-    b_n = new bound(b.x + b.w / 8, b.y + b.h / 2, 6 * b.w / 8, b.h / 2); // place neural net in the middle of the pong
-    pong = new pongSimulation(b);
-    net = new NeuralNetwork([11, 8, 4, 2, 1], b_n);
+    pongs = []; // array of pong simulations
+    margin = 10; // margin between the pong simulations and edge
+    w = ((width - margin) / 5) - margin; // width of individual pong
+    h = ((height - margin) / 5) - margin; // height of individual pong
+    for(let i = 0; i < 20; i++) {
+        let b = new bound((w + margin) * (i % 4) + margin, (h + margin) * (floor(i / 4)) + margin, w, h); // pong bound
+        let b_n = new bound(b.x + b.w / 8, b.y + b.h / 2, 6 * b.w / 8, b.h / 2); // place neural net in the middle of the pong
+        // create a new pong simulation with the neural network (debug = true)
+        pongs.push(new pongSimulation(b, new NeuralNetwork([11, 8, 4, 2, 1], b_n), false, i)); 
+    }
 }
 
 
 function draw() {
     background(0);
 
-    net.forward_propagate(pong.return_state()); // propagate the neural network with the pong state
-    output = net.output(); // get the output of the neural network
-
-    accuracy = pong.calculate_left_paddle_score(); // calculate the score of the left paddle
-
-    if(frameCount % 10 == 0) {
-        console.log("Frame: " + frameCount + ", Accuracy: " + (accuracy * 100).toFixed(2) + "%" + ", Fitness: " + pong.total_fitness); // get the score of the left paddle
+    if(frameCount % 60 == 0) {
+        sort_pongs();
     }
 
-    pong.move_left_paddle(output * (pong.bound.h - pong.paddle_height)); // move left paddle to network output
-    // pong.move_left_paddle(mouseY - pong.bound.y - pong.paddle_height / 2); // move left paddle (mouse position)
-    pong.move_right_paddle(pong.ball_pos.y - pong.paddle_height / 2) // move right paddle to ball position (perfect play)
+    pongs.forEach((pong, i) => {
+        push();
+        pong.update(); // main update loop, update the pong simulation and neural network
+        // outline best pong simulation
+        push();
+        stroke(255);
+        strokeWeight(2);
+        fill(255, 0, 0, map(i, 0, pongs.length, -500, 255)); // red outline
+        rect(pong.bound.x, pong.bound.y, pong.bound.w, pong.bound.h); // outline the pong simulation
+        pop();
+        pong.show(); // show the pong simulation and neural network
 
-    pong.clamp_paddles(); // clamp paddles to withen the bounds
-    pong.update(); // update the pong simulation after clamping the paddles
-    if(pong.debug == true) {
-        net.show(); // show the neural network
-    }
-    pong.show(); // show the pong simulation
+        pop();
+    });
 
+    // information display
+    push();
+    noFill();
+    stroke(255);
+    strokeWeight(2);
+    translate((w + margin) * 4 + margin, margin); // top left of the information display
+    rect(0, 0, w, (h + margin) * 5 - margin); // outline the information display
+
+    noStroke();
+    fill(255);
+    text("Dashboard", 0, 0, w, 20); // title
+    stroke(255);
+    line(0, 20, w, 20); // line under title
+    noStroke();
+    textSize(10);
+    textAlign(LEFT, CENTER);
+    // instructions
+    text("SPACE: debug", 5, 20, w, 20); 
+    text("R: Hard Reset All", 5, 30, w, 20);
+    text("S: Sort (Red = #1)", 5, 40, w, 20);
+
+    pop();
 }
 
 // handle keyboard input
 function keyPressed() {
     // check if the mouse is within the bounds before checking for key presses
     if(mouseX > 0 && mouseX < height && mouseY > 0 && mouseY < width) {
-        if (keyCode === 32) { // space bar
-            pong.debug = !pong.debug; // toggle debug mode
+        // toggle debug mode for all pongs
+        if (keyCode === 32) {
+            pongs.forEach((pong, i) => {
+                pong.debug = !pong.debug; // toggle debug mode
+            });
+        }
+
+        // hard reset all pongs
+        if (keyCode === 82) { 
+            pongs.forEach((pong, i) => {
+                pong.reset_game(); // reset the pong simulation
+            });
+        }
+
+        // S: sort the pongs by fitness
+        if (keyCode === 83) {
+            sort_pongs(); // sort the pongs by fitness
         }
 
         return false;
     }
+}
+
+function sort_pongs() {
+    // sort the pongs by fitness
+    pongs.sort((a, b) => {
+        return b.total_fitness - a.total_fitness; // sort by fitness
+    });
+
+    console.log("Sorted by fitness, best: ", pongs[0].total_fitness); // log the best fitness
 }
