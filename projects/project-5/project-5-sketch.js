@@ -14,6 +14,8 @@ function windowResized() {
 let pongs;
 let w, h, margin; // width and height of the individual pong simulation
 
+let statistic_fitness_deviation = 0; // percent deviation of the fitness
+let statistic_average_score = 0; // average score
 
 function setup() {
     // start up
@@ -54,8 +56,82 @@ function draw() {
         pop();
     });
 
+    // update statistics
+    if(frameCount % 60 == 0) {
+        calculateFitnessDeviation(); // calculate the percent deviation of the fitness
+        calculateAverageScore(); // calculate the average score
+    }
+
     highlightBestPong(); // highlight the best pong simulation
     informationDisplay(); // show the information display
+}
+
+function informationDisplay() {
+    // information display
+    push();
+    let travel = 0;
+    noFill();
+    stroke(255);
+    strokeWeight(2);
+    translate((w + margin) * 4 + margin, margin); // top left of the information display
+    rect(0, 0, w, (h + margin) * 5 - margin); // outline the information display
+
+    noStroke();
+    fill(255);
+    text("Dashboard", 0, travel, w, 20); // title
+    stroke(255);
+    line(0, 20, w, 20); // line under title
+    noStroke();
+    textSize(10);
+    textAlign(LEFT, CENTER);
+    // instructions
+    travel += 20;
+    text(" --- Controls ---", 5, travel, w, 20); 
+    travel += 10;
+    text("SPACE: debug", 5, travel, w, 20); 
+    travel += 10;
+    text("R: Hard Reset All", 5, travel, w, 20);
+    travel += 10;
+    text("S: Sort (Red = #1)", 5, travel, w, 20);
+    travel += 15;
+    text(" --- Statistics ---", 5, travel, w, 20); 
+    travel += 10;
+    text("Fitness Deviation: " + statistic_fitness_deviation.toFixed(2) + "%", 5, travel, w, 20); // percent deviation
+    travel += 10;
+    text("Average Score: " + round(statistic_average_score) + " pts", 5, travel, w, 20); // percent deviation
+    pop();
+}
+
+function calculateFitnessDeviation() {
+    // calculate the percent deviation of the fitness
+    let sum = 0;
+    let avg = 0;
+    let n = pongs.length;
+
+    pongs.forEach((pong) => {
+        sum += pong.total_fitness; // sum of fitness
+    });
+
+    avg = sum / n; // average fitness
+
+    let deviation = 0;
+    pongs.forEach((pong) => {
+        deviation += abs(pong.total_fitness - avg); // absolute deviation from average
+    });
+
+    statistic_fitness_deviation = abs((deviation / n) / avg) * 100; // percent deviation
+}
+
+function calculateAverageScore() {
+    // calculate the average score
+    let sum = 0;
+    let n = pongs.length;
+
+    pongs.forEach((pong) => {
+        sum += pong.left_score - pong.right_score; // sum of scores
+    });
+
+    statistic_average_score = sum / n; // average fitness
 }
 
 function highlightBestPong() {
@@ -69,30 +145,13 @@ function highlightBestPong() {
     });
 }
 
-function informationDisplay() {
-    // information display
-    push();
+function sort_pongs() {
+    // sort the pongs by fitness
+    pongs.sort((a, b) => {
+        return b.total_fitness - a.total_fitness; // sort by fitness
+    });
 
-    noFill();
-    stroke(255);
-    strokeWeight(2);
-    translate((w + margin) * 4 + margin, margin); // top left of the information display
-    rect(0, 0, w, (h + margin) * 5 - margin); // outline the information display
-
-    noStroke();
-    fill(255);
-    text("Dashboard", 0, 0, w, 20); // title
-    stroke(255);
-    line(0, 20, w, 20); // line under title
-    noStroke();
-    textSize(10);
-    textAlign(LEFT, CENTER);
-    // instructions
-    text("SPACE: debug", 5, 20, w, 20); 
-    text("R: Hard Reset All", 5, 30, w, 20);
-    text("S: Sort (Red = #1)", 5, 40, w, 20);
-
-    pop();
+    // console.log("Sorted by fitness, best: ", pongs[0].total_fitness); // log the best fitness
 }
 
 // handle keyboard input
@@ -120,13 +179,4 @@ function keyPressed() {
 
         return false;
     }
-}
-
-function sort_pongs() {
-    // sort the pongs by fitness
-    pongs.sort((a, b) => {
-        return b.total_fitness - a.total_fitness; // sort by fitness
-    });
-
-    // console.log("Sorted by fitness, best: ", pongs[0].total_fitness); // log the best fitness
 }
