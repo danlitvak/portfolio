@@ -39,10 +39,12 @@ function draw() {
 
     net.forward_propagate(pong.return_state()); // propagate the neural network with the pong state
     output = net.output(); // get the output of the neural network
-    console.log(output); // get the output of the neural network
 
-    nn_score = pong.calculate_left_paddle_score(); // calculate the score of the left paddle
-    console.log(nn_score); // get the score of the left paddle
+    accuracy = pong.calculate_left_paddle_score(); // calculate the score of the left paddle
+
+    if(frameCount % 10 == 0) {
+        console.log("Frame: " + frameCount + ", Accuracy: " + (accuracy * 100).toFixed(2) + "%" + ", Fitness: " + pong.total_fitness); // get the score of the left paddle
+    }
 
     pong.move_left_paddle(output * (pong.bound.h - pong.paddle_height)); // move left paddle to network output
     // pong.move_left_paddle(mouseY - pong.bound.y - pong.paddle_height / 2); // move left paddle (mouse position)
@@ -50,6 +52,21 @@ function draw() {
 
     pong.clamp_paddles(); // clamp paddles to withen the bounds
     pong.update(); // update the pong simulation after clamping the paddles
-    net.show(); // show the neural network
+    if(pong.debug == true) {
+        net.show(); // show the neural network
+    }
     pong.show(); // show the pong simulation
+
+}
+
+// handle keyboard input
+function keyPressed() {
+    // check if the mouse is within the bounds before checking for key presses
+    if(mouseX > 0 && mouseX < height && mouseY > 0 && mouseY < width) {
+        if (keyCode === 32) { // space bar
+            pong.debug = !pong.debug; // toggle debug mode
+        }
+
+        return false;
+    }
 }
