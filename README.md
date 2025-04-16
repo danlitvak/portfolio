@@ -1,5 +1,6 @@
 https://danlitvak.github.io/portofolio_test_2/
 
+Website Related:
 1) Hamburger needs to be larger ✅
 2) Change the light mode icon, looks weird on phone ✅
 3) Make elements fade in not the whole body ✅
@@ -8,3 +9,6 @@ https://danlitvak.github.io/portofolio_test_2/
 6) added chevron scroll functionality ✅
 7) added cool glow to featured projects ✅
 8) fixed poor spacer placement ✅
+
+Project Related:
+1) Project 5: increase scope of hard reset functionality -> (history, score, NN.weights, NN.biases) ❌
