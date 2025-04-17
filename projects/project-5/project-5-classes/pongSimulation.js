@@ -36,6 +36,8 @@ class pongSimulation {
         this.punishment = 500; // punishment for missing the ball
         this.score_reward = 1000; // reward for scoring
         this.bounce_reward = 100; // reward for bouncing the ball
+        this.ball_sleep_time = 120; // time to sleep after scoring (frames ~about 2 seconds)
+        this.time_to_move = this.ball_sleep_time; // time to sleep untill moving after scoring (frames)
 
         // game variables
         this.left_score = 0; // left player score
@@ -60,7 +62,8 @@ class pongSimulation {
             : 1 - (vertical_distance / max_distance); // Closer = higher score
 
         // Calculate the horizontal distance to the paddle
-        const horizontal_distance = Math.max(0, this.left_paddle_edge - this.ball_pos.x);
+        // const horizontal_distance = Math.max(0, this.left_paddle_edge - this.ball_pos.x);
+        const horizontal_distance = 1;
 
         // Normalize the horizontal distance
         const normalized_horizontal_distance = 1 - (horizontal_distance / this.bound.w); // Closer = higher weight
@@ -69,7 +72,9 @@ class pongSimulation {
         const weighted_vertical_score = pow(normalized_vertical_distance * normalized_horizontal_distance, 2); // Square the score for more sensitivity
 
         this.last_accuracy = weighted_vertical_score; // Store the last accuracy for debugging
-        this.total_fitness += this.last_accuracy; // Update total fitness
+        if(this.time_to_move <= 0) {
+            this.total_fitness += this.last_accuracy / 2; // Update total fitness
+        }
         return weighted_vertical_score;
     }
 
@@ -264,8 +269,15 @@ class pongSimulation {
 
         // draw ball
         push();
-            fill(255);
-            noStroke();
+            if(this.time_to_move > 0) {
+                noFill();
+                stroke(255);
+                strokeWeight(1);
+            } else {
+                fill(255);
+                noStroke();
+            }
+            
             translate(this.ball_pos.x, this.ball_pos.y);
             circle(0, 0, this.ball_diameter);
             if (this.debug) {
@@ -306,7 +318,11 @@ class pongSimulation {
     }
 
     // Update the ball position and check for collisions
-    update() {
+    update(d_score) {
+        if(abs(this.left_score - this.right_score) > d_score) {
+            return;
+        }
+
         this.net.forward_propagate(this.return_state()); // propagate the neural network with the pong state
         let output = this.net.output(); // get the output of the neural network
         this.move_left_paddle(output * (this.bound.h - this.paddle_height)); // move left paddle to network output
@@ -327,9 +343,14 @@ class pongSimulation {
 
         for (let s = 0; s < this.ball_vel.mag(); s += dv.mag()) {
             let prev_pos = this.ball_pos.copy();
-            this.ball_pos.add(dv);
+
+            if(this.time_to_move < 0) {
+                this.ball_pos.add(dv);
+            } else{
+                this.time_to_move -= 1;
+            }
+
             if (this.check_intersection(prev_pos)) {
-                this.applyYJitter(this.ball_vel);
                 return;
             }
         }
@@ -401,6 +422,17 @@ class pongSimulation {
             bounced = true;
         }
 
+        // update ball velocity direction
+        if (abs(this.ball_vel.y / this.ball_vel.x) > 2) {
+            this.ball_vel.x *= random(1, 2);
+            this.ball_vel.setMag(this.ball_speed);
+        }
+
+        if(bounced) {
+            this.applyJitter(this.ball_vel, 10, 30); // Apply jitter to the ball's vertical velocity
+        }
+
+
         return bounced;
     }
 
@@ -419,6 +451,8 @@ class pongSimulation {
         // Reset paddle positions
         this.left_paddle_pos = (this.bound.h - this.paddle_height) / 2; // Center left paddle vertically
         this.right_paddle_pos = (this.bound.h - this.paddle_height) / 2; // Center right paddle vertically
+
+        this.time_to_move = this.ball_sleep_time; // Reset time to move the ball
     }
 
     // Hard reset the game (history, score, NN.weights, NN.biases)
@@ -441,8 +475,22 @@ class pongSimulation {
     }
 
     // Apply jitter to the ball's vertical velocity
-    applyYJitter(vel, maxYJitter = 1) {
-        vel.y += random(-maxYJitter, maxYJitter);
-        vel.setMag(this.ball_speed); // reset to constant speed
+    applyJitter(vel, minAngleOffset = 5, maxAngleOffset = 25) {
+        // Convert velocity to angle
+        let angle = vel.heading();
+    
+        // Check if the angle is too close to vertical (90° or 270°) or horizontal (0° or 180°)
+        if (abs(sin(angle)) < 0.2 || abs(cos(angle)) < 0.2) {
+            // Add a small random offset to the angle to avoid direct vertical or horizontal bounces
+            let offset = radians(random(minAngleOffset, maxAngleOffset)) * (random() < 0.5 ? 1 : -1);
+            angle += offset;
+        }
+    
+        // Ensure the angle is within a shallow range to avoid 45-degree bounces
+        let shallowOffset = radians(random(-15, 15)); // Random shallow adjustment
+        angle += shallowOffset;
+    
+        // Update the velocity vector with the adjusted angle
+        vel.set(p5.Vector.fromAngle(angle).mult(this.ball_speed));
     }
 }
