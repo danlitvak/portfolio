@@ -15,4 +15,4 @@ Project Related:
 2) seperate simulation bound and visual bound for pong sims ❌
     2.1) have hidden simulations in the background ❌
     2.2) simulation pagination, highligh best performer ❌
-3) automate when to create new generations (time trial, score based, incremental fitness bar ...) ❌
+3) automate when to create new generations (time trial, score based, incremental fitness bar ...) ✅
