@@ -14,9 +14,9 @@ class NeuralNetwork {
             for (let j = 0; j < this.layerSizes[i]; j++) {
                 this.network[i][j] = [
                     i < this.layerSizes.length - 1
-                        ? new Array(this.layerSizes[i + 1]).fill(0).map(() => Math.random(-1, 1)) // Random weights for non-output layers
+                        ? new Array(this.layerSizes[i + 1]).fill(0).map(() => random(-1, 1)) // Random weights for non-output layers
                         : [], // No weights for the output layer
-                        Math.random(-1, 1), // Random bias
+                        random(-1, 1), // Random bias
                     0 // Reset output to 0
                 ];
             }
@@ -25,7 +25,9 @@ class NeuralNetwork {
 
     // return the output of the neural network after propagating the input
     output() {
-        return max(min(this.network[this.network.length - 1][0][2], 1), 0);
+        let output = this.network[this.network.length - 1][0][2]
+        // return this.sigmoid(output); // Apply sigmoid to the output
+        return Math.atan(output); // Apply atan to the output
     }
 
     // propagate the input through the network
@@ -78,7 +80,11 @@ class NeuralNetwork {
                 for (let i = 0; i < w.length; i++) {
                     let nextNodeY = i * nextYSpacing + nextYSpacing / 2;
                     let weight = w[i];
-                    stroke(0, 255, 0, weight * 255); // Set opacity proportional to weight
+                    if(weight < 0) {
+                        stroke(0, 255, 0, abs(weight) * 255); // Set opacity proportional to weight
+                    }else{
+                        stroke(255, 0, 0, abs(weight) * 255); // Set opacity proportional to weight
+                    }
                     line(nodeX, nodeY, (x + 2) * xSpacing, nextNodeY);
                 }
             }
@@ -171,7 +177,9 @@ class NeuralNetwork {
     }
 
     // Clone the neural network from another two neural networks
-    set_from_crossover(network1, network2) {
+    set_from_crossover(net1, net2) {
+        let network1 = net1.network;
+        let network2 = net2.network;
         for (let i = 0; i < this.network.length; i++) {
             for (let j = 0; j < this.network[i].length; j++) {
                 let node = this.network[i][j];
@@ -208,12 +216,12 @@ class NeuralNetwork {
                 // Mutate weights
                 for (let k = 0; k < node[0].length; k++) {
                     if (Math.random() < mutationRate) {
-                        node[0][k] += Math.random(-1, 1);
+                        node[0][k] += random(-1, 1);
                     }
                 }
                 // Mutate bias
                 if (Math.random() < mutationRate) {
-                    node[1] += Math.random(-1, 1);
+                    node[1] += random(-1, 1);
                 }
             }
         }

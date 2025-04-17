@@ -215,7 +215,7 @@ class pongSimulation {
             );
 
             // Draw the total fitness in the middle
-            textSize(0.04 * this.bound.w); // Adjust text size relative to game width
+            textSize(0.06 * this.bound.w); // Adjust text size relative to game width
             text(
                 `Total Fitness: ${this.total_fitness.toFixed(2)}`, // Total fitness
                 this.bound.w / 2, // Center of the canvas
@@ -404,6 +404,7 @@ class pongSimulation {
         return bounced;
     }
 
+    // Reset the game after a score
     reset_game() {
         // Reset ball position to the center
         this.ball_pos = new p5.Vector(this.bound.w / 2, this.bound.h / 2);
@@ -418,6 +419,25 @@ class pongSimulation {
         // Reset paddle positions
         this.left_paddle_pos = (this.bound.h - this.paddle_height) / 2; // Center left paddle vertically
         this.right_paddle_pos = (this.bound.h - this.paddle_height) / 2; // Center right paddle vertically
+    }
+
+    // Hard reset the game (history, score, NN.weights, NN.biases)
+    hard_reset() {
+        this.left_score = 0;
+        this.right_score = 0;
+        this.total_fitness = 0;
+        this.fitness_history = [];
+        this.net.rand_reset_network(); // Reset the neural network
+        this.reset_game(); // Reset the game
+    }
+
+    // Soft reset after NN update or new generation (history, score)
+    soft_reset() {
+        this.left_score = 0;
+        this.right_score = 0;
+        this.total_fitness = 0;
+        this.fitness_history = [];
+        this.reset_game(); // Reset the game
     }
 
     // Apply jitter to the ball's vertical velocity

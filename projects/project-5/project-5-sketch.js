@@ -35,18 +35,13 @@ function setup() {
         let b = new bound((w + margin) * (i % 4) + margin, (h + margin) * (floor(i / 4)) + margin, w, h); // pong bound
         let b_n = new bound(b.x + b.w / 8, b.y + b.h / 2, 6 * b.w / 8, b.h / 2); // place neural net in the middle of the pong
         // create a new pong simulation with the neural network (debug = true)
-        pongs.push(new pongSimulation(b, new NeuralNetwork([11, 8, 4, 2, 1], b_n), false, i)); 
+        pongs.push(new pongSimulation(b, new NeuralNetwork([11, 16, 8, 4, 1], b_n), false, i)); 
     }
 }
 
 
 function draw() {
     background(0);
-
-    // sort the pongs by fitness every 60 frames
-    if(frameCount % 60 == 0) {
-        sort_pongs();
-    }
 
     // update and draw the pong simulations
     pongs.forEach((pong) => {
@@ -60,6 +55,7 @@ function draw() {
     if(frameCount % 60 == 0) {
         calculateFitnessDeviation(); // calculate the percent deviation of the fitness
         calculateAverageScore(); // calculate the average score
+        sort_pongs();
     }
 
     highlightBestPong(); // highlight the best pong simulation
@@ -86,13 +82,16 @@ function informationDisplay() {
     textAlign(LEFT, CENTER);
     // instructions
     travel += 20;
-    text(" --- Controls ---", 5, travel, w, 20); 
+    text(" --- Key Controls ---", 5, travel, w, 20); 
     travel += 10;
     text("SPACE: debug", 5, travel, w, 20); 
     travel += 10;
     text("R: Hard Reset All", 5, travel, w, 20);
     travel += 10;
     text("S: Sort (Red = #1)", 5, travel, w, 20);
+    travel += 10;
+    text("G: Create New Generation", 5, travel, w, 20);
+    
     travel += 15;
     text(" --- Statistics ---", 5, travel, w, 20); 
     travel += 10;
@@ -139,7 +138,7 @@ function highlightBestPong() {
         push();
         stroke(255);
         strokeWeight(2);
-        fill(255, 0, 0, map(i, 0, pongs.length, -256, 128)); // red outline
+        fill(0, 255, 0, map(pongs.length - i, 0, pongs.length, -128, 128));
         rect(pong.bound.x, pong.bound.y, pong.bound.w, pong.bound.h); // outline the pong simulation
         pop();
     });
@@ -151,7 +150,43 @@ function sort_pongs() {
         return b.total_fitness - a.total_fitness; // sort by fitness
     });
 
+    console.log("");
+        pongs.forEach((pong, i) => {
+        console.log("Rank: " + i + " | Pong ID " + pong.id + ": " + pong.total_fitness); // log the fitness
+    });
+    console.log("");
+
     // console.log("Sorted by fitness, best: ", pongs[0].total_fitness); // log the best fitness
+}
+
+// create new generation where the top k pongs are selected to reproduce (elitism)
+function new_generation_ELITE() {
+    sort_pongs(); // sort the pongs by fitness
+    let length = pongs.length; // length of the pongs array
+    let k = floor(length / 2); // number of pongs to select for reproduction
+
+    for(let i = 0; i < length; i++) {
+        if(i == 0) {
+            // best pong is saved
+        } else if (i < k){
+            // elite pongs are slightly mutated
+            pongs[i].net.mutate(0.1); // mutate the neural network
+        } else {
+            pongs[i].net.set_from_crossover(pongs[floor(random(k))].net, pongs[floor(random(k))].net); // crossover the neural networks
+        }
+
+        pongs[i].soft_reset(); // soft reset the pong simulation
+    }
+}
+
+// create new generation where mutation is proportional to fitness (proportional mutation)
+function new_generation_MPROP() {
+    sort_pongs(); // sort the pongs by fitness
+    let length = pongs.length; // length of the pongs array
+    pongs.forEach((pong, i) => {
+        pong.net.mutate(map(i, 0, length, 0, 1)); // mutate the neural network
+        pong.soft_reset(); // soft reset the pong simulation
+    });
 }
 
 // handle keyboard input
@@ -159,22 +194,27 @@ function keyPressed() {
     // check if the mouse is within the bounds before checking for key presses
     if(mouseX > 0 && mouseX < height && mouseY > 0 && mouseY < width) {
         // toggle debug mode for all pongs
-        if (keyCode === 32) {
+        if (keyCode == 32) {
             pongs.forEach((pong, i) => {
                 pong.debug = !pong.debug; // toggle debug mode
             });
         }
 
         // hard reset all pongs
-        if (keyCode === 82) { 
+        if (keyCode == 82) { 
             pongs.forEach((pong, i) => {
-                pong.reset_game(); // reset the pong simulation
+                pong.hard_reset(); // reset the pong simulation
             });
         }
 
         // S: sort the pongs by fitness
-        if (keyCode === 83) {
+        if (keyCode == 83) {
             sort_pongs(); // sort the pongs by fitness
+        }
+
+        // manually begin new generation
+        if (keyCode == 71) {
+            new_generation_ELITE(); // create a new generation
         }
 
         return false;
