@@ -23,12 +23,12 @@ class pongSimulation {
 
         // ball constants
         this.ball_diameter = 0.03 * this.bound.w;
-        this.ball_speed = 0.015 * this.bound.w; 
+        this.ball_speed = 0.015 * this.bound.w;
         // ball variables
         this.ball_pos = new p5.Vector(this.bound.w / 2, this.bound.h / 2);
         // Randomize ball direction (left or right)
         let angleOffset = radians(random() * 120 - 60); // convert degrees to radians
-        if(random() < 0.5){
+        if (random() < 0.5) {
             angleOffset += PI; // flip direction
         }
         this.ball_vel = p5.Vector.fromAngle(angleOffset).mult(this.ball_speed);
@@ -73,7 +73,7 @@ class pongSimulation {
         const weighted_vertical_score = pow(normalized_vertical_distance * normalized_horizontal_distance, 2); // Square the score for more sensitivity
 
         this.last_accuracy = weighted_vertical_score; // Store the last accuracy for debugging
-        if(this.time_to_move <= 0) {
+        if (this.time_to_move <= 0) {
             this.total_fitness += this.last_accuracy / 2; // Update total fitness
         }
         return weighted_vertical_score;
@@ -156,14 +156,14 @@ class pongSimulation {
 
         // show ID near top left corner
         push();
-            noStroke();
-            fill(255);
-            textSize(0.06 * this.bound.w); // Adjust text size relative to game width
-            text(
-                `ID: ${this.id}`, // ID of the pong simulation
-                0.08 * this.bound.w, // Left
-                0.04 * this.bound.w // Top
-            );
+        noStroke();
+        fill(255);
+        textSize(0.06 * this.bound.w); // Adjust text size relative to game width
+        text(
+            `ID: ${this.id}`, // ID of the pong simulation
+            0.08 * this.bound.w, // Left
+            0.04 * this.bound.w // Top
+        );
         pop();
 
         // draw center line
@@ -182,68 +182,68 @@ class pongSimulation {
 
             // current state output
             push();
-                let state = this.return_state_2();
-                let state_width = 0.04 * this.bound.w;
-                translate((this.bound.w - state_width * state.length) / 2, state_width);
-                noStroke();
-                fill(255);
-                textSize(0.03 * this.bound.w);
-                text("Current State:", 0, -state_width, state_width * state.length, state_width);
-                stroke(255);
-                strokeWeight(2);
-                state.forEach((val, i) => {
-                    if(val == 1){
-                        fill(0, 0, 255);
-                    }else if(val == 0){
-                        fill(255, 0, 0);
-                    }else{
-                        fill(val * 255);
-                    }
-                    rect(i * state_width, 0, state_width, state_width);
-                });
+            let state = this.return_state_2();
+            let state_width = 0.04 * this.bound.w;
+            translate((this.bound.w - state_width * state.length) / 2, state_width);
+            noStroke();
+            fill(255);
+            textSize(0.03 * this.bound.w);
+            text("Current State:", 0, -state_width, state_width * state.length, state_width);
+            stroke(255);
+            strokeWeight(2);
+            state.forEach((val, i) => {
+                if (val == 1) {
+                    fill(0, 0, 255);
+                } else if (val == 0) {
+                    fill(255, 0, 0);
+                } else {
+                    fill(val * 255);
+                }
+                rect(i * state_width, 0, state_width, state_width);
+            });
             pop();
 
             // Show history of fitness
             push();
-                stroke(255, 128);
-                strokeWeight(2);
-                // line(0, this.bound.h / 2, this.bound.w, this.bound.h / 2);
-                let smallest = min(this.fitness_history);
-                let largest = max(this.fitness_history);
-                let step = this.bound.w / this.fitness_history.length;
-                for (let i = 0; i < this.fitness_history.length - 1; i++) {
-                    let x1 = i * step;
-                    let y1 = map(this.fitness_history[i], smallest, largest, this.bound.h, 0);
-                    let x2 = (i + 1) * step;
-                    let y2 = map(this.fitness_history[i + 1], smallest, largest, this.bound.h, 0);
-                    if(this.fitness_history[i] > this.fitness_history[i + 1]){
-                        stroke(255, 0, 0, 128);
-                    }else{
-                        stroke(0, 255, 0, 128);
-                    }
-                    line(x1, y1, x2, y2);
+            stroke(255, 128);
+            strokeWeight(2);
+            // line(0, this.bound.h / 2, this.bound.w, this.bound.h / 2);
+            let smallest = min(this.fitness_history);
+            let largest = max(this.fitness_history);
+            let step = this.bound.w / this.fitness_history.length;
+            for (let i = 0; i < this.fitness_history.length - 1; i++) {
+                let x1 = i * step;
+                let y1 = map(this.fitness_history[i], smallest, largest, this.bound.h, 0);
+                let x2 = (i + 1) * step;
+                let y2 = map(this.fitness_history[i + 1], smallest, largest, this.bound.h, 0);
+                if (this.fitness_history[i] > this.fitness_history[i + 1]) {
+                    stroke(255, 0, 0, 128);
+                } else {
+                    stroke(0, 255, 0, 128);
                 }
+                line(x1, y1, x2, y2);
+            }
             pop();
         }
-        
-        push();
-            noStroke();
-            fill(255);
-            // Draw the last accuracy in the middle
-            textSize(0.04 * this.bound.w); // Adjust text size relative to game width
-            text(
-                `Accuracy: ${this.last_accuracy.toFixed(2)}`, // Last accuracy
-                this.bound.w / 2, // Center of the canvas
-                (1/3) * this.bound.h
-            );
 
-            // Draw the total fitness in the middle
-            textSize(0.06 * this.bound.w); // Adjust text size relative to game width
-            text(
-                `Total Fitness: ${this.total_fitness.toFixed(2)}`, // Total fitness
-                this.bound.w / 2, // Center of the canvas
-                (1/3 + 0.04) * this.bound.h
-            );
+        push();
+        noStroke();
+        fill(255);
+        // Draw the last accuracy in the middle
+        textSize(0.04 * this.bound.w); // Adjust text size relative to game width
+        text(
+            `Accuracy: ${this.last_accuracy.toFixed(2)}`, // Last accuracy
+            this.bound.w / 2, // Center of the canvas
+            (1 / 3) * this.bound.h
+        );
+
+        // Draw the total fitness in the middle
+        textSize(0.06 * this.bound.w); // Adjust text size relative to game width
+        text(
+            `Total Fitness: ${this.total_fitness.toFixed(2)}`, // Total fitness
+            this.bound.w / 2, // Center of the canvas
+            (1 / 3 + 0.04) * this.bound.h
+        );
         pop();
 
         // draw bounding box of game
@@ -262,7 +262,7 @@ class pongSimulation {
         noStroke();
         rect(this.right_paddle_edge, this.right_paddle_pos, this.paddle_width, this.paddle_height);
 
-        if(this.debug) {
+        if (this.debug) {
             // draw paddle directions
             // Draw paddle direction for the left paddle
             push();
@@ -287,48 +287,48 @@ class pongSimulation {
 
         // draw ball
         push();
-            if(this.time_to_move > 0) {
-                noFill();
-                stroke(255);
-                strokeWeight(1);
-            } else {
-                fill(255);
-                noStroke();
-            }
-            
-            translate(this.ball_pos.x, this.ball_pos.y);
-            circle(0, 0, this.ball_diameter);
-            if (this.debug) {
-                stroke(255, 0, 0);
-                line(0, 0, this.ball_vel.x * 2, this.ball_vel.y * 2);
-            }
+        if (this.time_to_move > 0) {
+            noFill();
+            stroke(255);
+            strokeWeight(1);
+        } else {
+            fill(255);
+            noStroke();
+        }
+
+        translate(this.ball_pos.x, this.ball_pos.y);
+        circle(0, 0, this.ball_diameter);
+        if (this.debug) {
+            stroke(255, 0, 0);
+            line(0, 0, this.ball_vel.x * 2, this.ball_vel.y * 2);
+        }
         pop();
 
         // Show scores in two separate text boxes
         push();
-            textAlign(CENTER, CENTER);
-            noStroke();
-            textSize(0.05 * this.bound.w); // Adjust text size relative to game width
-            fill(255);
+        textAlign(CENTER, CENTER);
+        noStroke();
+        textSize(0.05 * this.bound.w); // Adjust text size relative to game width
+        fill(255);
 
-            // Left score (centered in the left half)
-            text(
-                `${this.left_score}`, // Left player's score
-                this.bound.w / 4, // Center of the left half
-                (1/3) * this.bound.h // Near the top
-            );
+        // Left score (centered in the left half)
+        text(
+            `${this.left_score}`, // Left player's score
+            this.bound.w / 4, // Center of the left half
+            (1 / 3) * this.bound.h // Near the top
+        );
 
-            // Right score (centered in the right half)
-            text(
-                `${this.right_score}`, // Right player's score
-                (3 * this.bound.w) / 4, // Center of the right half
-                (1/3) * this.bound.h // Near the top
-            );
+        // Right score (centered in the right half)
+        text(
+            `${this.right_score}`, // Right player's score
+            (3 * this.bound.w) / 4, // Center of the right half
+            (1 / 3) * this.bound.h // Near the top
+        );
         pop();
     }
 
     show_visual() {
-        if(this.debug) {
+        if (this.debug) {
             push();
             this.net.show(); // Show the neural network
             pop();
@@ -338,14 +338,14 @@ class pongSimulation {
 
         // show ID near top left corner
         push();
-            noStroke();
-            fill(255);
-            textSize(0.06 * this.v_bound.w); // Adjust text size relative to game width
-            text(
-                `ID: ${this.id}`, // ID of the pong simulation
-                0.08 * this.v_bound.w, // Left
-                0.04 * this.v_bound.w // Top
-            );
+        noStroke();
+        fill(255);
+        textSize(0.06 * this.v_bound.w); // Adjust text size relative to game width
+        text(
+            `ID: ${this.id}`, // ID of the pong simulation
+            0.08 * this.v_bound.w, // Left
+            0.04 * this.v_bound.w // Top
+        );
         pop();
 
         // draw center line
@@ -355,7 +355,7 @@ class pongSimulation {
         // draw vertical / horizontal debug lines
         if (this.debug) {
             stroke(128, 0, 0);
-            
+
 
             stroke(0, 0, 128);
         }
@@ -368,18 +368,20 @@ class pongSimulation {
     }
 
     // Update the ball position and check for collisions
-    update(d_score) {
-        if(abs(this.left_score - this.right_score) > d_score) {
+    update(d_score, perfect_play) {
+        if (abs(this.left_score - this.right_score) > d_score) {
             return;
         }
 
         this.net.forward_propagate(this.return_state_2()); // propagate the neural network with the pong state
         let output = this.net.output(); // get the output of the neural network
         this.move_left_paddle(output * (this.bound.h - this.paddle_height)); // move left paddle to network output
-        this.move_right_paddle(this.ball_pos.y - this.paddle_height / 2); // move right paddle to ball position (perfect play)
+        if (perfect_play) {
+            this.move_right_paddle(this.ball_pos.y - this.paddle_height / 2); // move right paddle to ball position (perfect play)
+        }
         this.clamp_paddles(); // clamp paddles to withen the bounds
         this.calculate_left_paddle_score();
-        
+
 
         // add fitness to history
         this.fitness_history.push(this.total_fitness);
@@ -394,9 +396,9 @@ class pongSimulation {
         for (let s = 0; s < this.ball_vel.mag(); s += dv.mag()) {
             let prev_pos = this.ball_pos.copy();
 
-            if(this.time_to_move < 0) {
+            if (this.time_to_move < 0) {
                 this.ball_pos.add(dv);
-            } else{
+            } else {
                 this.time_to_move -= 1;
             }
 
@@ -478,7 +480,7 @@ class pongSimulation {
             this.ball_vel.setMag(this.ball_speed);
         }
 
-        if(bounced) {
+        if (bounced) {
             this.applyJitter(this.ball_vel, 10, 30); // Apply jitter to the ball's vertical velocity
         }
 
@@ -490,14 +492,14 @@ class pongSimulation {
     reset_game() {
         // Reset ball position to the center
         this.ball_pos = new p5.Vector(this.bound.w / 2, this.bound.h / 2);
-    
+
         // Randomize ball direction (left or right)
         let angleOffset = radians(random() * 120 - 60); // convert degrees to radians
-        if(random() < 0.5){
+        if (random() < 0.5) {
             angleOffset += PI; // flip direction
         }
         this.ball_vel = p5.Vector.fromAngle(angleOffset).mult(this.ball_speed);
-    
+
         // Reset paddle positions
         this.left_paddle_pos = (this.bound.h - this.paddle_height) / 2; // Center left paddle vertically
         this.right_paddle_pos = (this.bound.h - this.paddle_height) / 2; // Center right paddle vertically
@@ -528,18 +530,18 @@ class pongSimulation {
     applyJitter(vel, minAngleOffset = 5, maxAngleOffset = 25) {
         // Convert velocity to angle
         let angle = vel.heading();
-    
+
         // Check if the angle is too close to vertical (90° or 270°) or horizontal (0° or 180°)
         if (abs(sin(angle)) < 0.2 || abs(cos(angle)) < 0.2) {
             // Add a small random offset to the angle to avoid direct vertical or horizontal bounces
             let offset = radians(random(minAngleOffset, maxAngleOffset)) * (random() < 0.5 ? 1 : -1);
             angle += offset;
         }
-    
+
         // Ensure the angle is within a shallow range to avoid 45-degree bounces
         let shallowOffset = radians(random(-15, 15)); // Random shallow adjustment
         angle += shallowOffset;
-    
+
         // Update the velocity vector with the adjusted angle
         vel.set(p5.Vector.fromAngle(angle).mult(this.ball_speed));
     }

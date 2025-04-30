@@ -2,7 +2,7 @@ class NeuralNetwork {
     constructor(layerSizes, bound) {
         this.layerSizes = layerSizes; // array of layer sizes
         this.bound = bound; // store the bound for drawing
-        
+
         this.rand_reset_network(); // initialize the network with random weights and biases
     }
 
@@ -16,7 +16,7 @@ class NeuralNetwork {
                     i < this.layerSizes.length - 1
                         ? new Array(this.layerSizes[i + 1]).fill(0).map(() => random(-1, 1)) // Random weights for non-output layers
                         : [], // No weights for the output layer
-                        random(-1, 1), // Random bias
+                    random(-1, 1), // Random bias
                     0 // Reset output to 0
                 ];
             }
@@ -80,9 +80,9 @@ class NeuralNetwork {
                 for (let i = 0; i < w.length; i++) {
                     let nextNodeY = i * nextYSpacing + nextYSpacing / 2;
                     let weight = w[i];
-                    if(weight < 0) {
+                    if (weight < 0) {
                         stroke(0, 255, 0, abs(weight) * 255); // Set opacity proportional to weight
-                    }else{
+                    } else {
                         stroke(255, 0, 0, abs(weight) * 255); // Set opacity proportional to weight
                     }
                     line(nodeX, nodeY, (x + 2) * xSpacing, nextNodeY);
@@ -103,7 +103,7 @@ class NeuralNetwork {
 
                 let nodeX = (x + 1) * xSpacing;
                 let nodeY = y * ySpacing + ySpacing / 2;
-                
+
                 // Map bias to stroke color range
                 let biasColorValue = map(bias, -1, 1, 0, 255);
                 fill(0, 128);
@@ -197,13 +197,15 @@ class NeuralNetwork {
     }
 
     // Clone the neural network from another neural network
-    copy_network(network){
+    copy_network(network) {
         for (let i = 0; i < this.network.length; i++) {
             for (let j = 0; j < this.network[i].length; j++) {
                 let node = this.network[i][j];
                 let newNode = network[i][j];
-                node[0] = newNode[0].slice();
-                node[1] = newNode[1];
+
+                node[0] = newNode[0].slice(); // Copy weights
+                node[1] = newNode[1];        // Copy bias
+                node[2] = newNode[2];        // Copy output
             }
         }
     }
