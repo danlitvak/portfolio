@@ -7,6 +7,10 @@
 // Structure: [11, 16, 8, 4, 1]
 // Date of creation: April 17, 2025
 
+// Notes:
+// - This neural network's input includes opponent's position
+//   due to this it may not be as strong against real players
+
 let net_1 = [
     [
       {

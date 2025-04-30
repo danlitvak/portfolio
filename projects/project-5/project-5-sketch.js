@@ -34,14 +34,17 @@ function setup() {
     margin = 10; // margin between the pong simulations and edge
     w = ((width - margin) / 5) - margin; // width of individual pong
     h = ((height - margin) / 5) - margin; // height of individual pong
-    for(let i = 0; i < 20; i++) {
-        let b = new bound((w + margin) * (i % 4) + margin, (h + margin) * (floor(i / 4)) + margin, w, h); // pong bound
-        let b_n = new bound(b.x + b.w / 8, b.y + b.h / 2, 6 * b.w / 8, b.h / 2); // place neural net in the middle of the pong
+    for(let i = 0; i < 2; i++) {
+        let b_v = new bound((w + margin) * (i % 4) + margin, (h + margin) * (floor(i / 4)) + margin, w, h); // pong bound
+        let b_s = new bound((w + margin) * (i % 4) + margin, (h + margin) * (floor(i / 4)) + margin, w, h); // pong bound
+        
+        // place neural net bound based off the visual bound
+        let b_v_n = new bound(b_s.x + b_s.w / 8, b_s.y + b_s.h / 2, 6 * b_s.w / 8, b_s.h / 2); // place neural net in the middle of the pong
         // create a new pong simulation with the neural network (debug = true)
-        pongs.push(new pongSimulation(b, new NeuralNetwork([11, 16, 8, 4, 1], b_n), false, i)); 
+        // simulation bound, visual bound
+        pongs.push(new pongSimulation(b_s, b_v, new NeuralNetwork([10, 16, 8, 4, 1], b_v_n), false, i)); 
     }
 }
-
 
 function draw() {
     background(0);
@@ -55,7 +58,10 @@ function draw() {
             if(abs(pong.left_score - pong.right_score) < 100) {
                 sims_done = false; // if any pong simulation is not done, set sims_done to false
             }
-            pong.show(); // show the pong simulation and neural network
+            // draw the pong simulation once
+            if(!i){
+                pong.show_visual(); // show the pong simulation and neural network
+            }
             pop();
         });
 
@@ -66,7 +72,7 @@ function draw() {
         }
     }
 
-    highlight_best_game(); // highlight the best pong simulation
+    // highlight_best_game(); // highlight the best pong simulation
     information_display(); // show the information display
 
     // update statistics
@@ -166,8 +172,7 @@ function calculate_average_score() {
 function highlight_best_game() {
     pongs.forEach((pong, i) => {
         push();
-        stroke(255);
-        strokeWeight(2);
+        noStroke();
         fill(0, 255, 0, map(pongs.length - i, 0, pongs.length, -128, 128));
         rect(pong.bound.x, pong.bound.y, pong.bound.w, pong.bound.h); // outline the pong simulation
         pop();
@@ -181,7 +186,7 @@ function sort_pongs() {
     });
 
     console.log("");
-    for(let i = 0; i < 5; i++) {
+    for(let i = 0; i < min(5, pongs.length); i++) {
         console.log("Rank: " + i + " | Pong ID " + pongs[i].id + ": " + pongs[i].total_fitness); // log the fitness
     }
     console.log(" ... ");

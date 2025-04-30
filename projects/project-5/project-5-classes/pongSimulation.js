@@ -1,6 +1,7 @@
 class pongSimulation {
-    constructor(bound, net, debug, id) {
-        this.bound = bound;
+    constructor(bound, b_s, net, debug, id) {
+        this.bound = bound; // simulation and visual bound
+        this.v_bound = b_s; // visual bound
         this.net = net; // neural network for the left paddle
         this.debug = debug; // debug mode
         this.id = id; // id of the pong simulation
@@ -109,11 +110,28 @@ class pongSimulation {
     }
 
     // Return the current state of the game as a normalized array of values
-    return_state() {
+    // Variation 1: includes opponent paddle position
+    return_state_1() {
         // Outputs the current state of the game as a normalized array of values
         return [
             this.left_paddle_pos / this.bound.h, // Normalized left paddle position
             this.right_paddle_pos / this.bound.h, // Normalized right paddle position
+            this.ball_pos.x / this.bound.w, // Normalized ball x position
+            this.ball_pos.y / this.bound.h, // Normalized ball y position
+            this.ball_vel.x / this.ball_speed, // Normalized ball x velocity
+            this.ball_vel.y / this.ball_speed, // Normalized ball y velocity
+            (this.ball_pos.x - this.left_paddle_edge) / this.bound.w, // Horizontal distance to left paddle
+            (this.right_paddle_edge - this.ball_pos.x) / this.bound.w, // Horizontal distance to right paddle
+            (this.ball_pos.y - (this.left_paddle_pos + this.paddle_height / 2)) / this.bound.h, // Vertical distance to left paddle center
+            (this.ball_pos.y - (this.right_paddle_pos + this.paddle_height / 2)) / this.bound.h, // Vertical distance to right paddle center
+            this.ball_vel.x > 0 ? 1 : 0 // Ball direction (1 = right, 0 = left)
+        ];
+    }
+
+    // Variation 2: excludes opponent paddle position
+    return_state_2() {
+        return [
+            this.left_paddle_pos / this.bound.h, // Normalized left paddle position
             this.ball_pos.x / this.bound.w, // Normalized ball x position
             this.ball_pos.y / this.bound.h, // Normalized ball y position
             this.ball_vel.x / this.ball_speed, // Normalized ball x velocity
@@ -164,7 +182,7 @@ class pongSimulation {
 
             // current state output
             push();
-                let state = this.return_state();
+                let state = this.return_state_2();
                 let state_width = 0.04 * this.bound.w;
                 translate((this.bound.w - state_width * state.length) / 2, state_width);
                 noStroke();
@@ -307,8 +325,40 @@ class pongSimulation {
                 (1/3) * this.bound.h // Near the top
             );
         pop();
+    }
 
-        
+    show_visual() {
+        if(this.debug) {
+            push();
+            this.net.show(); // Show the neural network
+            pop();
+        }
+
+        translate(this.v_bound.x, this.v_bound.y); // translate to top left corner
+
+        // show ID near top left corner
+        push();
+            noStroke();
+            fill(255);
+            textSize(0.06 * this.v_bound.w); // Adjust text size relative to game width
+            text(
+                `ID: ${this.id}`, // ID of the pong simulation
+                0.08 * this.v_bound.w, // Left
+                0.04 * this.v_bound.w // Top
+            );
+        pop();
+
+        // draw center line
+        stroke(128);
+        line(this.v_bound.w / 2, 0, this.v_bound.w / 2, this.v_bound.h);
+
+        // draw vertical / horizontal debug lines
+        if (this.debug) {
+            stroke(128, 0, 0);
+            
+
+            stroke(0, 0, 128);
+        }
     }
 
     // Clamp the paddle positions to within the bounds of the game
@@ -323,7 +373,7 @@ class pongSimulation {
             return;
         }
 
-        this.net.forward_propagate(this.return_state()); // propagate the neural network with the pong state
+        this.net.forward_propagate(this.return_state_2()); // propagate the neural network with the pong state
         let output = this.net.output(); // get the output of the neural network
         this.move_left_paddle(output * (this.bound.h - this.paddle_height)); // move left paddle to network output
         this.move_right_paddle(this.ball_pos.y - this.paddle_height / 2); // move right paddle to ball position (perfect play)
