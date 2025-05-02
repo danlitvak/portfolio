@@ -1,4 +1,4 @@
-let minzoom = 0.01;
+let minzoom = 1;
 let maxzoom = 1000;
 
 let canvas_pos_x = 0;
@@ -32,6 +32,7 @@ let currentBackground = 0;
 function windowResized() {
     container = document.getElementById("canvas-container");
     canvasWidth = container.getBoundingClientRect().width;
+    canvasHeight = canvasWidth * 0.8; // 4:3 aspect ratio
     resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -169,7 +170,7 @@ function show_error_lines(coefficients) {
 
         error = pow(abs(y1 - y0), 2);
 
-        stroke(map(error, 0, 0.05, 0, 255), map(error, 0.1, 0, 0, 255), map(error, 0.01, 0, 0, 255), 128);
+        stroke(map(error, 0, 0.05, 0, 255), map(error, 0.1, 0, 0, 255), map(error, 0.01, 0, 0, 255), 64);
 
         line(get_x(x0), get_y(y0), get_x(x1), get_y(y1));
     });
@@ -443,10 +444,10 @@ function drawtext() {
     // bottom left of the screen (canvas information)
     textAlign(LEFT, BOTTOM);
     ride = 0;
-    text("S: Sinusoidal Fit", 0, height - ride);
-    ride += 12;
-    text("SPACE: New Fit", 0, height - ride);
-    ride += 12;
+    // text("S: Sinusoidal Fit", 0, height - ride);
+    // ride += 12;
+    // text("SPACE: New Fit", 0, height - ride);
+    // ride += 12;
     text("Zoom Y: " + canvas_zoom_y.toFixed(2), 0, height - ride);
     ride += 12;
     text("Zoom X: " + canvas_zoom_x.toFixed(2), 0, height - ride);

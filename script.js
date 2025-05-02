@@ -165,6 +165,10 @@ if (display) {
 }
 
 
+// defualt theme: dark mode
+if (!localStorage.getItem("theme")) {
+    localStorage.setItem("theme", "dark");
+}
 
 const darkToggle = document.getElementById("darkModeToggle");
 
