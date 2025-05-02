@@ -10,8 +10,14 @@ let canvasWidth = 400;
 let darkMode = document.body.classList.contains("dark-mode");
 let currentBackground = 0;
 
+let polynomial_length = 5; // degree of polynomial
+let data_length = 300; // number of data points
+let data_range = 3; // range of x values for data generation
+let speed = 100; // speed of the AI learning process
+
 let polynomial_data_coefficients = [];
 let randomized_data = [];
+let ai_polynomial_coefficients = [];
 
 // function for resizing
 function windowResized() {
@@ -28,11 +34,17 @@ function setup() {
     windowResized();
     // integration ends here
 
-    // Initialize polynomial coefficients
-    randomize_polynomial_data_coefficients(5);
+    // randomize polynomial coefficients for AI
+    randomize_polynomial_data_coefficients(polynomial_length);
+
+    // Initialize AI polynomial coefficients
+    ai_polynomial_coefficients = polynomial_data_coefficients.slice(0);
+
+    // Initialize polynomial coefficients for the actual polynomial
+    randomize_polynomial_data_coefficients(polynomial_length);
 
     // Generate data after coefficients are set
-    generate_data(1000);
+    generate_data(data_length, data_range);
 
     console.log("Coefficients:", polynomial_data_coefficients);
     console.log("Generated Data:", randomized_data);
@@ -49,14 +61,92 @@ function draw() {
     background(currentBackground);
 
     show_data(0, 0, width, height);
+    show_actual_error();
+    show_ai_error();
+    display_coefficients();
+
+    for (let s = 0; s < speed; s++) {
+        let dx = 0.0001; // small adjustment for the coefficients
+        let learning_rate = 0.001; // learning rate for the adjustment
+        let max_gradient = 1; // maximum gradient to prevent blowup
+
+        let tweaks = [];
+
+        // begin to fix the AI polynomial coefficients
+        for (let i = 0; i < ai_polynomial_coefficients.length; i++) {
+            // previous logic: random() < 0.05 && error_percent_difference > 0.1
+            if (false) {
+                // add some noise to the coefficients only if the error is high
+                tweaks.push({ error: randomGaussian(0, 0.01), index: i });
+            } else {
+                let error_before = error_function(ai_polynomial);
+                ai_polynomial_coefficients[i] += dx; // adjust the coefficient by a small amount
+                let error_after = error_function(ai_polynomial);
+                let error_slope = (error_after - error_before) / dx; // calculate the slope
+
+                // Clip the gradient to prevent it from blowing up
+                error_slope = constrain(error_slope, -max_gradient, max_gradient);
+
+                tweaks.push({ error: error_slope * learning_rate, index: i }); // adjust the coefficient back
+            }
+        }
+
+        // Apply all but the worst tweak
+        tweaks.sort((a, b) => abs(b.error) - abs(a.error)); // sort by absolute error
+        for (let i = 0; i < tweaks.length - 1; i++) {
+            let tweak = tweaks[i];
+            ai_polynomial_coefficients[tweak.index] -= tweak.error; // apply the best tweaks
+        }
+    }
 }
 
-function error_function() {
+function display_coefficients() {
+    push();
+    fill(255);
+    noStroke();
+    text(
+        "AI Coefficients: " + ai_polynomial_coefficients.map(c => c.toFixed(4)).join(", "),
+        10,
+        height - 10
+    );
+    text(
+        "Actual Coefficients: " + polynomial_data_coefficients.map(c => c.toFixed(4)).join(", "),
+        10,
+        height - 30
+    );
+    pop();
+}
+
+function show_ai_error() {
+    push();
+    fill(255);
+    noStroke();
+    text("AI Error: " + error_function(ai_polynomial).toFixed(2), 10, 40);
+    pop();
+}
+
+function ai_polynomial(x) {
+    let y = 0;
+    for (let i = 0; i < ai_polynomial_coefficients.length; i++) {
+        y += ai_polynomial_coefficients[i] * pow(x, i);
+    }
+    return y;
+}
+
+function show_actual_error() {
+    push();
+    fill(255);
+    noStroke();
+    text("Error Goal: " + error_function(actual_polynomial).toFixed(2), 10, 20);
+    pop();
+}
+
+function error_function(f) {
     let error = 0;
     for (let i = 0; i < randomized_data.length; i++) {
         let x = randomized_data[i].x;
         let y = randomized_data[i].y;
-        let predictedY = actual_polynomial(x);
+        let predictedY = f(x);
         error += pow(y - predictedY, 2);
     }
     return error / randomized_data.length;
@@ -102,6 +192,19 @@ function show_data(x, y, w, h) {
     }
     endShape();
 
+    // Draw the AI polynomial line in red
+    stroke(255, 0, 0);
+    strokeWeight(2);
+    noFill();
+    beginShape();
+    for (let px = x; px <= x + w; px++) {
+        let graphX = map(px, x, x + w, minX, maxX);
+        let graphY = ai_polynomial(graphX);
+        let mappedY = map(graphY, minY, maxY, y + h, y);
+        vertex(px, mappedY);
+    }
+    endShape();
+
     // Plot the data points
     stroke(255);
     strokeWeight(2);
@@ -113,16 +216,13 @@ function show_data(x, y, w, h) {
 
 }
 
-function randomize_polynomial_data_coefficients(length = 5) {
+function randomize_polynomial_data_coefficients(length) {
     polynomial_data_coefficients = [];
     for (let i = 0; i < length; i++) {
         // Use a wider range and randomGaussian for more variation
-        let coefficient = randomGaussian(0, 5); // Mean 0, standard deviation 5
+        let coefficient = randomGaussian(0, (length - i) * 3); // Mean 0, standard deviation based on index
         polynomial_data_coefficients[i] = coefficient;
     }
-
-    // Ensure the highest-degree term is significant for more dramatic curves
-    polynomial_data_coefficients[length - 1] = random(-10, 10);
 }
 
 function actual_polynomial(x) {
@@ -133,19 +233,41 @@ function actual_polynomial(x) {
     return y;
 }
 
-function generate_data(length = 100) {
+function generate_data(length, range) {
     randomized_data = [];
     for (let i = 0; i < length; i++) {
-        let x = map(i, 0, length, -5, 5) + random(-1, 1);
-        let y = actual_polynomial(x) + random(-100, 100);
+        let x = map(i, 0, length, range * -1, range);
+        let y = actual_polynomial(x) + randomGaussian(0, 30);
         randomized_data.push({ x: x, y: y });
     }
 }
 
+function generate_sin_data(length, range) {
+    randomized_data = [];
+    for (let i = 0; i < length; i++) {
+        let x = map(i, 0, length, range * -1, range);
+        let y = (sin(x / 2) * 1000) + randomGaussian(0, 0.5);
+        randomized_data.push({ x: x, y: y });
+    }
+
+    ai_polynomial_coefficients.forEach((c) => { c = 0; }); // reset AI coefficients
+}
+
 function mousePressed() {
     if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-        randomize_polynomial_data_coefficients(5);
-        generate_data(1000);
+        randomize_polynomial_data_coefficients(polynomial_length);
+        generate_data(data_length, data_range);
+
+        console.log("Coefficients:", polynomial_data_coefficients);
+        console.log("Generated Data:", randomized_data);
+    }
+}
+
+function keyPressed() {
+    // press s to generate sin data (doesn't work yet)
+    if (key === 's' && false) {
+        generate_sin_data(data_length, 10);
+        console.log("Generated Sin Data:", randomized_data);
     }
 }
 
