@@ -32,7 +32,7 @@ let currentBackground = 0;
 function windowResized() {
     container = document.getElementById("canvas-container");
     canvasWidth = container.getBoundingClientRect().width;
-    canvasHeight = canvasWidth * 0.8; // 4:3 aspect ratio
+    canvasHeight = canvasWidth * 0.6;
     resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -279,8 +279,16 @@ function show_polynomial(coefficients) {
 
 function show_data() {
     push();
-    noStroke();
-    fill(255);
+
+    if (darkMode) {
+        fill(255);
+        noStroke();
+    } else {
+        fill(64);
+        stroke(0, 128);
+        strokeWeight(2);
+    }
+
     data.forEach((p) => {
         let x = p.x;
         let y = p.y;
@@ -412,7 +420,7 @@ function drawtext() {
     resetMatrix();
     fill(255);
     stroke(0, 128);
-    strokeWeight(5);
+    strokeWeight(3);
     textSize(13);
 
     let ride; // keep track of text position
@@ -467,10 +475,13 @@ function drawtext() {
 function keyPressed() {
     if (keyCode == 32) {
         // new fit
-        ai_coefficients = randomize_coefficients(degree);
+        // ai_coefficients = randomize_coefficients(degree);
+        // dont randomize coefficients, just use the same ones as before to see smoother transitions
         data_coefficients = randomize_coefficients(degree);
         data = init_data(data_coefficients, data_length, data_range);
         data_error = error_function(data, data_coefficients);
+
+        return false; // prevent default scrolling behavior while inside the canvas
     }
 
     if (keyCode == 83) {
