@@ -61,21 +61,31 @@
                 <details class="dropdown" open>
                     <summary> Introduction </summary>
                     <p>
-                        intro ...
+                        The difficulty of sorting vectors is a position many developers have found themselves in, including me. The naive approach would be to loop through every point then returning desired values, this would run in a time complexity of the length of the array.
+                    </p>
+
+                    <p>
+                        A quad tree is a sollution to store vectors of any length and search for them extremely quickly. In the beginning one Quad Tree object is created and when another vector needs to be stored it is pushed to the Quad Tree. If the current Quad Tree is storing
+                        too many vectors a subdivision occurs and the vectors are pushed further down the tree. To querry the tree, a recursion efficiently finds the desired points.
+                    </p>
+
+                    <p>
+                        The key benifet of a Quad Tree is that when a small area is querried, very few position searches are performed, increasing the performance and reducing the time complexity.
                     </p>
                 </details>
 
                 <details class="dropdown" open>
                     <summary> Implementation </summary>
                     <p>
-                        implementation ...
+                        This implementation lets users place points by clicking, and they are represented by a small red circle. The area in which the querry happens is the green square around the users mouse. A Quad Tree which has returned its points has a grey background and
+                        a black background if did not. From this it is clear to see how a Quad Tree is an optimal solution.
                     </p>
                 </details>
 
                 <details class="dropdown" open>
                     <summary> What I Learned </summary>
                     <p>
-                        learning ...
+                        From this project I learned how to implement recursion algorithms and Axis Aligned Bounding Boxs (AABB).
                     </p>
                 </details>
             </div>

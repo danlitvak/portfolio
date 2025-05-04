@@ -172,19 +172,26 @@ function drawtext() {
 function mouseWheel(event) {
     // mouse wheel control
     // d = event.delta / 100
-    if (((mouseX < 0 || mouseX > width) || (mouseY < 0 || mouseY > height))) {
-        if (event.delta < 0) {
-            queryradius -= 5;
-            searchb.w -= 5;
-        } else {
-            queryradius += 5;
-            searchb.h += 5;
-        }
-        pauseLength = max(1, pauseLength);
-        return false;
+
+    // do nothing if the mouse is not over the canvas
+    if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) {
+        return;
     }
 
-    return true;
+    if (event.delta < 0) {
+        queryradius -= 5;
+        searchb.w -= 5;
+    } else {
+        queryradius += 5;
+        searchb.h += 5;
+    }
+
+    queryradius = constrain(queryradius, 5, 1000);
+    searchb.w = constrain(searchb.w, 5, 1000);
+
+    pauseLength = max(1, pauseLength);
+
+    return false; // prevent default scrolling behavior
 }
 
 function keyPressed() {
