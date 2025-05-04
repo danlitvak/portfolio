@@ -22,6 +22,8 @@ let ai_error = 0;
 
 let speed = 10;
 
+let itterations = 0;
+
 // integration starts here
 // variables to keep track
 let canvasHeight = 400;
@@ -156,6 +158,8 @@ function draw() {
             let tweak = tweaks[i];
             ai_coefficients[tweak.index] -= tweak.error; // apply the best tweaks
         }
+
+        itterations++;
     }
 }
 
@@ -442,6 +446,8 @@ function drawtext() {
     //   ride
     // );
     ride += 12;
+    text("iterations     : " + itterations, 0, ride);
+    ride += 12;
     text("Fit Polynomial : " + ai_coefficients.map((c) => c.toFixed(4)).join(", "), 0, ride);
     ride += 12;
 
@@ -480,6 +486,8 @@ function keyPressed() {
         data_coefficients = randomize_coefficients(degree);
         data = init_data(data_coefficients, data_length, data_range);
         data_error = error_function(data, data_coefficients);
+
+        itterations = 0;
 
         return false; // prevent default scrolling behavior while inside the canvas
     }
