@@ -22,7 +22,7 @@ function setup() {
     // integration ends here
 }
 
-function draw() {
+function draw_background() {
     // Handle dark mode background transition
     darkMode = document.body.classList.contains("dark-mode");
     if (darkMode) {
@@ -30,5 +30,10 @@ function draw() {
     } else {
         currentBackground = lerp(currentBackground, 200, 0.1);
     }
+
     background(currentBackground);
+}
+
+function draw() {
+    draw_background();
 }
