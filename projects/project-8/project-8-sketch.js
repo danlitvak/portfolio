@@ -42,10 +42,7 @@ function setup() {
     windowResized();
     // integration ends here
 
-    // generate path vectors, only happens once, doesn't need to be the fastest
-    generate_path_vectors();
-    // possible moves will be path vectors of head position
-    add_first_state_to_queue();
+
 
     textFont("Courier New");
     textSize(font_size);
@@ -53,49 +50,133 @@ function setup() {
 
 let solving_speed = 1000;
 let dim = { x: 5, y: 5 };
-let start_pos = { x: 0, y: 0 };
+let start_pos = { x: 2, y: 2 };
 let walls = [];
 let path_vectors;
+
+let margin = 10;
 
 let queue = [];
 let paths_found = [];
 
-let state = "setup"; // the user needs to set up the grid
+let machine_state = "setup_start"; // the user needs to set up the grid
+let mouse_pos = { x: -1, y: -1 };
 
 function draw() {
     draw_background();
-    stepsPerFrame = 0;  // Reset steps counter for this frame
 
-    for (let i = 0; i < solving_speed; i++) {
-        if (queue.length > 0) {
-            let current_state = queue.pop();
+    switch (machine_state) {
+        case "setup_walls":
+            draw_grid(0, 0, height, height, margin);
+            user_interface(height, 0, width - height, height, margin);
 
-            // check if we have found a valid path
-            if (check_if_path_found(current_state.path)) {
-                paths_found.push(current_state.path); // add the path to the found paths
-            } else {
-                // get useful references from the current state we are working on
-                let path = current_state.path; // get the path from the state
-                let vectors = current_state.vectors; // get the path vectors from the state
-                let head = path[path.length - 1]; // get the head of the path
+            locate_mouse_pos();
+            break;
 
-                let head_vector = get_path_vector(vectors, head.x, head.y); // get the path vector of the head position
+        case "setup_start":
+            draw_grid(0, 0, height, height, margin);
+            user_interface(height, 0, width - height, height, margin);
 
-                // Check all cardinal directions
-                add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
-                add_new_state_to_queue(path, vectors, head, head_vector.south, head.x, head.y + 1); // South
-                add_new_state_to_queue(path, vectors, head, head_vector.east, head.x + 1, head.y);  // East
-                add_new_state_to_queue(path, vectors, head, head_vector.west, head.x - 1, head.y);  // West
+            locate_mouse_pos();
+            break;
 
-                stepsPerFrame++;  // Increment steps for this frame
-                totalSteps++;     // Increment total steps
+        case "solve":
+            stepsPerFrame = 0;  // Reset steps counter for this frame
+
+            for (let i = 0; i < solving_speed; i++) {
+                step_solve_queue();
             }
+
+            draw_grid(0, 0, height, height, margin);
+            user_interface(height, 0, width - height, height, margin);
+            show_paths_found(paths_found, paths_found.length * (frameCount / 360), 0, 0, height, height, margin);
+            break;
+
+        default:
+            break;
+    }
+
+
+}
+
+function mousePressed() {
+    switch (machine_state) {
+        case "setup_start":
+            locate_mouse_pos();
+            if (mouse_pos.x !== -1 && mouse_pos.y !== -1) {
+                start_pos.x = mouse_pos.x;
+                start_pos.y = mouse_pos.y;
+                // console.log("Place start at: (" + mouse_pos.x + ", " + mouse_pos.y + ")");
+            }
+            break;
+
+        case "setup_walls":
+            locate_mouse_pos();
+            if (mouse_pos.x !== -1 && mouse_pos.y !== -1) {
+                // console.log("Toggle wall at: (" + mouse_pos.x + ", " + mouse_pos.y + ")");
+                // Wall toggling logic would go here
+
+                let index_found = -1;
+
+                for (let pos = 0; pos < walls.length; pos++) {
+                    let wall = walls[pos];
+
+                    if (wall.x == mouse_pos.x && wall.y == mouse_pos.y) {
+                        index_found = pos;
+                    }
+                }
+
+                if (index_found >= 0) {
+                    // wall exists therefor must be toggled off
+                    walls.splice(index_found, 1);
+                } else {
+                    // wall doesn't exist meaning it must be pushed as a new wall
+                    walls.push({ x: mouse_pos.x, y: mouse_pos.y });
+                }
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+
+function locate_mouse_pos() {
+    mouse_pos.x = floor((mouseX - margin) / ((height - margin * 2) / dim.x));
+    mouse_pos.y = floor((mouseY - margin) / ((height - margin * 2) / dim.y));
+
+    if (mouse_pos.x < 0 || mouse_pos.x > dim.x - 1 || mouse_pos.y < 0 || mouse_pos.y > dim.y - 1) {
+        mouse_pos.x = -1;
+        mouse_pos.y = -1;
+    }
+}
+
+function step_solve_queue() {
+    if (queue.length > 0) {
+        let current_state = queue.pop();
+
+        // check if we have found a valid path
+        if (check_if_path_found(current_state.path)) {
+            paths_found.push(current_state.path); // add the path to the found paths
+        } else {
+            // get useful references from the current state we are working on
+            let path = current_state.path; // get the path from the state
+            let vectors = current_state.vectors; // get the path vectors from the state
+            let head = path[path.length - 1]; // get the head of the path
+
+            let head_vector = get_path_vector(vectors, head.x, head.y); // get the path vector of the head position
+
+            // Check all cardinal directions
+            add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
+            add_new_state_to_queue(path, vectors, head, head_vector.south, head.x, head.y + 1); // South
+            add_new_state_to_queue(path, vectors, head, head_vector.east, head.x + 1, head.y);  // East
+            add_new_state_to_queue(path, vectors, head, head_vector.west, head.x - 1, head.y);  // West
+
+            stepsPerFrame++;  // Increment steps for this frame
+            totalSteps++;     // Increment total steps
         }
     }
 
-    draw_grid(0, 0, height, height, 10);
-    show_paths_found(paths_found, paths_found.length * (frameCount / 60), 0, 0, height, height, 10);
-    user_interface(height, 0, width - height, height, 10);
 }
 
 function user_interface(x, y, w, h, margin) {
@@ -120,7 +201,11 @@ function user_interface(x, y, w, h, margin) {
 
 
     // static status information (dont change much / at all)
-    text("Solver Status: Solving", x + text_margin, y + ride, w, font_size);
+    if (machine_state == "solving") {
+        text("Solver Status: Solving", x + text_margin, y + ride, w, font_size);
+    } else {
+        text("Solver Status: Waiting", x + text_margin, y + ride, w, font_size);
+    }
     ride += font_size;
 
     text("Target Steps/Frame: " + solving_speed, x + text_margin, y + ride, w, font_size);
@@ -164,9 +249,101 @@ function user_interface(x, y, w, h, margin) {
     text("Queue Size:  " + queue.length, x + text_margin, y + ride, w, font_size);
     ride += font_size;
 
+    // user interface, buttons and stuff
+    push();
+    stroke(255);
+    line(x, y + ride + font_size / 2, x + w, y + ride + font_size / 2);
+    pop();
+    ride += font_size;
+
+    text("State: " + machine_state, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    switch (machine_state) {
+        case "setup_start":
+            text("SPACE: setup walls", x + text_margin, y + ride, w, font_size);
+            ride += font_size;
+            break;
+
+        case "setup_walls":
+            text("SPACE: start solving", x + text_margin, y + ride, w, font_size);
+            ride += font_size;
+            break;
+
+        case "solve":
+            text("SPACE: setup start", x + text_margin, y + ride, w, font_size);
+            ride += font_size;
+            break;
+
+        default:
+            break;
+    }
+
+    // Add arrow key controls information
+    push();
+    stroke(255);
+    line(x, y + ride + font_size / 2, x + w, y + ride + font_size / 2);
+    pop();
+    ride += font_size;
+
+    text("Grid Controls:", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+    text("↑/↓: Change Height", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+    text("←/→: Change Width", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
     pop();
 }
 
+function keyPressed() {
+    if (keyCode == 32) {
+        if (machine_state == "setup_start") {
+            machine_state = "setup_walls";
+        } else if (machine_state == "setup_walls") {
+            machine_state = "solve";
+
+            queue = [];
+            paths_found = [];
+            startTime = Date.now();
+
+            // generate path vectors, only happens once, doesn't need to be the fastest
+            generate_path_vectors();
+            // possible moves will be path vectors of head position
+            add_first_state_to_queue();
+        } else if (machine_state == "solve") {
+            machine_state = "setup_start"
+        }
+    }
+
+    if (machine_state != "solve") {
+        // Arrow keys to modify grid dimensions
+        if (keyCode === UP_ARROW) {
+            dim.y = constrain(dim.y + 1, 3, 20); // Increase y dimension
+            resetGrid();
+        } else if (keyCode === DOWN_ARROW) {
+            dim.y = constrain(dim.y - 1, 3, 20); // Decrease y dimension
+            resetGrid();
+        } else if (keyCode === RIGHT_ARROW) {
+            dim.x = constrain(dim.x + 1, 3, 20); // Increase x dimension
+            resetGrid();
+        } else if (keyCode === LEFT_ARROW) {
+            dim.x = constrain(dim.x - 1, 3, 20); // Decrease x dimension
+            resetGrid();
+        }
+    }
+
+    return false;
+}
+
+// Helper function to reset the grid when dimensions change
+function resetGrid() {
+    walls = [];
+    queue = [];
+    paths_found = [];
+    start_pos = { x: floor(dim.x / 2), y: floor(dim.y / 2) };
+    generate_path_vectors();
+}
 
 function show_paths_found(paths, index, x, y, w, h, margin) {
     if (paths.length === 0) {
@@ -423,6 +600,27 @@ function draw_grid(x, y, w, h, margin) {
 
     fill(0, 255, 0, 64);
     rect(i * dx + x, j * dy + y, dx, dy);
+
+    // draw mouse hover
+
+    switch (machine_state) {
+        case "setup_start":
+            fill(0, 255, 0, 64);
+            break;
+
+        case "setup_walls":
+            fill(255, 64);
+            break;
+
+        default:
+            noFill();
+            break;
+    }
+
+
+    if (mouse_pos.x >= 0 && mouse_pos.y >= 0) {
+        rect(mouse_pos.x * dx + x, mouse_pos.y * dy + y, dx, dy);
+    }
 
     pop();
 }
