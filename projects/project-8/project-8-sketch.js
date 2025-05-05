@@ -1,5 +1,10 @@
 // shift + alt + f -> format document nicely
 
+// Performance tracking variables
+let startTime = Date.now();
+let stepsPerFrame = 0;
+let totalSteps = 0;
+
 // integration starts here
 // variables to keep track
 let canvasHeight = 400;
@@ -11,7 +16,7 @@ let currentBackground = 0;
 function windowResized() {
     container = document.getElementById('canvas-container');
     canvasWidth = container.getBoundingClientRect().width;
-    canvasHeight = canvasWidth; // square canvas
+    canvasHeight = canvasWidth * (2 / 3); // 2 : 3 aspect ratio
     resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -27,6 +32,8 @@ function draw_background() {
     background(currentBackground);
 }
 
+let font_size = 14;
+
 function setup() {
     // start up
     container = document.getElementById('canvas-container');
@@ -39,45 +46,127 @@ function setup() {
     generate_path_vectors();
     // possible moves will be path vectors of head position
     add_first_state_to_queue();
+
+    textFont("Courier New");
+    textSize(font_size);
 }
 
-
-let dim = { x: 6, y: 6 };
+let solving_speed = 1000;
+let dim = { x: 5, y: 5 };
 let start_pos = { x: 0, y: 0 };
-let walls = [{ x: 3, y: 3 }, { x: 2, y: 3 }];
+let walls = [];
 let path_vectors;
 
 let queue = [];
 let paths_found = [];
 
+let state = "setup"; // the user needs to set up the grid
+
 function draw() {
     draw_background();
+    stepsPerFrame = 0;  // Reset steps counter for this frame
 
-    if (queue.length > 0) {
-        let current_state = queue.pop();
+    for (let i = 0; i < solving_speed; i++) {
+        if (queue.length > 0) {
+            let current_state = queue.pop();
 
-        // check if we have found a valid path
-        if (check_if_path_found(current_state.path)) {
-            paths_found.push(current_state.path); // add the path to the found paths
-        } else {
-            // get useful references from the current state we are working on
-            let path = current_state.path; // get the path from the state
-            let vectors = current_state.vectors; // get the path vectors from the state
-            let head = path[path.length - 1]; // get the head of the path
+            // check if we have found a valid path
+            if (check_if_path_found(current_state.path)) {
+                paths_found.push(current_state.path); // add the path to the found paths
+            } else {
+                // get useful references from the current state we are working on
+                let path = current_state.path; // get the path from the state
+                let vectors = current_state.vectors; // get the path vectors from the state
+                let head = path[path.length - 1]; // get the head of the path
 
-            let head_vector = get_path_vector(vectors, head.x, head.y); // get the path vector of the head position
+                let head_vector = get_path_vector(vectors, head.x, head.y); // get the path vector of the head position
 
-            // Check all cardinal directions
-            add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
-            add_new_state_to_queue(path, vectors, head, head_vector.south, head.x, head.y + 1); // South
-            add_new_state_to_queue(path, vectors, head, head_vector.east, head.x + 1, head.y);  // East
-            add_new_state_to_queue(path, vectors, head, head_vector.west, head.x - 1, head.y);  // West
+                // Check all cardinal directions
+                add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
+                add_new_state_to_queue(path, vectors, head, head_vector.south, head.x, head.y + 1); // South
+                add_new_state_to_queue(path, vectors, head, head_vector.east, head.x + 1, head.y);  // East
+                add_new_state_to_queue(path, vectors, head, head_vector.west, head.x - 1, head.y);  // West
+
+                stepsPerFrame++;  // Increment steps for this frame
+                totalSteps++;     // Increment total steps
+            }
         }
     }
 
-    draw_grid(0, 0, width, height, 10);
-    show_paths_found(paths_found, paths_found.length * (frameCount / 60), 0, 0, width, height, 10);
+    draw_grid(0, 0, height, height, 10);
+    show_paths_found(paths_found, paths_found.length * (frameCount / 60), 0, 0, height, height, 10);
+    user_interface(height, 0, width - height, height, 10);
 }
+
+function user_interface(x, y, w, h, margin) {
+    // margin on the left already exists from draw grid
+    y += margin;
+    w -= margin;
+    h -= margin * 2;
+
+    push();
+    // draw bounding box
+    noFill();
+    stroke(255);
+    strokeWeight(1);
+    rect(x, y, w, h);
+
+    fill(255);
+    noStroke();
+
+    // information about the pathfinding
+    let text_margin = 5; // margin around the text
+    let ride = font_size / 2; // keep track of how far the top
+
+
+    // static status information (dont change much / at all)
+    text("Solver Status: Solving", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Target Steps/Frame: " + solving_speed, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+
+    text("Dimensions: (" + dim.x + ", " + dim.y + ")", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Solution Length: " + (paths_found.length > 0 ? paths_found[paths_found.length - 1].length : 0), x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Start Position: " + start_pos.x + ", " + start_pos.y, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Walls: " + walls.length, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    // Performance Metrics (things that chanage / update)
+    push();
+    stroke(255);
+    line(x, y + ride + font_size / 2, x + w, y + ride + font_size / 2);
+    pop();
+    ride += font_size;
+
+    text("FPS: " + frameRate().toFixed(3), x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Runtime: --- " + ((Date.now() - startTime) / 1000).toFixed(2) + "s", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Steps/Frame: " + stepsPerFrame, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Total Steps: " + totalSteps, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Paths Found: " + paths_found.length, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("Queue Size:  " + queue.length, x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    pop();
+}
+
 
 function show_paths_found(paths, index, x, y, w, h, margin) {
     if (paths.length === 0) {
