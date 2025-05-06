@@ -666,14 +666,14 @@ section {
 }
 
 .swiper {
-    height: 20vh;
+    height: 25vh;
     /* full screen height */
 }
 
 .swiper-slide {
     width: 100%;
     /* now full width */
-    height: 420px;
+    height: 500px;
     /* portrait height still */
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);

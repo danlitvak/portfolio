@@ -197,7 +197,7 @@ if (darkToggle) {
 window.addEventListener("DOMContentLoaded", () => {
     const swiper = new Swiper(".swiper", {
         direction: "vertical",
-        slidesPerView: "auto",
+        slidesPerView: 1, // Changed from "auto" to 1 to fix height issue
         spaceBetween: 16,
         grabCursor: true,
         mousewheel: true,
