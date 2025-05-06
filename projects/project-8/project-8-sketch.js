@@ -48,7 +48,9 @@ function setup() {
     textSize(font_size);
 }
 
-let solving_speed = 1000;
+let solving_speed = 10000;
+let time_to_first_solve = -1; // -1 means ready to recieve the time
+
 let dim = { x: 5, y: 5 };
 let start_pos = { x: 2, y: 2 };
 let walls = [];
@@ -59,7 +61,7 @@ let margin = 10;
 let queue = [];
 let paths_found = [];
 
-let machine_state = "setup_start"; // the user needs to set up the grid
+let machine_state = "setup_walls"; // the user needs to set up the grid
 let mouse_pos = { x: -1, y: -1 };
 
 function draw() {
@@ -158,6 +160,10 @@ function step_solve_queue() {
         // check if we have found a valid path
         if (check_if_path_found(current_state.path)) {
             paths_found.push(current_state.path); // add the path to the found paths
+
+            if (time_to_first_solve == -1) {
+                time_to_first_solve = (Date.now() - startTime);
+            }
         } else {
             // get useful references from the current state we are working on
             let path = current_state.path; // get the path from the state
@@ -176,7 +182,6 @@ function step_solve_queue() {
             totalSteps++;     // Increment total steps
         }
     }
-
 }
 
 function user_interface(x, y, w, h, margin) {
@@ -235,6 +240,9 @@ function user_interface(x, y, w, h, margin) {
     ride += font_size;
 
     text("Runtime: --- " + ((Date.now() - startTime) / 1000).toFixed(2) + "s", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
+
+    text("First solve:  " + (time_to_first_solve / 1000).toFixed(2) + "s", x + text_margin, y + ride, w, font_size);
     ride += font_size;
 
     text("Steps/Frame: " + stepsPerFrame, x + text_margin, y + ride, w, font_size);
@@ -298,10 +306,11 @@ function user_interface(x, y, w, h, margin) {
 
 function keyPressed() {
     if (keyCode == 32) {
-        if (machine_state == "setup_start") {
-            machine_state = "setup_walls";
-        } else if (machine_state == "setup_walls") {
+        if (machine_state == "setup_walls") {
+            machine_state = "setup_start";
+        } else if (machine_state == "setup_start") {
             machine_state = "solve";
+            totalSteps = 0;
 
             queue = [];
             paths_found = [];
@@ -311,8 +320,11 @@ function keyPressed() {
             generate_path_vectors();
             // possible moves will be path vectors of head position
             add_first_state_to_queue();
+
         } else if (machine_state == "solve") {
-            machine_state = "setup_start"
+            machine_state = "setup_walls"
+            time_to_first_solve = -1;
+            // resetGrid();
         }
     }
 
@@ -346,11 +358,21 @@ function resetGrid() {
 }
 
 function show_paths_found(paths, index, x, y, w, h, margin) {
-    if (paths.length === 0) {
-        return; // no paths found yet
+    let path;
+    // decide where to get the path from
+    if (paths.length) {
+        // if paths are found show them
+        index = round(index) % paths.length; // loop back to the first path if index is out of bounds
+        path = paths[index];
+    } else {
+        if (queue.length) {
+            // if still working on paths show progress
+            path = queue.at(-1).path;
+        } else {
+            // no paths and queue is not populated
+            return;
+        }
     }
-
-    index = round(index) % paths.length; // loop back to the first path if index is out of bounds
 
     push();
     stroke(0, 255, 0);
@@ -366,8 +388,6 @@ function show_paths_found(paths, index, x, y, w, h, margin) {
     // calculate width and height of each grid cell
     let dx = w / dim.x;
     let dy = h / dim.y;
-
-    let path = paths[index]; // get the path from the found paths
 
     noFill();
     beginShape();
@@ -623,4 +643,14 @@ function draw_grid(x, y, w, h, margin) {
     }
 
     pop();
+}
+
+function resolve_current(speed) {
+    if (!speed) speed = 1;
+    solving_speed = speed;
+    totalSteps = 0;
+    startTime = Date.now();
+    paths_found = [];
+    time_to_first_solve = -1;
+    add_first_state_to_queue();
 }
