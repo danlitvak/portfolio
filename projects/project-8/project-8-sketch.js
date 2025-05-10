@@ -200,15 +200,8 @@ function add_new_state_to_queue(path, vectors, head, isValid, newX, newY) {
         let new_vectors = map_deep_copy(vectors);
         let made_hole = remove_vectors_pointing_to_pos(new_vectors, head.x, head.y, newX, newY, new_path);
 
-        if (false) {
-            // Optimization: check to make sure no holes are made before pushing
-            if (!made_hole) {
-                let new_state = { path: new_path, vectors: new_vectors };
-                queue.push(new_state);
-            }
-
-        } else {
-            // No Optimization
+        // Optimization: check to make sure no holes are made before pushing
+        if (!made_hole) {
             let new_state = { path: new_path, vectors: new_vectors };
             queue.push(new_state);
         }
