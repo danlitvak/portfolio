@@ -56,7 +56,7 @@ function setup() {
     add_first_state_to_queue();
 }
 
-let solving_speed = 1000;
+let solving_speed = 10000; // target solving speed
 let time_to_first_solve = -1; // -1 means ready to recieve the time
 
 let dim = { x: 6, y: 6 };
@@ -181,10 +181,10 @@ function solve_step() {
             let head_vector = get_path_vector(vectors, head.x, head.y); // get the path vector of the head position
 
             // Check all cardinal directions
-            add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
             add_new_state_to_queue(path, vectors, head, head_vector.south, head.x, head.y + 1); // South
             add_new_state_to_queue(path, vectors, head, head_vector.east, head.x + 1, head.y);  // East
             add_new_state_to_queue(path, vectors, head, head_vector.west, head.x - 1, head.y);  // West
+            add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
 
             stepsPerFrame++;  // Increment steps for this frame
             totalSteps++;     // Increment total steps
@@ -198,10 +198,9 @@ function add_new_state_to_queue(path, vectors, head, isValid, newX, newY) {
         let new_pos = { x: newX, y: newY };
         let new_path = [...path, new_pos];
         let new_vectors = map_deep_copy(vectors);
-        let made_hole = remove_vectors_pointing_to_pos(new_vectors, head.x, head.y, newX, newY, new_path);
 
         // Optimization: check to make sure no holes are made before pushing
-        if (!made_hole) {
+        if (!remove_vectors_pointing_to_pos(new_vectors, head.x, head.y, newX, newY, new_path)) {
             let new_state = { path: new_path, vectors: new_vectors };
             queue.push(new_state);
         }
@@ -334,6 +333,8 @@ function user_interface(x, y, w, h, margin) {
     ride += font_size;
     text("←/→: Change Width", x + text_margin, y + ride, w, font_size);
     ride += font_size;
+    text("R: Redo Current", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
 
     pop();
 }
@@ -377,6 +378,10 @@ function keyPressed() {
             dim.x = constrain(dim.x - 1, 3, 20); // Decrease x dimension
             resetGrid();
         }
+    }
+
+    if (keyCode == 82) {
+        resolve_current(solving_speed);
     }
 
     return false;
@@ -514,8 +519,6 @@ function generate_path_vectors() {
 }
 
 function remove_vectors_pointing_to_pos(vectors, x, y, nextX, nextY, path) {
-    let made_hole = false;
-
     let headVector = get_path_vector(vectors, x, y);
     headVector.north = false;
     headVector.east = false;
@@ -528,8 +531,7 @@ function remove_vectors_pointing_to_pos(vectors, x, y, nextX, nextY, path) {
         northVector.north = false;
         if (check_if_vector_empty(northVector)) {
             if (path && path.length && !path_contains_pos(path, northVector.pos)) {
-                made_hole = true;
-                // console.log(`created empty vector at: (${northVector.pos.x}, ${northVector.pos.y})`);
+                return true;
             }
         }
     }
@@ -540,8 +542,7 @@ function remove_vectors_pointing_to_pos(vectors, x, y, nextX, nextY, path) {
         southVector.south = false;
         if (check_if_vector_empty(southVector)) {
             if (path && path.length && !path_contains_pos(path, southVector.pos)) {
-                made_hole = true;
-                // console.log(`created empty vector at: (${southVector.pos.x}, ${southVector.pos.y})`);
+                return true;
             }
         }
     }
@@ -552,8 +553,7 @@ function remove_vectors_pointing_to_pos(vectors, x, y, nextX, nextY, path) {
         eastVector.west = false;
         if (check_if_vector_empty(eastVector)) {
             if (path && path.length && !path_contains_pos(path, eastVector.pos)) {
-                made_hole = true;
-                // console.log(`created empty vector at: (${eastVector.pos.x}, ${eastVector.pos.y})`);
+                return true;
             }
         }
     }
@@ -564,16 +564,13 @@ function remove_vectors_pointing_to_pos(vectors, x, y, nextX, nextY, path) {
         westVector.east = false;
         if (check_if_vector_empty(westVector)) {
             if (path && path.length && !path_contains_pos(path, westVector.pos)) {
-                made_hole = true;
-                // console.log(`created empty vector at: (${westVector.pos.x}, ${westVector.pos.y})`);
+                return true;
             }
         }
     }
 
-    return made_hole;
+    return false;
 }
-
-
 
 function check_if_vector_empty(vector) {
     return !(vector.north || vector.east || vector.south || vector.west);
