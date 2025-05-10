@@ -663,7 +663,7 @@ section {
     background: var(--text-color);
     /* your highlight color */
     opacity: 1;
-}
+} 
 
 .swiper {
     height: 25vh;
@@ -699,7 +699,6 @@ section {
     font-size: 1rem;
     color: var(--muted-text);
 }
-
 
 /* Glowy Text */
 
@@ -769,6 +768,29 @@ section {
 
 .contact-list a:hover {
     text-decoration: underline;
+}
+
+/* === CODE BLOCK === */
+
+/* Code block styling for light and dark modes */
+pre {
+    background-color: var(--card-bg); /* Adapts to light or dark mode */
+    color: var(--text-color); /* Adapts to light or dark mode */
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
+    font-size: 0.8rem;
+    box-shadow: 0 4px 12px var(--shadow-color);
+
+    transition: background-color 0.5s ease;
+}
+
+code {
+    background-color: transparent;
+    font-family: inherit;
+    color: inherit;
 }
 
 

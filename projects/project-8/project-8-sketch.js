@@ -86,7 +86,7 @@ function draw() {
             stepsPerFrame = 0;  // Reset steps counter for this frame
 
             for (let i = 0; i < solving_speed; i++) {
-                step_solve_queue();
+                solve_step();
             }
 
             draw_grid(0, 0, height, height, margin);
@@ -153,7 +153,7 @@ function locate_mouse_pos() {
     }
 }
 
-function step_solve_queue() {
+function solve_step() {
     if (queue.length > 0) {
         let current_state = queue.pop();
 
@@ -651,6 +651,7 @@ function resolve_current(speed) {
     totalSteps = 0;
     startTime = Date.now();
     paths_found = [];
+    queue = [];
     time_to_first_solve = -1;
     add_first_state_to_queue();
 }

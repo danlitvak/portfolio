@@ -493,7 +493,7 @@ function keyPressed() {
     }
 
     if (keyCode == 83) {
-        ai_coefficients = randomize_coefficients(degree);
+        // ai_coefficients = randomize_coefficients(degree);
         data = init_data_sin(data_length, data_range);
         data_error = error_function(data, data_coefficients);
     }
