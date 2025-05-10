@@ -26,7 +26,7 @@ function draw_background() {
     if (darkMode) {
         currentBackground = lerp(currentBackground, 0, 0.1);
     } else {
-        currentBackground = lerp(currentBackground, 200, 0.1);
+        currentBackground = lerp(currentBackground, 100, 0.1);
     }
 
     background(currentBackground);
@@ -41,19 +41,27 @@ function setup() {
     canvas.parent(container);
     windowResized();
     // integration ends here
-
-
-
     textFont("Courier New");
     textSize(font_size);
+
+    totalSteps = 0;
+
+    queue = [];
+    paths_found = [];
+    startTime = Date.now();
+
+    // generate path vectors, only happens once, doesn't need to be the fastest
+    generate_path_vectors();
+    // possible moves will be path vectors of head position
+    add_first_state_to_queue();
 }
 
-let solving_speed = 10000;
+let solving_speed = 1000;
 let time_to_first_solve = -1; // -1 means ready to recieve the time
 
-let dim = { x: 5, y: 5 };
-let start_pos = { x: 2, y: 2 };
-let walls = [];
+let dim = { x: 6, y: 6 };
+let start_pos = { x: 5, y: 0 };
+let walls = [{ x: 0, y: 5 }, { x: 0, y: 3 }, { x: 4, y: 4 }, { x: 5, y: 1 }];
 let path_vectors;
 
 let margin = 10;
@@ -61,7 +69,7 @@ let margin = 10;
 let queue = [];
 let paths_found = [];
 
-let machine_state = "setup_walls"; // the user needs to set up the grid
+let machine_state = "solve"; // the user needs to set up the grid
 let mouse_pos = { x: -1, y: -1 };
 
 function draw() {
@@ -182,6 +190,39 @@ function solve_step() {
             totalSteps++;     // Increment total steps
         }
     }
+}
+
+// Helper function to add new state for a valid direction
+function add_new_state_to_queue(path, vectors, head, isValid, newX, newY) {
+    if (isValid) {
+        let new_pos = { x: newX, y: newY };
+        let new_path = [...path, new_pos];
+        let new_vectors = map_deep_copy(vectors);
+        let made_hole = remove_vectors_pointing_to_pos(new_vectors, head.x, head.y, newX, newY, new_path);
+
+        if (false) {
+            // Optimization: check to make sure no holes are made before pushing
+            if (!made_hole) {
+                let new_state = { path: new_path, vectors: new_vectors };
+                queue.push(new_state);
+            }
+
+        } else {
+            // No Optimization
+            let new_state = { path: new_path, vectors: new_vectors };
+            queue.push(new_state);
+        }
+    }
+}
+
+// !!!!!!!!!!
+// No optimization : 302108  | time: 3.83 sec
+// Yes optimization: 37469   | time: 0.51 sec
+
+// reduction: 10x
+
+function path_contains_pos(path, pos) {
+    return path.some(p => p.x === pos.x && p.y === pos.y);
 }
 
 function user_interface(x, y, w, h, margin) {
@@ -359,6 +400,7 @@ function resetGrid() {
 
 function show_paths_found(paths, index, x, y, w, h, margin) {
     let path;
+    let vectors;
     // decide where to get the path from
     if (paths.length) {
         // if paths are found show them
@@ -368,6 +410,7 @@ function show_paths_found(paths, index, x, y, w, h, margin) {
         if (queue.length) {
             // if still working on paths show progress
             path = queue.at(-1).path;
+            vectors = queue.at(-1).vectors;
         } else {
             // no paths and queue is not populated
             return;
@@ -396,6 +439,13 @@ function show_paths_found(paths, index, x, y, w, h, margin) {
     }
     endShape();
     pop();
+
+    x -= margin;
+    y -= margin;
+    w += margin * 2;
+    h += margin * 2;
+
+    draw_path_vectors(vectors, x, y, w, h, margin);
 }
 
 function check_if_path_found(path) {
@@ -404,21 +454,6 @@ function check_if_path_found(path) {
         return true; // path found
     }
     return false; // path not found
-}
-
-// Helper function to add new state for a valid direction
-function add_new_state_to_queue(path, vectors, head, isValid, newX, newY) {
-    if (isValid) {
-        let new_pos = { x: newX, y: newY };
-        let new_path = [...path, new_pos];
-        let new_vectors = map_deep_copy(vectors);
-        remove_vectors_pointing_to_pos(new_vectors, head.x, head.y);
-        let new_state = { path: new_path, vectors: new_vectors };
-        queue.push(new_state);
-        return true;
-    } else {
-        return false;
-    }
 }
 
 function map_deep_copy(map) {
@@ -485,18 +520,70 @@ function generate_path_vectors() {
     // remove_vectors_pointing_to_pos(path_vectors, start_pos.x, start_pos.y); // remove vectors pointing to the starting position
 }
 
-function remove_vectors_pointing_to_pos(vectors, x, y) {
+function remove_vectors_pointing_to_pos(vectors, x, y, nextX, nextY, path) {
+    let made_hole = false;
+
+    let headVector = get_path_vector(vectors, x, y);
+    headVector.north = false;
+    headVector.east = false;
+    headVector.south = false;
+    headVector.west = false;
+
+    // NORTH
     let northVector = get_path_vector(vectors, x, y + 1);
-    if (northVector) northVector.north = false;
+    if (northVector) {
+        northVector.north = false;
+        if (check_if_vector_empty(northVector)) {
+            if (path && path.length && !path_contains_pos(path, northVector.pos)) {
+                made_hole = true;
+                // console.log(`created empty vector at: (${northVector.pos.x}, ${northVector.pos.y})`);
+            }
+        }
+    }
 
+    // SOUTH
     let southVector = get_path_vector(vectors, x, y - 1);
-    if (southVector) southVector.south = false;
+    if (southVector) {
+        southVector.south = false;
+        if (check_if_vector_empty(southVector)) {
+            if (path && path.length && !path_contains_pos(path, southVector.pos)) {
+                made_hole = true;
+                // console.log(`created empty vector at: (${southVector.pos.x}, ${southVector.pos.y})`);
+            }
+        }
+    }
 
+    // EAST
     let eastVector = get_path_vector(vectors, x + 1, y);
-    if (eastVector) eastVector.west = false;
+    if (eastVector) {
+        eastVector.west = false;
+        if (check_if_vector_empty(eastVector)) {
+            if (path && path.length && !path_contains_pos(path, eastVector.pos)) {
+                made_hole = true;
+                // console.log(`created empty vector at: (${eastVector.pos.x}, ${eastVector.pos.y})`);
+            }
+        }
+    }
 
+    // WEST
     let westVector = get_path_vector(vectors, x - 1, y);
-    if (westVector) westVector.east = false;
+    if (westVector) {
+        westVector.east = false;
+        if (check_if_vector_empty(westVector)) {
+            if (path && path.length && !path_contains_pos(path, westVector.pos)) {
+                made_hole = true;
+                // console.log(`created empty vector at: (${westVector.pos.x}, ${westVector.pos.y})`);
+            }
+        }
+    }
+
+    return made_hole;
+}
+
+
+
+function check_if_vector_empty(vector) {
+    return !(vector.north || vector.east || vector.south || vector.west);
 }
 
 function get_path_vector(vectors, x, y) {
@@ -531,6 +618,8 @@ function pos_to_key(x, y) {
 }
 
 function draw_path_vectors(vectors, x, y, w, h, margin) {
+    if (!(vectors && vectors.size > 0)) return;
+
     push();
     stroke(255, 0, 0);
     fill(255, 0, 0);
