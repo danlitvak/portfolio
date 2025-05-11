@@ -72,6 +72,8 @@ let paths_found = [];
 let machine_state = "solve"; // the user needs to set up the grid
 let mouse_pos = { x: -1, y: -1 };
 
+let is_paused = false;
+
 function draw() {
     draw_background();
 
@@ -93,8 +95,10 @@ function draw() {
         case "solve":
             stepsPerFrame = 0;  // Reset steps counter for this frame
 
-            for (let i = 0; i < solving_speed; i++) {
-                solve_step();
+            if (!is_paused) {
+                for (let i = 0; i < solving_speed; i++) {
+                    solve_step();
+                }
             }
 
             draw_grid(0, 0, height, height, margin);
@@ -105,9 +109,69 @@ function draw() {
         default:
             break;
     }
-
-
 }
+
+function find_spaces(current_state) {
+    if (!queue.length) return true;
+
+    let path = current_state.path;
+    let vectors = map_deep_copy(current_state.vectors); // still needed for clean state
+
+    // Remove all path positions from the vector map
+    for (let p = 0; p < path.length; p++) {
+        let point = path[p];
+        let key = pos_to_key(point.x, point.y);
+        vectors.delete(key);
+    }
+
+    const keys = [...vectors.keys()];
+    if (keys.length === 0) return true;
+
+    const startKey = keys[0];
+    const queueFlood = [startKey];
+
+    // Reset visited flags (in case vectors are reused)
+    for (let key of keys) {
+        vectors.get(key).visited = false;
+    }
+
+    // Flood fill with in-object `.visited` flag
+    while (queueFlood.length > 0) {
+        const currentKey = queueFlood.pop();
+        const current_vector = vectors.get(currentKey);
+        if (current_vector.visited) continue;
+        current_vector.visited = true;
+
+        const { x, y } = current_vector.pos;
+
+        if (current_vector.north) {
+            const k = pos_to_key(x, y - 1);
+            if (vectors.has(k) && !vectors.get(k).visited) queueFlood.push(k);
+        }
+        if (current_vector.south) {
+            const k = pos_to_key(x, y + 1);
+            if (vectors.has(k) && !vectors.get(k).visited) queueFlood.push(k);
+        }
+        if (current_vector.east) {
+            const k = pos_to_key(x + 1, y);
+            if (vectors.has(k) && !vectors.get(k).visited) queueFlood.push(k);
+        }
+        if (current_vector.west) {
+            const k = pos_to_key(x - 1, y);
+            if (vectors.has(k) && !vectors.get(k).visited) queueFlood.push(k);
+        }
+    }
+
+    // Final check: were all nodes visited?
+    for (let key of keys) {
+        if (!vectors.get(key).visited) {
+            return false; // found a disconnected piece
+        }
+    }
+
+    return true; // fully connected
+}
+
 
 function mousePressed() {
     switch (machine_state) {
@@ -163,31 +227,37 @@ function locate_mouse_pos() {
 
 function solve_step() {
     if (queue.length > 0) {
-        let current_state = queue.pop();
+        if (find_spaces(queue.at(-1))) {
+            // if true, then its fully connected
+            let current_state = queue.pop();
 
-        // check if we have found a valid path
-        if (check_if_path_found(current_state.path)) {
-            paths_found.push(current_state.path); // add the path to the found paths
+            // check if we have found a valid path
+            if (check_if_path_found(current_state.path)) {
+                paths_found.push(current_state.path); // add the path to the found paths
 
-            if (time_to_first_solve == -1) {
-                time_to_first_solve = (Date.now() - startTime);
+                if (time_to_first_solve == -1) {
+                    time_to_first_solve = (Date.now() - startTime);
+                }
+            } else {
+                // get useful references from the current state we are working on
+                let path = current_state.path; // get the path from the state
+                let vectors = current_state.vectors; // get the path vectors from the state
+                let head = path[path.length - 1]; // get the head of the path
+
+                let head_vector = get_path_vector(vectors, head.x, head.y); // get the path vector of the head position
+
+                // Check all cardinal directions
+                add_new_state_to_queue(path, vectors, head, head_vector.south, head.x, head.y + 1); // South
+                add_new_state_to_queue(path, vectors, head, head_vector.east, head.x + 1, head.y);  // East
+                add_new_state_to_queue(path, vectors, head, head_vector.west, head.x - 1, head.y);  // West
+                add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
+
+                stepsPerFrame++;  // Increment steps for this frame
+                totalSteps++;     // Increment total steps
             }
         } else {
-            // get useful references from the current state we are working on
-            let path = current_state.path; // get the path from the state
-            let vectors = current_state.vectors; // get the path vectors from the state
-            let head = path[path.length - 1]; // get the head of the path
-
-            let head_vector = get_path_vector(vectors, head.x, head.y); // get the path vector of the head position
-
-            // Check all cardinal directions
-            add_new_state_to_queue(path, vectors, head, head_vector.south, head.x, head.y + 1); // South
-            add_new_state_to_queue(path, vectors, head, head_vector.east, head.x + 1, head.y);  // East
-            add_new_state_to_queue(path, vectors, head, head_vector.west, head.x - 1, head.y);  // West
-            add_new_state_to_queue(path, vectors, head, head_vector.north, head.x, head.y - 1); // North
-
-            stepsPerFrame++;  // Increment steps for this frame
-            totalSteps++;     // Increment total steps
+            // the latest state is not connected, pop it
+            queue.pop();
         }
     }
 }
@@ -198,20 +268,18 @@ function add_new_state_to_queue(path, vectors, head, isValid, newX, newY) {
         let new_pos = { x: newX, y: newY };
         let new_path = [...path, new_pos];
         let new_vectors = map_deep_copy(vectors);
+        remove_vectors_pointing_to_pos(new_vectors, head.x, head.y, newX, newY, new_path)
 
-        // Optimization: check to make sure no holes are made before pushing
-        if (!remove_vectors_pointing_to_pos(new_vectors, head.x, head.y, newX, newY, new_path)) {
-            let new_state = { path: new_path, vectors: new_vectors };
-            queue.push(new_state);
-        }
+        let new_state = { path: new_path, vectors: new_vectors };
+        queue.push(new_state);
     }
 }
 
 // !!!!!!!!!!
-// No optimization : 302108  | time: 3.83 sec
-// Yes optimization: 37469   | time: 0.51 sec
+// No optimization  : 302108  | time: 3.83 sec  | 1x
+// Yes optimization : 37469   | time: 0.51 sec  | 10x
+// Best optimization: 1990    | time: 0.04 sec  | 100x
 
-// reduction: 10x
 
 function path_contains_pos(path, pos) {
     return path.some(p => p.x === pos.x && p.y === pos.y);
@@ -231,7 +299,7 @@ function user_interface(x, y, w, h, margin) {
     rect(x, y, w, h);
 
     fill(255);
-    noStroke();
+    stroke(128);
 
     // information about the pathfinding
     let text_margin = 5; // margin around the text
@@ -335,6 +403,15 @@ function user_interface(x, y, w, h, margin) {
     ride += font_size;
     text("R: Redo Current", x + text_margin, y + ride, w, font_size);
     ride += font_size;
+    if (is_paused) {
+        text("P: Resume", x + text_margin, y + ride, w, font_size);
+        ride += font_size;
+    } else {
+        text("P: Pause", x + text_margin, y + ride, w, font_size);
+        ride += font_size;
+    }
+    text("S: Step Once", x + text_margin, y + ride, w, font_size);
+    ride += font_size;
 
     pop();
 }
@@ -359,7 +436,6 @@ function keyPressed() {
         } else if (machine_state == "solve") {
             machine_state = "setup_walls"
             time_to_first_solve = -1;
-            // resetGrid();
         }
     }
 
@@ -382,6 +458,16 @@ function keyPressed() {
 
     if (keyCode == 82) {
         resolve_current(solving_speed);
+    }
+
+    if (keyCode == 80) { // "p" key
+        is_paused = !is_paused;
+    }
+
+    if (keyCode == 83) { // "s" key
+        if (machine_state === "solve") {
+            solve_step();
+        }
     }
 
     return false;
@@ -527,49 +613,19 @@ function remove_vectors_pointing_to_pos(vectors, x, y, nextX, nextY, path) {
 
     // NORTH
     let northVector = get_path_vector(vectors, x, y + 1);
-    if (northVector) {
-        northVector.north = false;
-        if (check_if_vector_empty(northVector)) {
-            if (path && path.length && !path_contains_pos(path, northVector.pos)) {
-                return true;
-            }
-        }
-    }
+    if (northVector) northVector.north = false;
 
     // SOUTH
     let southVector = get_path_vector(vectors, x, y - 1);
-    if (southVector) {
-        southVector.south = false;
-        if (check_if_vector_empty(southVector)) {
-            if (path && path.length && !path_contains_pos(path, southVector.pos)) {
-                return true;
-            }
-        }
-    }
+    if (southVector) southVector.south = false;
 
     // EAST
     let eastVector = get_path_vector(vectors, x + 1, y);
-    if (eastVector) {
-        eastVector.west = false;
-        if (check_if_vector_empty(eastVector)) {
-            if (path && path.length && !path_contains_pos(path, eastVector.pos)) {
-                return true;
-            }
-        }
-    }
+    if (eastVector) eastVector.west = false;
 
     // WEST
     let westVector = get_path_vector(vectors, x - 1, y);
-    if (westVector) {
-        westVector.east = false;
-        if (check_if_vector_empty(westVector)) {
-            if (path && path.length && !path_contains_pos(path, westVector.pos)) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    if (westVector) westVector.east = false;
 }
 
 function check_if_vector_empty(vector) {
