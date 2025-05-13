@@ -36,7 +36,7 @@ function setup() {
 
     node_graph = innitialize_node_graph(node_count);
     visualization = new node_graph_visualization(node_graph, { x: vis_margin, y: vis_margin, w: width - (vis_margin * 2), h: height - (vis_margin * 2) });
-    user_interface = new user_pan_zoom(width / 2, height / 2, 1, 1);
+    user_interface = new user_pan_zoom(0, 0, 1, 1);
 }
 
 let vis_margin = 10;
@@ -58,9 +58,10 @@ function draw() {
 
     // adjust the positions for visual pleasentness
     if (visualization.adjust_graph_positions() < 1e-5) {
-        console.log("done adjusting!");
+        // console.log("done adjusting!");
     }
 
+    visualization.highlight_nearest_node(user_interface.return_mouse_bound(visualization.bound));
 }
 
 function innitialize_node_graph(node_count) {
@@ -73,7 +74,7 @@ function innitialize_node_graph(node_count) {
 
     // randomly assign connections to nodes
     for (let n = 0; n < node_count; n++) {
-        let connection_count = floor(random(1, node_count / 3));
+        let connection_count = abs(floor(randomGaussian(0, 3) + 1));
 
         let tries = 0;
         while (nodeGraph[n].connections.length < connection_count && tries < 100) {

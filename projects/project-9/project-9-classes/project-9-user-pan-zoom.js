@@ -11,6 +11,26 @@ class user_pan_zoom {
         this.scroll_delta = 0;
     }
 
+    return_mouse_bound(bound) {
+        // bound = {x: x, y: y, w: w, h: h};
+
+        // transform mouse position from screen space into world space
+        let mx = mouseX;
+        let my = mouseY;
+
+        mx /= this.zoom.x;
+        my /= this.zoom.y;
+
+
+        mx -= this.pos.x;
+        my -= this.pos.y;
+
+        mx = map(mx, bound.x, bound.x + bound.w, 0, 1);
+        my = map(my, bound.y, bound.y + bound.h, 0, 1);
+
+        return { x: mx, y: my };
+    }
+
     return_transform() {
         scale(this.zoom.x, this.zoom.y);
         translate(this.pos.x, this.pos.y);
@@ -48,4 +68,6 @@ class user_pan_zoom {
         // reset scroll delta
         this.scroll_delta = 0;
     }
+
+
 }

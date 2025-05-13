@@ -47,7 +47,7 @@ class node_graph_visualization {
                     force = spring_constant * (rest_distance - displacement) * -1;
                 } else {
                     force = spring_constant * ((rest_distance * 5) - displacement) * -1;
-                    force *= 0.1;
+                    force *= 0.5;
                 }
                 // calculate force vector from magnitude and direction
                 let force_vector = { x: force * direction_vector.x, y: force * direction_vector.y };
@@ -64,78 +64,41 @@ class node_graph_visualization {
 
         // update accelerations -> velocities -> positions
         this.node_graph.forEach(node => {
+            // references to simplify code a little
+            let velocity = this.node_velocity[node.id];
+            let position = this.node_positions[node.id];
+            let acceleration = this.node_acceleration[node.id];
+
             // add acceleration to velocity
-            this.node_velocity[node.id].x += this.node_acceleration[node.id].x;
-            this.node_velocity[node.id].y += this.node_acceleration[node.id].y;
+            velocity.x += acceleration.x;
+            velocity.y += acceleration.y;
 
             // add velocity to position
-            this.node_positions[node.id].x += this.node_velocity[node.id].x;
-            this.node_positions[node.id].y += this.node_velocity[node.id].y;
+            position.x += velocity.x;
+            position.y += velocity.y;
 
-            // damnpen velocity to simulate friction
-            this.node_velocity[node.id].x *= dampening;
-            this.node_velocity[node.id].y *= dampening;
+            // dampen velocity to simulate friction
+            velocity.x *= dampening;
+            velocity.y *= dampening;
 
             // slowly add to positions to make sure to center the graph
-            this.node_positions[node.id].x = lerp(this.node_positions[node.id].x, 0.5, 0.01);
-            this.node_positions[node.id].y = lerp(this.node_positions[node.id].y, 0.5, 0.01);
+            position.x = lerp(position.x, 0.5, 0.01);
+            position.y = lerp(position.y, 0.5, 0.01);
 
             // reset accelerations
-            this.node_acceleration[node.id].x = 0;
-            this.node_acceleration[node.id].y = 0;
+            acceleration.x = 0;
+            acceleration.y = 0;
         });
 
         // Calculate total change in positions to quantify graph stability
         let total_change = 0;
-
         for (let i = 0; i < this.node_positions.length; i++) {
             let pos = this.node_positions[i];
             let p_pos = this.p_node_positions[i];
 
             total_change += dist(pos.x, pos.y, p_pos.x, p_pos.y);
         }
-
         return total_change;
-    }
-
-    adjust_graph_positions_old() {
-        // each node will want to be closer to its connections
-        // simple solution: move them proportional to distance away
-        let rest_dist = 0.1;
-
-        this.node_graph.forEach(this_node => {
-            if (this_node.connections.length) {
-                // accumulate adjustments needed
-                let adjust = { x: 0, y: 0 };
-                this_node.connections.forEach(other_node => {
-                    // displacement vector = other.pos - this.pos
-                    // displacement vector give the direction of adjustment
-                    let d_vec = { x: 0, y: 0 };
-
-                    d_vec.x = this.node_positions[other_node.id].x - this.node_positions[this_node.id].x;
-                    d_vec.y = this.node_positions[other_node.id].y - this.node_positions[this_node.id].y;
-
-                    if (sqrt(d_vec.x * d_vec.x + d_vec.y * d_vec.y) < rest_dist) {
-                        d_vec.x *= -1;
-                        d_vec.y *= -1;
-                    }
-
-                    adjust.x += d_vec.x;
-                    adjust.y += d_vec.y;
-                });
-
-                // take average of adjustments
-                adjust.x /= this_node.connections.length;
-                adjust.y /= this_node.connections.length;
-
-                // adjustment rate
-                adjust.x /= 50;
-                adjust.y /= 50;
-
-                this.node_positions[this_node.id].x += adjust.x;
-                this.node_positions[this_node.id].y += adjust.y;
-            }
-        });
     }
 
     show_node_graph() {
@@ -158,6 +121,7 @@ class node_graph_visualization {
 
         // then draw over with circles for the nodes over the lines
         fill(255);
+        noStroke();
         this.node_graph.forEach(this_node => {
             this.draw_node_from_id(this_node.id, 10);
         });
@@ -165,10 +129,36 @@ class node_graph_visualization {
         pop();
     }
 
+    highlight_nearest_node(target_pos) {
+        // init to random one
+        let nearest_id = this.node_graph[0].id;
+        let nearest_dist = dist(target_pos.x, target_pos.y, this.node_positions[nearest_id].x, this.node_positions[nearest_id].y);
+
+        this.node_graph.forEach(node => {
+            node.highlighted = false; // set all to false, then at the end set the nearest to true
+            let test_id = node.id;
+            let test_dist = dist(target_pos.x, target_pos.y, this.node_positions[test_id].x, this.node_positions[test_id].y);
+
+            if (test_dist < nearest_dist) {
+                nearest_dist = test_dist;
+                nearest_id = test_id;
+            }
+        });
+
+        this.node_graph[nearest_id].highlighted = true;
+    }
+
 
     draw_node_from_id(id, radius) {
         let x = this.get_draw_x(this.node_positions[id].x);
         let y = this.get_draw_y(this.node_positions[id].y);
+
+        if (this.node_graph[id].highlighted) {
+            fill(0, 255, 0);
+            radius *= 1.5;
+        } else {
+            fill(255, 255, 255);
+        }
 
         ellipse(x, y, radius, radius);
     }
