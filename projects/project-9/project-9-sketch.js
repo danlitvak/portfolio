@@ -34,20 +34,33 @@ function setup() {
     windowResized();
     // integration ends here
 
-    node_graph = innitialize_node_graph(10);
-    let vis_margin = 10;
+    node_graph = innitialize_node_graph(node_count);
     visualization = new node_graph_visualization(node_graph, { x: vis_margin, y: vis_margin, w: width - (vis_margin * 2), h: height - (vis_margin * 2) });
+    user_interface = new user_pan_zoom(width / 2, height / 2, 1, 1);
 }
 
+let vis_margin = 10;
+let node_count = 10;
 let node_graph;
 let visualization;
+let user_interface;
 
 function draw() {
     draw_background();
 
+    // user interface for dragging and zooming
+    user_interface.handle_mouse_dragged();
+    user_interface.handle_mouse_scroll();
+    user_interface.return_transform();
+
+    // show the current state of the node graph
     visualization.show_node_graph();
 
-    visualization.adjust_graph_positions();
+    // adjust the positions for visual pleasentness
+    if (visualization.adjust_graph_positions() < 1e-5) {
+        console.log("done adjusting!");
+    }
+
 }
 
 function innitialize_node_graph(node_count) {
@@ -62,14 +75,39 @@ function innitialize_node_graph(node_count) {
     for (let n = 0; n < node_count; n++) {
         let connection_count = floor(random(1, node_count / 3));
 
-        for (let c = 0; c < connection_count; c++) {
+        let tries = 0;
+        while (nodeGraph[n].connections.length < connection_count && tries < 100) {
             let conneting_node = random(nodeGraph); // choose random node
-            if (!nodeGraph[n].connections_contains_id(conneting_node.id)) {
-                // only add to connections if it doesn't already contain it
+            if (!nodeGraph[n].connections_contains_id(conneting_node.id) && (nodeGraph[n].id != conneting_node.id)) {
+                // only add to connections if it doesn't already contain it and is not itself
                 nodeGraph[n].connections.push(conneting_node);
             }
+            tries++;
         }
     }
 
     return nodeGraph;
+}
+
+function mouseDragged() {
+    user_interface.is_user_dragging = true;
+}
+
+function mouseWheel(event) {
+    if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return true;
+    user_interface.scroll_delta = event.deltaY;
+    return false;
+}
+
+function keyPressed() {
+    // create a new nodegraph
+    if (key === ' ') {
+        node_graph = innitialize_node_graph(node_count);
+        visualization = new node_graph_visualization(node_graph, {
+            x: vis_margin,
+            y: vis_margin,
+            w: width - vis_margin * 2,
+            h: height - vis_margin * 2
+        });
+    }
 }
