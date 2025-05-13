@@ -45,6 +45,8 @@ let node_graph;
 let visualization;
 let user_interface;
 
+let nearest_node_id;
+
 function draw() {
     draw_background();
 
@@ -61,7 +63,8 @@ function draw() {
         // console.log("done adjusting!");
     }
 
-    visualization.highlight_nearest_node(user_interface.return_mouse_bound(visualization.bound));
+    nearest_node_id = visualization.highlight_nearest_node(user_interface.return_mouse_bound(visualization.bound));
+    // console.log(nearest_node_id);
 }
 
 function innitialize_node_graph(node_count) {
@@ -90,6 +93,8 @@ function innitialize_node_graph(node_count) {
     return nodeGraph;
 }
 
+// user inputs
+
 function mouseDragged() {
     user_interface.is_user_dragging = true;
 }
@@ -110,5 +115,26 @@ function keyPressed() {
             w: width - vis_margin * 2,
             h: height - vis_margin * 2
         });
+    }
+
+    if (key === "d" || key === "D") {
+        // delete the nearest node
+        if (nearest_node_id !== null) {
+            let nearest_node_index = 0; // set to anything really
+
+            for (let n = 0; n < node_graph.length; n++) {
+                if (node_graph[n].id == nearest_node_id) {
+                    nearest_node_index = n; // index of the nearest node to delete
+                }
+            }
+
+            node_graph.forEach(node => {
+                node.delete_connection_from_id(nearest_node_id); // delete connection from each other node
+            });
+
+            node_graph.splice(nearest_node_index, 1);
+        } else {
+            console.log("Get closer to a node to delete it");
+        }
     }
 }

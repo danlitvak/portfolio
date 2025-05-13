@@ -131,6 +131,7 @@ class node_graph_visualization {
 
     highlight_nearest_node(target_pos) {
         // init to random one
+        let min_valid_dist = 0.1;
         let nearest_id = this.node_graph[0].id;
         let nearest_dist = dist(target_pos.x, target_pos.y, this.node_positions[nearest_id].x, this.node_positions[nearest_id].y);
 
@@ -145,7 +146,12 @@ class node_graph_visualization {
             }
         });
 
-        this.node_graph[nearest_id].highlighted = true;
+        if (nearest_dist < min_valid_dist) {
+            this.node_graph[nearest_id].highlighted = true;
+            return nearest_id; // return nearest id for use of solving
+        } else {
+            return null;
+        }
     }
 
 
@@ -153,7 +159,13 @@ class node_graph_visualization {
         let x = this.get_draw_x(this.node_positions[id].x);
         let y = this.get_draw_y(this.node_positions[id].y);
 
-        if (this.node_graph[id].highlighted) {
+        let node = this.node_graph[id];
+
+        if (!node) return;
+
+        let is_highlighted = node.highlighted;
+
+        if (is_highlighted) {
             fill(0, 255, 0);
             radius *= 1.5;
         } else {
@@ -161,6 +173,11 @@ class node_graph_visualization {
         }
 
         ellipse(x, y, radius, radius);
+
+        stroke(255)
+        fill(0);
+        textAlign(CENTER, CENTER)
+        text(id, x, y);
     }
 
     draw_line_from_id(id_1, id_2) {
