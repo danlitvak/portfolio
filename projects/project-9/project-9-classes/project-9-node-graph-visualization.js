@@ -9,22 +9,8 @@ class node_graph_visualization {
         this.node_velocity = new Map();
         this.node_acceleration = new Map();
         // Initialize positions based on the number of connections
-        node_graph.forEach((node, id) => {
-            const connection_count = node.connections.length;
-            const max_connections = Math.max(...Array.from(node_graph.values()).map(n => n.connections.length));
+        this.innitialize_node_positions();
 
-            // Map connection count to a range where more connections are closer to the center
-            const distance_from_center = map(connection_count, 0, max_connections, 1, 0);
-
-            // Randomize the angle for placement around the center
-            const angle = random(TWO_PI);
-            const x = 0.5 + cos(angle) * distance_from_center * 0.5;
-            const y = 0.5 + sin(angle) * distance_from_center * 0.5;
-
-            this.node_positions.set(id, { x, y });
-            this.node_velocity.set(id, { x: 0, y: 0 });
-            this.node_acceleration.set(id, { x: 0, y: 0 });
-        });
         this.p_node_positions = new Map(this.node_positions); // Clone the map
     }
 
@@ -141,6 +127,26 @@ class node_graph_visualization {
         return total_change;
     }
 
+    innitialize_node_positions() {
+        node_graph.forEach((node, id) => {
+            const connection_count = node.connections.length;
+            const max_connections = Math.max(...Array.from(node_graph.values()).map(n => n.connections.length));
+
+            // Map connection count to a range where more connections are closer to the center
+            const distance_from_center = map(connection_count, 0, max_connections, 1, 0);
+
+            // Randomize the angle for placement around the center
+            const angle = random(TWO_PI);
+            const x = 0.5 + cos(angle) * distance_from_center * 0.5;
+            const y = 0.5 + sin(angle) * distance_from_center * 0.5;
+
+            this.node_positions.set(id, { x, y });
+
+            this.node_velocity.set(id, { x: 0, y: 0 });
+            this.node_acceleration.set(id, { x: 0, y: 0 });
+        });
+    }
+
     show_node_graph() {
         push();
 
@@ -161,9 +167,9 @@ class node_graph_visualization {
         // first draw connecting lines
         this.node_graph.forEach((this_node, id) => {
             if (this_node.connections) {
-                this_node.connections.forEach(other_node => {
+                this_node.connections.forEach(other_node_id => {
                     // create line from this_node to other_node
-                    this.draw_line_from_id(id, other_node.id);
+                    this.draw_line_from_id(id, other_node_id);
                 });
             }
         });

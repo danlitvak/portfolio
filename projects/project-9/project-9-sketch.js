@@ -87,8 +87,10 @@ function innitialize_node_graph(node_count) {
 
             if (!connections_contains_id(this_node.connections, connecting_node_id) && (this_node.id !== connecting_node_id)) {
                 // only add to connections if it doesn't already contain it and is not itself
-                this_node.connections.push(nodeGraph.get(connecting_node_id));
+                this_node.connections.push(nodeGraph.get(connecting_node_id).id);
+                // big change, connections will contain ids not node objects
             }
+
             tries++;
         }
     }
@@ -111,7 +113,7 @@ function get_random_node(node_graph) {
 }
 
 function connections_contains_id(connections, id) {
-    return connections.some(connection => connection.id === id);
+    return connections.some(connection => connection === id);
 }
 
 function delete_node_by_id(node_id) {
