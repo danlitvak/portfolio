@@ -35,12 +35,7 @@ class node_graph_visualization {
         let rest_distance = 0.1; // resting distance of springs
         let spring_constant = 0.3; // spring constant of springs
         let node_mass = 3; // mass of nodes when calculating accelerations
-        let dampening = 0.9;
-
-        // if (this.last_stability !== 0) {
-        //     spring_constant = map(this.last_stability, 0, 10, 0.3, 0.1);
-        //     spring_constant = constrain(spring_constant, 0.1, 0.3);
-        // }
+        let dampening = 0.9; // dampening factor for velocity
 
         this.node_graph.forEach((this_node, this_id) => {
             let this_position = this.node_positions.get(this_id);
@@ -48,7 +43,7 @@ class node_graph_visualization {
             this.node_graph.forEach((other_node, other_id) => {
                 if (this_id === other_id) return; // skip calculations of self
                 let other_position = this.node_positions.get(other_id);
-                let is_connection = this_node.connections_contains_id(other_id); // determine if other is a connection
+                let is_connection = connections_contains_id(this_node.connections, other_id); // determine if other is a connection
 
                 // calculate displacement vector
                 let displacement_vector = { x: other_position.x - this_position.x, y: other_position.y - this_position.y };

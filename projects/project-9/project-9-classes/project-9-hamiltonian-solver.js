@@ -12,14 +12,15 @@ class hamiltonian_solver {
 
         // Step 1: Create a shallow clone of each node (connections left empty for now)
         for (const [key, node] of original_graph.entries()) {
-            new_graph.set(key, new node(node.id, []));
+            new_graph.set(n, { id: n, connections: [], highlighted: false });
         }
 
         // Step 2: Populate connections with references to the new graph's nodes
         for (const [key, old_node] of original_graph.entries()) {
             const new_node = new_graph.get(key);
+
             for (const neighbor of old_node.connections) {
-                const neighbor_copy = new_graph.get(neighbor.id); // assumes neighbor.id is used as key
+                const neighbor_copy = new_graph.get(neighbor.id);
                 new_node.connections.push(neighbor_copy);
             }
         }

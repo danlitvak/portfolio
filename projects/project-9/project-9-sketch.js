@@ -72,7 +72,7 @@ function innitialize_node_graph(node_count) {
 
     // populate node graph with unconnected nodes
     for (let n = 0; n < node_count; n++) {
-        nodeGraph.set(n, new node(n, []));
+        nodeGraph.set(n, { id: n, connections: [], highlighted: false });
     }
 
     // randomly assign connections to nodes
@@ -82,8 +82,10 @@ function innitialize_node_graph(node_count) {
 
         let tries = 0;
         while (this_node.connections.length < connection_count && tries < 100) {
-            let connecting_node_id = floor(random(node_count)); // choose random node ID
-            if (!this_node.connections_contains_id(connecting_node_id) && (this_node.id !== connecting_node_id)) {
+            let connecting_node = get_random_node(nodeGraph);
+            let connecting_node_id = connecting_node.id;
+
+            if (!connections_contains_id(this_node.connections, connecting_node_id) && (this_node.id !== connecting_node_id)) {
                 // only add to connections if it doesn't already contain it and is not itself
                 this_node.connections.push(nodeGraph.get(connecting_node_id));
             }
@@ -100,6 +102,16 @@ function innitialize_node_graph(node_count) {
     }
 
     return nodeGraph;
+}
+
+function get_random_node(node_graph) {
+    const values = Array.from(node_graph.values());
+    const randomIndex = Math.floor(Math.random() * values.length);
+    return values[randomIndex];
+}
+
+function connections_contains_id(connections, id) {
+    return connections.some(connection => connection.id === id);
 }
 
 function delete_node_by_id(node_id) {
