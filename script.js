@@ -165,19 +165,31 @@ if (display) {
 }
 
 
-// defualt theme: dark mode
+// Default theme: dark mode
 if (!localStorage.getItem("theme")) {
     localStorage.setItem("theme", "dark");
 }
 
 const darkToggle = document.getElementById("darkModeToggle");
+const darkModeIcon = document.getElementById("darkModeIcon");
 
 if (darkToggle) {
-    const icon = darkToggle.querySelector("i");
-
     function setTheme(isDark) {
         document.body.classList.toggle("dark-mode", isDark);
-        icon.className = isDark ? "fi fi-ss-sun" : "fi fi-rr-moon-stars";
+
+        // Update the visibility of the SVG paths
+        const darkModePath = darkModeIcon.querySelector(".dark-mode-path");
+        const lightModePath = darkModeIcon.querySelector(".light-mode-path");
+
+        if (isDark) {
+            darkModePath.style.display = "none";
+            lightModePath.style.display = "block";
+        } else {
+            darkModePath.style.display = "block";
+            lightModePath.style.display = "none";
+        }
+
+        // Save the theme to localStorage
         localStorage.setItem("theme", isDark ? "dark" : "light");
     }
 

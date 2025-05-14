@@ -211,11 +211,6 @@ body {
 }
 
 #darkModeToggle:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    transform: scale(1.05);
-}
-
-#darkModeToggle:hover {
     background-color: var(--toggle-bg-hover);
     transform: scale(1.05);
 }
@@ -225,26 +220,36 @@ body {
     transform: scale(0.97);
 }
 
-#darkModeToggle:hover i {
-    color: var(--text-color);
-    /* 👈 Just a subtle zoom */
-    transform: scale(1.1);
+/* Style the SVG icon */
+#darkModeToggle svg {
+    width: 20px;
+    height: 20px;
+    transform: translateY(0.75px);
+    fill: var(--text-muted); /* Default color */
+    transition: fill 0.3s ease, transform 0.2s ease;
 }
 
-#darkModeToggle:active {
-    transform: scale(0.97);
-    background-color: rgba(0, 0, 0, 0.08);
+#darkModeToggle:hover svg path {
+    fill: var(--text-color); /* Change to text color on hover */
 }
 
-#darkModeToggle i {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    line-height: 1;
-    vertical-align: middle;
-    transition: color 0.3s ease, transform 0.2s ease;
-    position: relative;
-    top: 2px;
-    /* Manual vertical nudge */
+/* Default dark mode path */
+#darkModeToggle .dark-mode-path {
+    fill: var(--text-muted); /* Default muted color for dark mode icon */
+}
+
+/* Default light mode path */
+#darkModeToggle .light-mode-path {
+    fill: var(--text-muted); /* Default muted color for light mode icon */
+}
+
+/* Change icon dynamically based on theme */
+body.dark-mode #darkModeToggle .dark-mode-path {
+    display: none;
+}
+
+body.dark-mode #darkModeToggle .light-mode-path {
+    display: block;
 }
 
 
