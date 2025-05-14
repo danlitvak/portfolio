@@ -2,14 +2,26 @@ class node_graph_visualization {
     constructor(node_graph, bound) {
         this.bound = bound; // bound = {x: x, y: y, w: w, h: h}
         this.node_graph = node_graph;
+        this.last_stability = 0;
 
         // locally store pos / vel / acc for each node purely for visualization
         this.node_positions = new Map();
         this.node_velocity = new Map();
         this.node_acceleration = new Map();
-        // innitialize positions randomly
+        // Initialize positions based on the number of connections
         node_graph.forEach((node, id) => {
-            this.node_positions.set(id, { x: random(), y: random() });
+            const connection_count = node.connections.length;
+            const max_connections = Math.max(...Array.from(node_graph.values()).map(n => n.connections.length));
+
+            // Map connection count to a range where more connections are closer to the center
+            const distance_from_center = map(connection_count, 0, max_connections, 1, 0);
+
+            // Randomize the angle for placement around the center
+            const angle = random(TWO_PI);
+            const x = 0.5 + cos(angle) * distance_from_center * 0.5;
+            const y = 0.5 + sin(angle) * distance_from_center * 0.5;
+
+            this.node_positions.set(id, { x, y });
             this.node_velocity.set(id, { x: 0, y: 0 });
             this.node_acceleration.set(id, { x: 0, y: 0 });
         });
@@ -25,6 +37,11 @@ class node_graph_visualization {
         let node_mass = 3; // mass of nodes when calculating accelerations
         let dampening = 0.9;
 
+        // if (this.last_stability !== 0) {
+        //     spring_constant = map(this.last_stability, 0, 10, 0.3, 0.1);
+        //     spring_constant = constrain(spring_constant, 0.1, 0.3);
+        // }
+
         this.node_graph.forEach((this_node, this_id) => {
             let this_position = this.node_positions.get(this_id);
 
@@ -37,8 +54,15 @@ class node_graph_visualization {
                 let displacement_vector = { x: other_position.x - this_position.x, y: other_position.y - this_position.y };
                 // magnitude of displacement vector
                 let displacement = sqrt(displacement_vector.x * displacement_vector.x + displacement_vector.y * displacement_vector.y);
+
+                // Avoid division by zero
+                if (displacement === 0) {
+                    displacement = 1e-6; // Small value to prevent division by zero
+                }
+
                 // unit vector of direction vector
                 let direction_vector = { x: displacement_vector.x / displacement, y: displacement_vector.y / displacement };
+
                 // calculate magnitude of force
                 let force;
                 if (is_connection) {
@@ -72,9 +96,24 @@ class node_graph_visualization {
             let position = this.node_positions.get(node.id);
             let acceleration = this.node_acceleration.get(node.id);
 
+            // clamp acceleration to a maximum value
+            let max_acceleration = 0.01;
+            acceleration.x = constrain(acceleration.x, -max_acceleration, max_acceleration);
+            acceleration.y = constrain(acceleration.y, -max_acceleration, max_acceleration);
+
+            // clamp velocity to a maximum value
+            let max_velocity = 0.01;
+            velocity.x = constrain(velocity.x, -max_velocity, max_velocity);
+            velocity.y = constrain(velocity.y, -max_velocity, max_velocity);
+
+            // clamp position to a maximum value
+            position.x = constrain(position.x, 0, 1);
+            position.y = constrain(position.y, 0, 1);
+
             // add acceleration to velocity
             velocity.x += acceleration.x;
             velocity.y += acceleration.y;
+
 
             // add velocity to position
             position.x += velocity.x;
@@ -103,6 +142,7 @@ class node_graph_visualization {
             let p_pos = this.p_node_positions.get(id);
             total_change += dist(pos.x, pos.y, p_pos.x, p_pos.y);
         }
+        this.last_stability = total_change;
         return total_change;
     }
 
@@ -113,6 +153,15 @@ class node_graph_visualization {
         stroke(255);
         strokeWeight(1);
         rect(this.bound.x, this.bound.y, this.bound.w, this.bound.h);
+
+        // show the last stability of the graph
+        push();
+        fill(255);
+        noStroke();
+        textAlign(LEFT, TOP);
+        textSize(12);
+        text("Graph Stability: " + this.last_stability.toFixed(4), this.bound.x + 5, this.bound.y + 5);
+        pop();
 
         // first draw connecting lines
         this.node_graph.forEach((this_node, id) => {

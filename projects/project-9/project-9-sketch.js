@@ -40,7 +40,7 @@ function setup() {
 }
 
 let vis_margin = 10;
-let node_count = 10;
+let node_count = 30;
 let node_graph = new Map();
 let visualization;
 let user_interface;
@@ -78,7 +78,7 @@ function innitialize_node_graph(node_count) {
     // randomly assign connections to nodes
     for (let n = 0; n < node_count; n++) {
         let this_node = nodeGraph.get(n);
-        let connection_count = abs(floor(randomGaussian(0, 3) + 1));
+        let connection_count = abs(floor(randomGaussian(0, 4) + 1));
 
         let tries = 0;
         while (this_node.connections.length < connection_count && tries < 100) {
@@ -94,8 +94,17 @@ function innitialize_node_graph(node_count) {
     return nodeGraph;
 }
 
-// user inputs
+function delete_node_by_id(node_id) {
+    // Remove all connections to the node
+    node_graph.forEach((node, id) => {
+        node.connections = node.connections.filter(connection => connection.id !== node_id);
+    });
 
+    // Remove the node itself
+    node_graph.delete(node_id);
+}
+
+// user inputs
 function mouseDragged() {
     user_interface.is_user_dragging = true;
 }
@@ -106,15 +115,6 @@ function mouseWheel(event) {
     return false;
 }
 
-function delete_node_by_id(node_id) {
-    // Remove all connections to the node
-    node_graph.forEach((node, id) => {
-        node.connections = node.connections.filter(connection => connection.id !== node_id);
-    });
-
-    // Remove the node itself
-    node_graph.delete(node_id);
-}
 
 function keyPressed() {
     // create a new nodegraph
@@ -132,9 +132,9 @@ function keyPressed() {
         // delete the nearest node
         if (nearest_node_id !== null) {
             delete_node_by_id(nearest_node_id);
-            console.log(`Node ${nearest_node_id} deleted.`);
+            console.log("Node: " + nearest_node_id + " deleted.");
         } else {
-            console.log("Get closer to a node to delete it");
+            console.log("Get closer to a node to delete.");
         }
     }
 }
