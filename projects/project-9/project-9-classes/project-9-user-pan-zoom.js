@@ -68,6 +68,4 @@ class user_pan_zoom {
         // reset scroll delta
         this.scroll_delta = 0;
     }
-
-
 }

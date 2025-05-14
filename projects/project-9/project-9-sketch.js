@@ -41,7 +41,7 @@ function setup() {
 
 let vis_margin = 10;
 let node_count = 10;
-let node_graph;
+let node_graph = new Map();
 let visualization;
 let user_interface;
 
@@ -68,23 +68,24 @@ function draw() {
 }
 
 function innitialize_node_graph(node_count) {
-    let nodeGraph = [];
+    let nodeGraph = new Map();
 
     // populate node graph with unconnected nodes
     for (let n = 0; n < node_count; n++) {
-        nodeGraph.push(new node(n, []));
+        nodeGraph.set(n, new node(n, []));
     }
 
     // randomly assign connections to nodes
     for (let n = 0; n < node_count; n++) {
+        let this_node = nodeGraph.get(n);
         let connection_count = abs(floor(randomGaussian(0, 3) + 1));
 
         let tries = 0;
-        while (nodeGraph[n].connections.length < connection_count && tries < 100) {
-            let conneting_node = random(nodeGraph); // choose random node
-            if (!nodeGraph[n].connections_contains_id(conneting_node.id) && (nodeGraph[n].id != conneting_node.id)) {
+        while (this_node.connections.length < connection_count && tries < 100) {
+            let connecting_node_id = floor(random(node_count)); // choose random node ID
+            if (!this_node.connections_contains_id(connecting_node_id) && (this_node.id !== connecting_node_id)) {
                 // only add to connections if it doesn't already contain it and is not itself
-                nodeGraph[n].connections.push(conneting_node);
+                this_node.connections.push(nodeGraph.get(connecting_node_id));
             }
             tries++;
         }
@@ -105,6 +106,16 @@ function mouseWheel(event) {
     return false;
 }
 
+function delete_node_by_id(node_id) {
+    // Remove all connections to the node
+    node_graph.forEach((node, id) => {
+        node.connections = node.connections.filter(connection => connection.id !== node_id);
+    });
+
+    // Remove the node itself
+    node_graph.delete(node_id);
+}
+
 function keyPressed() {
     // create a new nodegraph
     if (key === ' ') {
@@ -120,19 +131,8 @@ function keyPressed() {
     if (key === "d" || key === "D") {
         // delete the nearest node
         if (nearest_node_id !== null) {
-            let nearest_node_index = 0; // set to anything really
-
-            for (let n = 0; n < node_graph.length; n++) {
-                if (node_graph[n].id == nearest_node_id) {
-                    nearest_node_index = n; // index of the nearest node to delete
-                }
-            }
-
-            node_graph.forEach(node => {
-                node.delete_connection_from_id(nearest_node_id); // delete connection from each other node
-            });
-
-            node_graph.splice(nearest_node_index, 1);
+            delete_node_by_id(nearest_node_id);
+            console.log(`Node ${nearest_node_id} deleted.`);
         } else {
             console.log("Get closer to a node to delete it");
         }
