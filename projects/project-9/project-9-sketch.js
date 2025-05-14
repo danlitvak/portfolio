@@ -39,12 +39,13 @@ function setup() {
     user_interface = new user_pan_zoom(0, 0, 1, 1);
 }
 
-let vis_margin = 10;
-let node_count = 30;
-let node_graph = new Map();
+// object declarations
 let visualization;
 let user_interface;
 
+let vis_margin = 10;
+let node_count = 30;
+let node_graph = new Map();
 let nearest_node_id;
 
 function draw() {
@@ -58,15 +59,14 @@ function draw() {
     // show the current state of the node graph
     visualization.show_node_graph();
 
-    // adjust the positions for visual pleasentness
-    if (visualization.adjust_graph_positions() < 1e-5) {
-        // console.log("done adjusting!");
-    }
+    // update graph positions
+    visualization.adjust_graph_positions();
 
+    // keep track of the nearest node to the mouse
     nearest_node_id = visualization.highlight_nearest_node(user_interface.return_mouse_bound(visualization.bound));
-    // console.log(nearest_node_id);
 }
 
+// --- NODE GRAPH FUNCTIONS ---
 function innitialize_node_graph(node_count) {
     let nodeGraph = new Map();
 
@@ -91,6 +91,14 @@ function innitialize_node_graph(node_count) {
         }
     }
 
+    // cull any nodes that are not connected to anything
+    for (let n = 0; n < node_count; n++) {
+        let this_node = nodeGraph.get(n);
+        if (this_node.connections.length === 0) {
+            delete_node_by_id(this_node.id);
+        }
+    }
+
     return nodeGraph;
 }
 
@@ -104,7 +112,7 @@ function delete_node_by_id(node_id) {
     node_graph.delete(node_id);
 }
 
-// user inputs
+// --- USER INPUTS ---
 function mouseDragged() {
     user_interface.is_user_dragging = true;
 }
@@ -114,7 +122,6 @@ function mouseWheel(event) {
     user_interface.scroll_delta = event.deltaY;
     return false;
 }
-
 
 function keyPressed() {
     // create a new nodegraph
@@ -137,4 +144,8 @@ function keyPressed() {
             console.log("Get closer to a node to delete.");
         }
     }
+}
+
+function mousePressed() {
+
 }
