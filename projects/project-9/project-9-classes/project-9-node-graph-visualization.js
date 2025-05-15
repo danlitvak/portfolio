@@ -19,8 +19,8 @@ class node_graph_visualization {
         this.p_node_positions = new Map(Array.from(this.node_positions.entries()).map(([id, pos]) => [id, { x: pos.x, y: pos.y }]));
 
         let rest_distance = 0.1; // resting distance of springs
-        let spring_constant = 0.3; // spring constant of springs
-        let node_mass = 3; // mass of nodes when calculating accelerations
+        let spring_constant = 0.15; // spring constant of springs
+        let node_mass = 5; // mass of nodes when calculating accelerations
         let dampening = 0.9; // dampening factor for velocity
 
         this.node_graph.forEach((this_node, this_id) => {
@@ -147,7 +147,7 @@ class node_graph_visualization {
         });
     }
 
-    show_node_graph() {
+    draw_node_graph(pos, zoom) {
         push();
 
         noFill();
@@ -163,6 +163,17 @@ class node_graph_visualization {
         textSize(12);
         text("Graph Stability: " + this.last_stability.toFixed(4), this.bound.x + 5, this.bound.y + 5);
         pop();
+
+        // show position and zoom of the graph
+        push();
+        fill(255);
+        noStroke();
+        textAlign(LEFT, BOTTOM);
+        textSize(12);
+        text("Graph Position: " + pos.x.toFixed(4) + ", " + pos.y.toFixed(4), this.bound.x + 5, this.bound.y + this.bound.h - 5);
+        text("Graph Zoom: " + zoom.x.toFixed(4) + ", " + zoom.y.toFixed(4), this.bound.x + 5, this.bound.y + this.bound.h - 20);
+        pop();
+
 
         // first draw connecting lines
         this.node_graph.forEach((this_node, id) => {
@@ -184,8 +195,8 @@ class node_graph_visualization {
         pop();
     }
 
-    highlight_nearest_node(target_pos) {
-        let min_valid_dist = 0.1;
+    highlight_nearest_node(target_pos, zoom) {
+        let min_valid_dist = 0.1 / ((zoom.x + zoom.y) / 2); // Minimum distance to consider a node valid
         let nearest_id = null;
         let nearest_dist = Infinity; // Corrected to start with Infinity for proper comparison
 
@@ -206,7 +217,6 @@ class node_graph_visualization {
             return null; // No valid nearest node found
         }
     }
-
 
     draw_node_from_id(id, radius) {
         let x = this.get_draw_x(this.node_positions.get(id).x);

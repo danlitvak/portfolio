@@ -37,14 +37,16 @@ function setup() {
     node_graph = innitialize_node_graph(node_count);
     visualization = new node_graph_visualization(node_graph, { x: vis_margin, y: vis_margin, w: width - (vis_margin * 2), h: height - (vis_margin * 2) });
     user_interface = new user_pan_zoom(0, 0, 1, 1);
+    solver = new hamiltonian_solver(node_graph);
 }
 
 // object declarations
 let visualization;
 let user_interface;
+let solver;
 
 let vis_margin = 10;
-let node_count = 30;
+let node_count = 10;
 let node_graph = new Map();
 let nearest_node_id;
 
@@ -57,13 +59,13 @@ function draw() {
     user_interface.return_transform();
 
     // show the current state of the node graph
-    visualization.show_node_graph();
+    visualization.draw_node_graph(user_interface.pos, user_interface.zoom);
 
     // update graph positions
     visualization.adjust_graph_positions();
 
     // keep track of the nearest node to the mouse
-    nearest_node_id = visualization.highlight_nearest_node(user_interface.return_mouse_bound(visualization.bound));
+    nearest_node_id = visualization.highlight_nearest_node(user_interface.return_mouse_bound(visualization.bound), user_interface.zoom);
 }
 
 // --- NODE GRAPH FUNCTIONS ---
@@ -88,7 +90,8 @@ function innitialize_node_graph(node_count) {
             if (!connections_contains_id(this_node.connections, connecting_node_id) && (this_node.id !== connecting_node_id)) {
                 // only add to connections if it doesn't already contain it and is not itself
                 this_node.connections.push(nodeGraph.get(connecting_node_id).id);
-                // big change, connections will contain ids not node objects
+                // also add the reverse connection
+                nodeGraph.get(connecting_node_id).connections.push(this_node.id);
             }
 
             tries++;
@@ -99,7 +102,7 @@ function innitialize_node_graph(node_count) {
     for (let n = 0; n < node_count; n++) {
         let this_node = nodeGraph.get(n);
         if (this_node.connections.length === 0) {
-            delete_node_by_id(this_node.id);
+            delete_node_by_id(nodeGraph, this_node.id);
         }
     }
 
@@ -116,14 +119,14 @@ function connections_contains_id(connections, id) {
     return connections.some(connection => connection === id);
 }
 
-function delete_node_by_id(node_id) {
+function delete_node_by_id(d_node_graph, node_id) {
     // Remove all connections to the node
-    node_graph.forEach((node, id) => {
-        node.connections = node.connections.filter(connection => connection.id !== node_id);
+    d_node_graph.forEach((node, id) => {
+        node.connections = node.connections.filter(connection => connection !== node_id);
     });
 
     // Remove the node itself
-    node_graph.delete(node_id);
+    d_node_graph.delete(node_id);
 }
 
 // --- USER INPUTS ---
@@ -152,7 +155,7 @@ function keyPressed() {
     if (key === "d" || key === "D") {
         // delete the nearest node
         if (nearest_node_id !== null) {
-            delete_node_by_id(nearest_node_id);
+            delete_node_by_id(node_graph, nearest_node_id);
             console.log("Node: " + nearest_node_id + " deleted.");
         } else {
             console.log("Get closer to a node to delete.");
@@ -161,5 +164,12 @@ function keyPressed() {
 }
 
 function mousePressed() {
+    // will be used to begin solving the hamiltonian path
+    if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return true;
 
+    if (nearest_node_id !== null) {
+        console.log("Hamiltonian path solving started at node: " + nearest_node_id);
+    } else {
+        console.log("Get closer to a node to start solving.");
+    }
 }
