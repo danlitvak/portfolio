@@ -1,34 +1,36 @@
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 
-// Toggle menu open/close
-navToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('show');
-});
-
-// Close menu when a link is clicked
-navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('show');
+if (navToggle && navLinks) {
+    // Toggle menu open/close
+    navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
     });
-});
 
-// Close menu when clicking outside of nav
-document.addEventListener('click', (e) => {
-    const isClickInsideMenu = navLinks.contains(e.target);
-    const isClickOnToggle = navToggle.contains(e.target);
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('show');
+        });
+    });
 
-    if (!isClickInsideMenu && !isClickOnToggle) {
-        navLinks.classList.remove('show');
-    }
-});
+    // Close menu when clicking outside of nav
+    document.addEventListener('click', (e) => {
+        const isClickInsideMenu = navLinks.contains(e.target);
+        const isClickOnToggle = navToggle.contains(e.target);
 
-// Remove menu state on resize to larger screens (not working ❌)
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-        navLinks.classList.remove('show');
-    }
-});
+        if (!isClickInsideMenu && !isClickOnToggle) {
+            navLinks.classList.remove('show');
+        }
+    });
+
+    // Remove menu state on resize to larger screens
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            navLinks.classList.remove('show');
+        }
+    });
+}
 
 // Fade elements on scroll
 const fadeEls = document.querySelectorAll('.fade-in-on-scroll');
