@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
         chevron.addEventListener("click", (e) => {
             e.preventDefault();
 
-            const target = document.getElementById("about");
-            const offset = 50;
+            const target = document.getElementById("projects");
+            const offset = 55;
 
             if (target) {
                 const top = target.getBoundingClientRect().top + window.scrollY - offset;
@@ -211,7 +211,7 @@ if (darkToggle) {
 window.addEventListener("DOMContentLoaded", () => {
     const swiper = new Swiper(".swiper", {
         direction: "vertical",
-        slidesPerView: 1, // Changed from "auto" to 1 to fix height issue
+        slidesPerView: 1,
         spaceBetween: 16,
         grabCursor: true,
         mousewheel: true,
@@ -219,9 +219,5 @@ window.addEventListener("DOMContentLoaded", () => {
             el: ".swiper-pagination",
             clickable: true,
         },
-        // navigation: {
-        //     nextEl: '.swiper-button-next',
-        //     prevEl: '.swiper-button-prev',
-        // },
     });
 });
