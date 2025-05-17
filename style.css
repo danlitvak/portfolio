@@ -1,55 +1,45 @@
 /* === THEME VARIABLES === */
 
 :root {
-    --bg-color: #ffffff;
-    --text-color: #000;
-    --muted-text: #555;
     --accent-color: #007acc;
-    --card-bg: #f7f7f7;
+    --bg-color: #ffffff;
     --border-color: #eaeaea;
-    --shadow-color: rgba(0, 0, 0, 0.05);
-    --hero-bg: linear-gradient(to bottom, rgba(240, 240, 240, 0.9), transparent 90%);
-    --cursor-color: #aaa;
+    --card-bg: #ebebeb;
     --chevron-color: #888;
     --chevron-hover: #444;
-    --hover-bg: #eaeaea;
-    --scrollbar-thumb: #ccc;
-    --card-bg: #fafafa;
-    --hover-bg: #ccc;
-    --accent-color: #007acc;
-    --muted-text: #999;
-    --text-muted: #666;
+    --cursor-color: #aaa;
+    --hero-bg: linear-gradient(to bottom, rgba(240, 240, 240, 0.9), transparent 90%);
+    --hover-bg: #ccc;                  
+    --letter-glow: #aaa;
+    --muted-text: #999;               
     --navbar-bg: rgba(255, 255, 255, 0.9);
-    --toggle-bg-hover: rgba(0, 0, 0, 0.05);
+    --scrollbar-thumb: #ccc;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --text-color: #000;
+    --text-muted: #666;
     --toggle-bg-active: rgba(0, 0, 0, 0.08);
-    --letter-glow: #aaa
+    --toggle-bg-hover: rgba(0, 0, 0, 0.05);
 }
 
 body.dark-mode {
+    --accent-color: #44afe4;
     --bg-color: #111;
-    --text-color: #f4f4f4;
-    --muted-text: #ccc;
-    --accent-color: #66ccff;
-    --card-bg: #1a1a1a;
     --border-color: #333;
-    --shadow-color: rgba(0, 0, 0, 0.2);
-    --hero-bg: linear-gradient(to bottom, rgba(40, 40, 40, 0.9), transparent 90%);
-    --cursor-color: #ccc;
+    --card-bg: #1e1e1e;
     --chevron-color: #aaa;
     --chevron-hover: #fff;
-    --hover-bg: #333;
-    /* or something subtle for dark hover */
-    --scrollbar-thumb: #444;
-    --card-bg: #1e1e1e;
+    --cursor-color: #ccc;
+    --hero-bg: linear-gradient(to bottom, rgba(40, 40, 40, 0.9), transparent 90%);
     --hover-bg: #555;
-    --accent-color: #66ccff;
+    --letter-glow: #ccc;
     --muted-text: #bbb;
-    --text-muted: #999;
     --navbar-bg: rgba(20, 20, 20, 0.9);
-    /* or something darker like rgba(30,30,30,0.85) */
-    --toggle-bg-hover: rgba(255, 255, 255, 0.08);
+    --scrollbar-thumb: #444;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --text-color: #f4f4f4;
+    --text-muted: #999;
     --toggle-bg-active: rgba(255, 255, 255, 0.12);
-    --letter-glow: #ccc
+    --toggle-bg-hover: rgba(255, 255, 255, 0.08);
 }
 
 
@@ -811,7 +801,6 @@ pre {
     font-family: 'Courier New', Courier, monospace; /* Monospace font for code */
     font-size: 0.8rem;
     box-shadow: 0 4px 12px var(--shadow-color);
-
     transition: background-color 0.5s ease;
 }
 
