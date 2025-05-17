@@ -207,8 +207,8 @@ if (darkToggle) {
 }
 
 
-// swiper
 window.addEventListener("DOMContentLoaded", () => {
+    // 1) vertical (your existing code)
     const swiper = new Swiper(".swiper", {
         direction: "vertical",
         slidesPerView: 1,
@@ -218,6 +218,22 @@ window.addEventListener("DOMContentLoaded", () => {
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
+        },
+    });
+
+    // ➤ NEW: horizontal Swiper
+    // 2) horizontal swiper – now with a 16px gap
+    new Swiper(".swiper-horizontal", {
+        direction: "horizontal",
+        loop: true,
+        spaceBetween: 16,   // ← here’s your horizontal gap
+        pagination: {
+            el: ".swiper-horizontal .swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-horizontal .swiper-button-next",
+            prevEl: ".swiper-horizontal .swiper-button-prev",
         },
     });
 });

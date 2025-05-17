@@ -19,6 +19,12 @@
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
         rel="stylesheet" />
+
+    <!-- Libraries -->
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 
 <body>
@@ -107,6 +113,8 @@
 
             <h2>QuadTree with Boids</h2>
             <p>Below is a snapshot of how quadtrees are used to speed up flocking simulations:</p>
+            <p>Notice how boids close together do not need to queury for boids outside their vicinity, improving
+                performance</p>
             <div class="image-section">
                 <a href="../assets/blog-assets/understanding-quadtrees-assets/boids.png" target="_blank">
                     <img src="../assets/blog-assets/understanding-quadtrees-assets/boids.png" alt="Quadtree Example"
@@ -115,9 +123,48 @@
                 <em class="image-caption">Figure 1: Visualization of a Quadtree in action with boids.</em>
             </div>
 
+            <h2>Boo! a slider section is below</h2>
+            <p>There are three slides with images: </p>
+            <ol>
+                <li>First slide: square image</li>
+                <li>Second slide: square image with a border radius</li>
+                <li>Third slide: filled image</li>
+            </ol>
+
+            <div class="swiper-horizontal">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png" alt="Quadtree Example"
+                            style="width: calc(100% - 40px); height: calc(100% - 30px); object-fit: contain; margin: 10px;">
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="image-container"
+                            style="border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                            <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png"
+                                alt="Quadtree Example"
+                                style="width: 100%; height: 80%; object-fit: cover; border-radius: 15px; margin: 20px 0;">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="image-container"
+                            style="border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                            <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png"
+                                alt="Background Example"
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; margin: 0;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- pagination + native arrows -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+
+
             <h2>Implementation Insights</h2>
-            <p>Here's a glimpse at the key parts of my quadtree
-                implementation:</p>
+            <p>Here's a glimpse at the key parts of my quadtree implementation:</p>
+
             <pre><code>class QuadTree {
     constructor(boundary, capacity) {
         this.boundary = boundary;
@@ -149,8 +196,10 @@
                 <li><strong>query(range)</strong>: Retrieves all points within a specified range.</li>
             </ol>
 
-            <p>Check out my <a href="../projects/project-1/project-1.html" class="blog-content-link">Flocking Birds</a>
-                or <a href="../projects/project-4/project-4.html" class="blog-content-link">QuadTree Demo</a> projects
+            <p>Check out my <a href=" ../projects/project-1/project-1.html" class="blog-content-link">Flocking
+                    Birds</a>
+                or <a href="../projects/project-4/project-4.html" class="blog-content-link">QuadTree Demo</a>
+                projects
                 to
                 see these concepts in action!</p>
 
