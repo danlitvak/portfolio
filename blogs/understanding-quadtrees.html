@@ -66,158 +66,339 @@
 
     <!-- Main Content -->
     <main class="page-content">
-        <article class="blog-content fade-in-on-scroll">
-            <h1>Understanding Quadtrees: A Visual Guide</h1>
-            <div class="blog-meta"><span>May 15, 2025</span> • <span>5 min read</span></div>
+        <!-- holds blog content and pfp section -->
+        <div class="blog-layout">
+            <article class="blog-content fade-in-on-scroll">
+                <h1>Understanding Quadtrees: A Visual Guide</h1>
+                <div class="blog-meta"><span>May 15, 2025</span> • <span>5 min read</span></div>
 
-            <hr>
+                <hr>
 
-            <h2>Introduction</h2>
-            <p>As someone who has implemented quadtrees in multiple
-                projects, I can tell you they're one of the most fascinating
-                and useful data structures for spatial partitioning. In this
-                post, I'll break down how quadtrees work and why they're so
-                powerful for optimizing spatial queries in 2D space.
+                <h2>Introduction</h2>
+                <p>As someone who has implemented quadtrees in multiple
+                    projects, I can tell you they're one of the most fascinating
+                    and useful data structures for spatial partitioning. In this
+                    post, I'll break down how quadtrees work and why they're so
+                    powerful for optimizing spatial queries in 2D space.
 
-                <br> <em> - Quadtrees are a cornerstone of efficient spatial partitioning in computer science.</em>
-            </p>
+                    <br> <em> - Quadtrees are a cornerstone of efficient spatial partitioning in computer science.</em>
+                </p>
 
 
-            <h2>What is a Quadtree?</h2>
-            <p>A quadtree is a tree data structure where each node has
-                exactly four children, or "quadrants." It's particularly
-                useful for dividing 2D space into smaller regions, making it
-                perfect for tasks like collision detection, spatial
-                indexing, and image compression.</p>
-            <h2>Why Use Quadtrees?</h2>
-            <p>The main advantage of quadtrees is their ability to reduce
-                the complexity of spatial operations from O(n²) to O(n log
-                n) or better. In my flocking birds simulation and gravity
-                projects, this made a huge difference in performance when
-                dealing with hundreds or thousands of objects.</p>
+                <h2>What is a Quadtree?</h2>
+                <p>A quadtree is a tree data structure where each node has
+                    exactly four children, or "quadrants." It's particularly
+                    useful for dividing 2D space into smaller regions, making it
+                    perfect for tasks like collision detection, spatial
+                    indexing, and image compression.</p>
+                <h2>Why Use Quadtrees?</h2>
+                <p>The main advantage of quadtrees is their ability to reduce
+                    the complexity of spatial operations from O(n²) to O(n log
+                    n) or better. In my flocking birds simulation and gravity
+                    projects, this made a huge difference in performance when
+                    dealing with hundreds or thousands of objects.</p>
 
-            <p style="text-align: center; margin: 2rem 0">
-                <a href="../projects/project-4/project-4.html" class="accent-link">Try the Interactive Demo →</a>
-            </p>
+                <p style="text-align: center; margin: 2rem 0">
+                    <a href="../projects/project-4/project-4.html" class="accent-link">Try the Interactive Demo →</a>
+                </p>
 
-            <h2>Real-World Applications</h2>
-            <p>I've used quadtrees in several projects on this site:</p>
-            <ul>
-                <li>Flocking Birds Simulation: For efficient neighbor
-                    searches</li>
-                <li>2D Gravity Simulation: To optimize force calculations
-                    between bodies</li>
-                <li>Collision Detection: For quick spatial queries in game
-                    development</li>
-            </ul>
+                <h2>Real-World Applications</h2>
+                <p>I've used quadtrees in several projects on this site:</p>
+                <ul>
+                    <li>Flocking Birds Simulation: For efficient neighbor
+                        searches</li>
+                    <li>2D Gravity Simulation: To optimize force calculations
+                        between bodies</li>
+                    <li>Collision Detection: For quick spatial queries in game
+                        development</li>
+                </ul>
 
-            <h2>QuadTree with Boids</h2>
-            <p>Below is a snapshot of how quadtrees are used to speed up flocking simulations:</p>
-            <p>Notice how boids close together do not need to queury for boids outside their vicinity, improving
-                performance</p>
-            <div class="image-section">
-                <a href="../assets/blog-assets/understanding-quadtrees-assets/boids.png" target="_blank">
-                    <img src="../assets/blog-assets/understanding-quadtrees-assets/boids.png" alt="Quadtree Example"
-                        style="max-width: 100%; height: auto;">
-                </a>
-                <em class="image-caption">Figure 1: Visualization of a Quadtree in action with boids.</em>
-            </div>
+                <h2>QuadTree with Boids</h2>
+                <p>Below is a snapshot of how quadtrees are used to speed up flocking simulations:</p>
+                <p>Notice how boids close together do not need to queury for boids outside their vicinity, improving
+                    performance</p>
+                <div class="image-section">
+                    <a href="../assets/blog-assets/understanding-quadtrees-assets/boids.png" target="_blank">
+                        <img src="../assets/blog-assets/understanding-quadtrees-assets/boids.png" alt="Quadtree Example"
+                            style="max-width: 100%; height: auto;">
+                    </a>
+                    <em class="image-caption">Figure 1: Visualization of a Quadtree in action with boids.</em>
+                </div>
 
-            <h2>Boo! a slider section is below</h2>
-            <p>There are three slides with images: </p>
-            <ol>
-                <li>First slide: square image</li>
-                <li>Second slide: square image with a border radius</li>
-                <li>Third slide: filled image</li>
-            </ol>
+                <h2>Boo! a slider section is below</h2>
+                <p>There are three slides with images: </p>
+                <ol>
+                    <li>First slide: square image</li>
+                    <li>Second slide: square image with a border radius</li>
+                    <li>Third slide: filled image</li>
+                </ol>
 
-            <div class="swiper-horizontal">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png" alt="Quadtree Example"
-                            style="width: calc(100% - 40px); height: calc(100% - 30px); object-fit: contain; margin: 10px;">
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="image-container"
-                            style="border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                <div class="swiper-horizontal">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
                             <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png"
                                 alt="Quadtree Example"
-                                style="width: 100%; height: 80%; object-fit: cover; border-radius: 15px; margin: 20px 0;">
+                                style="width: calc(100% - 40px); height: calc(100% - 30px); object-fit: contain; margin: 10px;">
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="image-container"
+                                style="border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png"
+                                    alt="Quadtree Example"
+                                    style="width: 100%; height: 80%; object-fit: cover; border-radius: 15px; margin: 20px 0;">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="image-container"
+                                style="border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png"
+                                    alt="Background Example"
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; margin: 0;">
+                            </div>
                         </div>
                     </div>
-                    <div class="swiper-slide">
-                        <div class="image-container"
-                            style="border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                            <img src="../assets/blog-assets/understanding-quadtrees-assets/hello.png"
-                                alt="Background Example"
-                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; margin: 0;">
-                        </div>
+
+                    <!-- pagination + native arrows -->
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+
+
+                <h2>Implementation Insights</h2>
+                <p>Here's a glimpse at the key parts of my quadtree implementation:</p>
+
+                <pre><code>class QuadTree {
+        constructor(boundary, capacity) {
+            this.boundary = boundary;
+            this.capacity = capacity;
+            this.points = [];
+            this.divided = false;
+        }
+    
+        subdivide() {
+            // Create four children...
+        }
+    
+        insert(point) {
+            // Add points and subdivide when needed...
+        }
+    
+        query(range) {
+            // Find points within a range...
+        }
+    }
+    </code></pre>
+
+                <p>Key functions in the implementation:</p>
+                <ol>
+                    <li><strong>constructor(boundary, capacity)</strong>: Initializes the quadtree with a boundary and
+                        capacity.</li>
+                    <li><strong>subdivide()</strong>: Divides the current node into four child nodes.</li>
+                    <li><strong>insert(point)</strong>: Adds a point to the quadtree and subdivides if necessary.</li>
+                    <li><strong>query(range)</strong>: Retrieves all points within a specified range.</li>
+                </ol>
+
+                <p>Check out my <a href=" ../projects/project-1/project-1.html" class="blog-content-link">Flocking
+                        Birds</a>
+                    or <a href="../projects/project-4/project-4.html" class="blog-content-link">QuadTree Demo</a>
+                    projects
+                    to
+                    see these concepts in action!</p>
+
+                <hr>
+
+                <h2>Further Reading</h2>
+
+                <p>If you're interested in learning more about quadtrees and
+                    spatial partitioning:</p>
+                <ul>
+                    <li><a href="https://en.wikipedia.org/wiki/Quadtree" class="blog-content-link">Wikipedia:
+                            Quadtree</a></li>
+                    <li><a href="https://github.com/danlitvak" class="blog-content-link">Check out my GitHub</a> for
+                        implementation examples</li>
+                </ul>
+
+
+            </article>
+
+            <aside class="blog-sidebar">
+                <div style="height: 50px"></div>
+
+
+                <!-- Author -->
+                <div class="sidebar-section author-box">
+                    <img src="../assets/author.jpg" alt="Daniel Litvak" class="author-img" />
+                    <p class="author-name">Daniel Litvak</p>
+                    <p class="author-bio"> Writing code is not just a skill, its a mindset.</p>
+                </div>
+
+                <!-- Search -->
+                <div class="sidebar-section">
+                    <input type="text" placeholder="Search..." class="sidebar-search" />
+                </div>
+
+                <!-- Newsletter -->
+                <div class="sidebar-section">
+                    <p>Subscribe to get blog updates:</p>
+                    <input type="email" placeholder="Your email" class="sidebar-input" />
+                    <button class="sidebar-button">Subscribe</button>
+                </div>
+
+                <!-- Categories -->
+                <div class="sidebar-section">
+                    <p><strong>Tags:</strong></p>
+                    <div class="tag-list">
+                        <span class="tag">#quadtrees</span>
+                        <span class="tag">#simulation</span>
+                        <span class="tag">#performance</span>
                     </div>
                 </div>
 
-                <!-- pagination + native arrows -->
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div>
+                <!-- Recent Posts -->
+                <div class="sidebar-section">
+                    <p><strong>Recent Posts:</strong></p>
+                    <ul class="sidebar-links">
+                        <li><a class="blog-content-link" href="#">Understanding Quadtrees</a></li>
+                        <li><a class="blog-content-link" href="#">Boids in Motion</a></li>
+                        <li><a class="blog-content-link" href="#">Gravity Sim Tips</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
 
 
-            <h2>Implementation Insights</h2>
-            <p>Here's a glimpse at the key parts of my quadtree implementation:</p>
+        <style>
+            .sidebar-section p {
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+                margin-top: 0.5rem;
+            }
 
-            <pre><code>class QuadTree {
-    constructor(boundary, capacity) {
-        this.boundary = boundary;
-        this.capacity = capacity;
-        this.points = [];
-        this.divided = false;
-    }
+            .blog-layout {
+                display: flex;
+                flex-direction: row;
+                gap: 2rem;
+                max-width: 1350px;
+                margin: 0 auto;
+                padding: 0 2rem;
+                box-sizing: border-box;
+                align-items: flex-start;
+            }
 
-    subdivide() {
-        // Create four children...
-    }
+            .blog-content {
+                width: 800px;
+                max-width: 100%;
+            }
 
-    insert(point) {
-        // Add points and subdivide when needed...
-    }
+            .blog-sidebar {
+                width: 250px;
+                flex-shrink: 0;
+                position: sticky;
+                top: 50px;
+                align-self: flex-start;
+            }
 
-    query(range) {
-        // Find points within a range...
-    }
-}
-</code></pre>
+            /* ✅ Responsive: stack vertically on narrow screens */
+            @media (max-width: 1300px) {
+                .blog-layout {
+                    flex-direction: column;
+                }
 
-            <p>Key functions in the implementation:</p>
-            <ol>
-                <li><strong>constructor(boundary, capacity)</strong>: Initializes the quadtree with a boundary and
-                    capacity.</li>
-                <li><strong>subdivide()</strong>: Divides the current node into four child nodes.</li>
-                <li><strong>insert(point)</strong>: Adds a point to the quadtree and subdivides if necessary.</li>
-                <li><strong>query(range)</strong>: Retrieves all points within a specified range.</li>
-            </ol>
+                .blog-content {
+                    width: 100%;
+                }
 
-            <p>Check out my <a href=" ../projects/project-1/project-1.html" class="blog-content-link">Flocking
-                    Birds</a>
-                or <a href="../projects/project-4/project-4.html" class="blog-content-link">QuadTree Demo</a>
-                projects
-                to
-                see these concepts in action!</p>
-
-            <hr>
-
-            <h2>Further Reading</h2>
-
-            <p>If you're interested in learning more about quadtrees and
-                spatial partitioning:</p>
-            <ul>
-                <li><a href="https://en.wikipedia.org/wiki/Quadtree" class="blog-content-link">Wikipedia:
-                        Quadtree</a></li>
-                <li><a href="https://github.com/danlitvak" class="blog-content-link">Check out my GitHub</a> for
-                    implementation examples</li>
-            </ul>
+                .blog-sidebar {
+                    position: static;
+                    width: 100%;
+                    margin-top: 2rem;
+                    padding-left: 0;
+                    border-left: none;
+                }
+            }
 
 
-        </article>
+            .author-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .author-img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid var(--accent-color);
+                margin-bottom: 0.5rem;
+            }
+
+            .author-name {
+                font-weight: bold;
+                margin: 0.5rem 0 0.25rem;
+                font-size: 1.1rem;
+            }
+
+            .author-bio {
+                font-size: 0.9rem;
+                text-align: left;
+                color: var(--muted-text);
+                margin-bottom: 0.5rem;
+            }
+
+            .sidebar-section {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar-search,
+            .sidebar-input {
+                padding: 0.5rem;
+                border: 1px solid var(--muted-border);
+                background: var(--card-bg);
+                color: var(--muted-text);
+                border-radius: 5px;
+                margin-bottom: 0.5rem;
+            }
+
+            .sidebar-button {
+                padding: 0.5rem;
+                margin-bottom: 0.5rem;
+                border: none;
+                background: var(--accent-color);
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .tag-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .tag {
+                background: var(--card-bg);
+                padding: 0.25rem 0.5rem;
+                border-radius: 5px;
+                font-size: 0.9rem;
+            }
+
+            .sidebar-links {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .sidebar-links li a {
+                text-decoration: none;
+                color: var(--muted-text);
+            }
+
+            /* Side bar end */
+        </style>
+
     </main>
 
 
