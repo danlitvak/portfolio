@@ -23,9 +23,9 @@
 
 body.dark-mode {
     --accent-color: #44afe4;
-    --bg-color: #111;
+    --bg-color: #0c0c0c;
     --border-color: #333;
-    --card-bg: #1e1e1e;
+    --card-bg: #1d1d1d;
     --chevron-color: #aaa;
     --chevron-hover: #fff;
     --cursor-color: #ccc;
@@ -35,7 +35,7 @@ body.dark-mode {
     --muted-text: #bbb;
     --navbar-bg: rgba(20, 20, 20, 0.9);
     --scrollbar-thumb: #444;
-    --shadow-color: rgba(0, 0, 0, 0.2);
+    --shadow-color: rgba(0, 0, 0);
     --text-color: #f4f4f4;
     --text-muted: #999;
     --toggle-bg-active: rgba(255, 255, 255, 0.12);
@@ -548,7 +548,7 @@ section {
 
 .tag:hover {
     background-color: var(--hover-bg, #eaeaea);
-    transform: scale(1.06);
+    transform: scale(1.03);
     box-shadow: 0 2px 6px var(--shadow-color);
     cursor: pointer;
 }
