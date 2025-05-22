@@ -735,8 +735,42 @@ section {
     margin-top: 1rem;
 }
 
+.extra-project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
 
 /* === PROJECT CARD === */
+
+.extra-card {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    text-decoration: none;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    box-shadow: none;
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.extra-card h3 {
+    font-size: 1rem;
+    /* margin-bottom: 0.5rem; */
+}
+
+.extra-card p {
+    color: var(--muted-text);
+    font-size: 0.8rem;
+}
+
+.extra-card:hover {
+    box-shadow: 0 4px 8px var(--shadow-color);
+    border-color: var(--hover-bg, #ccc);
+}
 
 .card {
     background-color: var(--card-bg);
