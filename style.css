@@ -94,7 +94,7 @@ body {
 .fade-in-on-scroll {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 1s ease-out, transform 0.5s ease-out;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .fade-in-on-scroll.visible {
@@ -305,6 +305,10 @@ section {
     margin: 0 auto;
     padding: 2rem 0;
     color: var(--text-color);
+}
+
+section .about p {
+    margin-bottom: 0.25rem;
 }
 
 
