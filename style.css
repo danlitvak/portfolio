@@ -664,14 +664,11 @@ section .about p {
 
 .swiper {
     height: 25vh;
-    /* full screen height */
 }
 
 .swiper-slide {
     width: 100%;
-    /* now full width */
     height: 500px;
-    /* portrait height still */
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -713,7 +710,6 @@ section .about p {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--card-bg);
     background: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     color: var(--text-color);
@@ -741,7 +737,7 @@ section .about p {
 
 .extra-project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
     gap: 0.8rem;
     margin-top: 1rem;
 }
@@ -778,7 +774,7 @@ section .about p {
 
 .card {
     background-color: var(--card-bg);
-    padding: 1.5rem;
+    padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 5px;
     text-decoration: none;
@@ -915,6 +911,8 @@ footer a:hover {
     padding-bottom: 0.5rem;
     color: var(--text-color);
 }
+
+
 
 .source-grid {
     display: grid;

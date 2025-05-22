@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
 
             const target = document.getElementById("projects");
-            const offset = 55;
+            const offset = 75;
 
             if (target) {
                 const top = target.getBoundingClientRect().top + window.scrollY - offset;
