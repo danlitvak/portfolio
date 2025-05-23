@@ -468,45 +468,54 @@ section .about p {
 
 /* === KNURLING BAR STYLES === */
 .knurling {
-    width: 100%;
-    height: 30px;
-    overflow: hidden;
-    position: relative;
-    margin-top: 8px;
-    background-image:
-        radial-gradient(circle at center,
-            rgba(255, 255, 255, 0.2) 0%,
-            rgba(255, 255, 255, 0) 80%),
-        repeating-radial-gradient(circle at center,
-            #888 0, #888 1px,
-            transparent 2px, transparent 6px);
-    background-size: 100% 100%, 10px 10px;
-    background-repeat: no-repeat, repeat;
-    background-position: center, 0 0;
+  width: 100%;
+  height: 25px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 8px;
+
+  /* dot pattern + center highlight */
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.2) 0%,
+      rgba(255,255,255,0)   80%
+    ),
+    repeating-radial-gradient(
+      circle at center,
+      #888 0, #888 1px,
+      transparent 2px, transparent 6px
+    );
+  background-size:   100% 100%, 10px 10px;
+  background-repeat: no-repeat,  repeat;
+  background-position: center,   0 0;
+
+  /* === mask out the edges === */
+  /* fully transparent at 0–10%, fully opaque 10–90%, transparent 90–100% */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black       10%,
+    black       90%,
+    transparent 100%
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+
+  /* Safari/WebKit prefix */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black       10%,
+    black       90%,
+    transparent 100%
+  );
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
 }
 
 .knurling.grabbing {
-    cursor: grabbing;
-}
-
-.knurling::before,
-.knurling::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 20%;
-    pointer-events: none;
-}
-
-.knurling::before {
-    left: 0;
-    background: linear-gradient(to right, #111, transparent);
-}
-
-.knurling::after {
-    right: 0;
-    background: linear-gradient(to left, #111, transparent);
+  cursor: grabbing;
 }
 
 
