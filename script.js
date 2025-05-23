@@ -238,3 +238,134 @@ window.addEventListener("DOMContentLoaded", () => {
         },
     });
 });
+
+// KNURLING IMAGE SCROLLER SECTION
+
+function initInfiniteCarousel({
+    sliderSelector = '#slider',
+    trackSelector = '#track',
+    knurlingSelector = '#knurling',
+    imageUrls = []
+} = {}) {
+    const slider = document.querySelector(sliderSelector);
+    const track = document.querySelector(trackSelector);
+    const knurling = document.querySelector(knurlingSelector);
+
+    // bail-out if missing elements or no images
+    if (!slider || !track || !knurling || imageUrls.length === 0) return;
+
+    // duplicate image list for infinite loop
+    const doubled = imageUrls.concat(imageUrls);
+    doubled.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.draggable = false;
+        img.addEventListener('dragstart', e => e.preventDefault());
+        track.appendChild(img);
+    });
+
+    const SLIDE_W = 300;
+    const TOTAL_W = SLIDE_W * imageUrls.length;
+    const FRICTION = 0.95;
+    const MIN_VELOCITY = 0.2;
+    const MAX_VELOCITY = 30;
+    const WHEEL_MULT = -0.1;
+
+    let offset = 0;
+    let autoSpeed = 0.7;
+    let isDragging = false;
+    let autoPaused = false;
+    let velocity = 0;
+    let dragStartX, dragOffset, prevOffset;
+    let resumeTimer = null;
+
+    function animate() {
+        if (isDragging) { /* do nothing */ }
+        else if (Math.abs(velocity) > MIN_VELOCITY) {
+            offset += velocity;
+            velocity *= FRICTION;
+        }
+        else if (!autoPaused) {
+            offset += autoSpeed;
+        }
+
+        if (offset >= TOTAL_W) offset -= TOTAL_W;
+        if (offset < 0) offset += TOTAL_W;
+
+        track.style.transform = `translateX(${-offset}px)`;
+        knurling.style.backgroundPosition = `center center, ${-offset}px 0`;
+
+        requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    function startDrag(x) {
+        isDragging = true;
+        autoPaused = true;
+        velocity = 0;
+        dragStartX = x;
+        dragOffset = offset;
+        prevOffset = offset;
+        slider.classList.add('grabbing');
+        knurling.classList.add('grabbing');
+        clearTimeout(resumeTimer);
+    }
+
+    function doDrag(x) {
+        if (!isDragging) return;
+        const dx = x - dragStartX;
+        offset = (dragOffset - dx + TOTAL_W) % TOTAL_W;
+        velocity = offset - prevOffset;
+        velocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, velocity));
+        prevOffset = offset;
+    }
+
+    function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        slider.classList.remove('grabbing');
+        knurling.classList.remove('grabbing');
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => { autoPaused = false; }, 1000);
+    }
+
+    [slider, knurling].forEach(el => {
+        el.addEventListener('mousedown', e => startDrag(e.pageX));
+        el.addEventListener('touchstart', e => startDrag(e.touches[0].pageX));
+    });
+
+    window.addEventListener('mousemove', e => doDrag(e.pageX));
+    window.addEventListener('touchmove', e => { e.preventDefault(); doDrag(e.touches[0].pageX); }, { passive: false });
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
+
+    slider.addEventListener('wheel', e => {
+        e.preventDefault();
+        autoPaused = true;
+        clearTimeout(resumeTimer);
+
+        const delta = e.deltaY * WHEEL_MULT;
+        offset = (offset + delta + TOTAL_W) % TOTAL_W;
+        velocity = delta;
+
+        track.style.transform = `translateX(${-offset}px)`;
+        knurling.style.backgroundPosition = `center center, ${-offset}px 0`;
+
+        resumeTimer = setTimeout(() => { autoPaused = false; }, 1000);
+    });
+}
+
+// Example initialization:
+initInfiniteCarousel({
+    sliderSelector: '#slider',
+    trackSelector: '#track',
+    knurlingSelector: '#knurling',
+    imageUrls: [
+        'https://picsum.photos/id/1011/300/200',
+        'https://picsum.photos/id/1012/300/200',
+        'https://picsum.photos/id/1013/300/200',
+        'https://picsum.photos/id/1014/300/200',
+        'https://picsum.photos/id/1015/300/200',
+        'https://picsum.photos/id/1016/300/200',
+    ]
+});

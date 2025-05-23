@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Infinite Carousel with Inertia & Reliable Auto-Resume</title>
+    <style>
+        /* === RESET & BASE STYLES === */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* === CAROUSEL WRAPPER === */
+        .carousel-wrapper {
+            width: 60vw;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* === SLIDER STYLES === */
+        .slider {
+            width: 60vw;
+            height: 200px;
+            overflow: hidden;
+            cursor: grab;
+            position: relative;
+        }
+
+        .slider.grabbing {
+            cursor: grabbing;
+        }
+
+        /* === TRACK & IMAGE STYLES === */
+        .track {
+            display: flex;
+            height: 100%;
+            will-change: transform;
+        }
+
+        .track img {
+            width: 300px;
+            height: 100%;
+            object-fit: cover;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        /* === KNURLING BAR STYLES === */
+        .knurling {
+            width: 100%;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 8px;
+            background-image:
+                radial-gradient(circle at center,
+                    rgba(255, 255, 255, 0.2) 0%,
+                    rgba(255, 255, 255, 0) 80%),
+                repeating-radial-gradient(circle at center,
+                    #888 0, #888 1px,
+                    transparent 2px, transparent 6px);
+            background-size: 100% 100%, 10px 10px;
+            background-repeat: no-repeat, repeat;
+            background-position: center, 0 0;
+        }
+
+        .knurling.grabbing {
+            cursor: grabbing;
+        }
+
+        .knurling::before,
+        .knurling::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 20%;
+            pointer-events: none;
+        }
+
+        .knurling::before {
+            left: 0;
+            background: linear-gradient(to right, #111, transparent);
+        }
+
+        .knurling::after {
+            right: 0;
+            background: linear-gradient(to left, #111, transparent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="carousel-wrapper">
+        <div class="slider" id="slider">
+            <div class="track" id="track"><!-- your imgs --></div>
+        </div>
+
+        <!-- move knurling here, outside of .slider -->
+        <div class="knurling" id="knurling"></div>
+    </div>
+
+    <script>
+        (function () {
+            const slider = document.getElementById('slider');
+            const track = document.getElementById('track');
+            const knurling = document.getElementById('knurling');
+
+            // your images
+            const imgs = [
+                'https://picsum.photos/id/1011/300/200',
+                'https://picsum.photos/id/1012/300/200',
+                'https://picsum.photos/id/1013/300/200',
+                'https://picsum.photos/id/1014/300/200',
+                'https://picsum.photos/id/1015/300/200',
+                'https://picsum.photos/id/1016/300/200',
+            ];
+
+            // duplicate for loop
+            const doubled = imgs.concat(imgs);
+            doubled.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.draggable = false;
+                img.addEventListener('dragstart', e => e.preventDefault());
+                track.appendChild(img);
+            });
+
+            const SLIDE_W = 300;
+            const TOTAL_W = SLIDE_W * imgs.length;
+            const FRICTION = 0.95;    // higher = smoother
+            const MIN_VELOCITY = 0.2;
+            const MAX_VELOCITY = 30;      // clamp px/frame
+            const WHEEL_MULT = -0.1;    // wheel sensitivity
+
+            let offset = 0;
+            let autoSpeed = 0.7;
+            let isDragging = false;
+            let autoPaused = false;
+            let velocity = 0;
+            let dragStartX, dragOffset, prevOffset;
+            let resumeTimer = null;
+
+            // animation loop
+            function animate() {
+                if (isDragging) {
+                    // offset set in doDrag()
+                }
+                else if (Math.abs(velocity) > MIN_VELOCITY) {
+                    offset += velocity;
+                    velocity *= FRICTION;
+                }
+                else if (!autoPaused) {
+                    offset += autoSpeed;
+                }
+
+                // wrap
+                if (offset >= TOTAL_W) offset -= TOTAL_W;
+                if (offset < 0) offset += TOTAL_W;
+
+                // apply transforms
+                track.style.transform = `translateX(${-offset}px)`;
+                knurling.style.backgroundPosition = `${-offset}px 0`;
+                knurling.style.backgroundPosition = `center center, ${-offset}px 0`;
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            // shared pointer handlers
+            function startDrag(x) {
+                isDragging = true;
+                autoPaused = true;
+                velocity = 0;
+                dragStartX = x;
+                dragOffset = offset;
+                prevOffset = offset;
+                slider.classList.add('grabbing');
+                knurling.classList.add('grabbing');
+                clearTimeout(resumeTimer);
+            }
+
+            function doDrag(x) {
+                if (!isDragging) return;
+                const dx = x - dragStartX;
+                offset = (dragOffset - dx + TOTAL_W) % TOTAL_W;
+
+                // compute & clamp velocity
+                velocity = offset - prevOffset;
+                velocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, velocity));
+                prevOffset = offset;
+            }
+
+            function endDrag() {
+                if (!isDragging) return;
+                isDragging = false;
+                slider.classList.remove('grabbing');
+                knurling.classList.remove('grabbing');
+                clearTimeout(resumeTimer);
+                resumeTimer = setTimeout(() => { autoPaused = false; }, 1000);
+            }
+
+            // wire slider + knurling for pointer-down
+            [slider, knurling].forEach(el => {
+                el.addEventListener('mousedown', e => startDrag(e.pageX));
+                el.addEventListener('touchstart', e => startDrag(e.touches[0].pageX));
+            });
+
+            // global move/end
+            window.addEventListener('mousemove', e => doDrag(e.pageX));
+            window.addEventListener('touchmove', e => { e.preventDefault(); doDrag(e.touches[0].pageX); }, { passive: false });
+            window.addEventListener('mouseup', endDrag);
+            window.addEventListener('touchend', endDrag);
+
+            // wheel control
+            slider.addEventListener('wheel', e => {
+                e.preventDefault();
+                autoPaused = true;
+                clearTimeout(resumeTimer);
+
+                const delta = e.deltaY * WHEEL_MULT;
+                offset = (offset + delta + TOTAL_W) % TOTAL_W;
+                velocity = delta;
+
+                // immediate update
+                track.style.transform = `translateX(${-offset}px)`;
+                knurling.style.backgroundPosition = `${-offset}px 0`;
+
+                resumeTimer = setTimeout(() => { autoPaused = false; }, 1000);
+            });
+        })();
+    </script>
+
+</body>
+
+</html>
