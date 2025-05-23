@@ -239,8 +239,10 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// KNURLING IMAGE SCROLLER SECTION
 
+
+
+// KNURLING IMAGE SCROLLER INIT
 function initInfiniteCarousel({
     sliderSelector = '#slider',
     trackSelector = '#track',
@@ -251,12 +253,11 @@ function initInfiniteCarousel({
     const track = document.querySelector(trackSelector);
     const knurling = document.querySelector(knurlingSelector);
 
-    // bail-out if missing elements or no images
+    // Bail if missing required elements or no images provided
     if (!slider || !track || !knurling || imageUrls.length === 0) return;
 
-    // duplicate image list for infinite loop
-    const doubled = imageUrls.concat(imageUrls);
-    doubled.forEach(src => {
+    // Populate track with images (duplicated for infinite loop)
+    [...imageUrls, ...imageUrls].forEach(src => {
         const img = document.createElement('img');
         img.src = src;
         img.draggable = false;
@@ -264,6 +265,7 @@ function initInfiniteCarousel({
         track.appendChild(img);
     });
 
+    // Constants
     const SLIDE_W = 300;
     const TOTAL_W = SLIDE_W * imageUrls.length;
     const FRICTION = 0.95;
@@ -271,6 +273,7 @@ function initInfiniteCarousel({
     const MAX_VELOCITY = 30;
     const WHEEL_MULT = -0.1;
 
+    // State
     let offset = 0;
     let autoSpeed = 0.7;
     let isDragging = false;
@@ -279,8 +282,9 @@ function initInfiniteCarousel({
     let dragStartX, dragOffset, prevOffset;
     let resumeTimer = null;
 
+    // Core animation loop
     function animate() {
-        if (isDragging) { /* do nothing */ }
+        if (isDragging) { /* manual control */ }
         else if (Math.abs(velocity) > MIN_VELOCITY) {
             offset += velocity;
             velocity *= FRICTION;
@@ -289,9 +293,11 @@ function initInfiniteCarousel({
             offset += autoSpeed;
         }
 
+        // wrap offset
         if (offset >= TOTAL_W) offset -= TOTAL_W;
         if (offset < 0) offset += TOTAL_W;
 
+        // apply transforms
         track.style.transform = `translateX(${-offset}px)`;
         knurling.style.backgroundPosition = `center center, ${-offset}px 0`;
 
@@ -299,6 +305,7 @@ function initInfiniteCarousel({
     }
     requestAnimationFrame(animate);
 
+    // Pointer event handlers
     function startDrag(x) {
         isDragging = true;
         autoPaused = true;
@@ -315,6 +322,8 @@ function initInfiniteCarousel({
         if (!isDragging) return;
         const dx = x - dragStartX;
         offset = (dragOffset - dx + TOTAL_W) % TOTAL_W;
+
+        // compute & clamp velocity
         velocity = offset - prevOffset;
         velocity = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, velocity));
         prevOffset = offset;
@@ -329,16 +338,24 @@ function initInfiniteCarousel({
         resumeTimer = setTimeout(() => { autoPaused = false; }, 1000);
     }
 
+    // Wire up mouse and touch start
     [slider, knurling].forEach(el => {
         el.addEventListener('mousedown', e => startDrag(e.pageX));
         el.addEventListener('touchstart', e => startDrag(e.touches[0].pageX));
+        // Element-level touchmove: only prevent default when dragging
+        el.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            e.preventDefault();
+            doDrag(e.touches[0].pageX);
+        }, { passive: false });
     });
 
+    // Global move/end
     window.addEventListener('mousemove', e => doDrag(e.pageX));
-    window.addEventListener('touchmove', e => { e.preventDefault(); doDrag(e.touches[0].pageX); }, { passive: false });
     window.addEventListener('mouseup', endDrag);
     window.addEventListener('touchend', endDrag);
 
+    // Wheel control on slider
     slider.addEventListener('wheel', e => {
         e.preventDefault();
         autoPaused = true;
@@ -355,7 +372,7 @@ function initInfiniteCarousel({
     });
 }
 
-// Example initialization:
+// Initialize it from your main JS
 initInfiniteCarousel({
     sliderSelector: '#slider',
     trackSelector: '#track',
