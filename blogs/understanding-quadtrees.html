@@ -70,7 +70,9 @@
         <div class="blog-layout">
             <article class="blog-content fade-in-on-scroll">
                 <h1>Understanding Quadtrees: A Visual Guide</h1>
-                <div class="blog-meta"><span>May 15, 2025</span> • <span>5 min read</span></div>
+                <div class="blog-meta">
+                    <span>May 15, 2025</span> • <span id="understanding-quadtrees"></span> • <span>5 min read</span>
+                </div>
 
                 <hr>
 
@@ -420,6 +422,27 @@
 
     <!-- script -->
     <script src="../script.js"></script>
+
+    <!-- word count script -->
+    <script>
+        fetch('../data/blog-word-count.json')
+            .then(response => response.json())
+            .then(data => {
+                for (const key in data) {
+                    const el = document.getElementById(key);
+                    if (el) {
+                        const wordCount = data[key];
+                        el.textContent = wordCount + " words";
+                    } else {
+                        console.warn(`Element with ID ${key} not found.`);
+                        el.textContent = "No Data";
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Failed to load or apply word counts:', error);
+            });
+    </script>
 </body>
 
 </html>

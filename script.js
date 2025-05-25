@@ -299,7 +299,7 @@ function initInfiniteCarousel({
 
         // apply transforms
         track.style.transform = `translateX(${-offset}px)`;
-        knurling.style.backgroundPosition = `center center, ${-offset}px 0`;
+        knurling.style.backgroundPosition = `${-offset}px 0`;
 
         requestAnimationFrame(animate);
     }
@@ -366,7 +366,7 @@ function initInfiniteCarousel({
         velocity = delta;
 
         track.style.transform = `translateX(${-offset}px)`;
-        knurling.style.backgroundPosition = `center center, ${-offset}px 0`;
+        knurling.style.backgroundPosition = `${-offset}px 0`;
 
         resumeTimer = setTimeout(() => { autoPaused = false; }, 1000);
     });
