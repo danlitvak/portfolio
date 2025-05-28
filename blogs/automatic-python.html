@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Daniel Litvak] - Understanding Quadtrees</title>
+    <link rel="stylesheet" href="../style.css" />
+
+    <!-- meta -->
+    <meta name="description" content="A deep dive into quadtree data structures and their practical applications" />
+    <meta name="author" content="Daniel Litvak" />
+    <meta name="date" content="2025-05-15" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Libraries -->
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar fade-in-on-scroll">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <a href="../index.html">[Daniel Litvak]</a>
+            </div>
+            <div class="nav-right">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="../index.html#contact">Contact</a></li>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../blog.html">Blog</a></li>
+                </ul>
+
+                <!-- dark mode / light mode toggle button -->
+                <div class="nav-actions">
+                    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+                    <button id="darkModeToggle" aria-label="Toggle dark mode">
+                        <svg id="darkModeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                            height="24">
+                            <!-- Default dark mode icon -->
+                            <path class="dark-mode-path"
+                                d="M12.009,24A12.067,12.067,0,0,1,.075,10.725,12.121,12.121,0,0,1,10.1.152a13,13,0,0,1,5.03.206,2.5,2.5,0,0,1,1.8,1.8,2.47,2.47,0,0,1-.7,2.425c-4.559,4.168-4.165,10.645.807,14.412h0a2.5,2.5,0,0,1-.7,4.319A13.875,13.875,0,0,1,12.009,24Zm.074-22a10.776,10.776,0,0,0-1.675.127,10.1,10.1,0,0,0-8.344,8.8A9.928,9.928,0,0,0,4.581,18.7a10.473,10.473,0,0,0,11.093,2.734.5.5,0,0,0,.138-.856h0C9.883,16.1,9.417,8.087,14.865,3.124a.459.459,0,0,0,.127-.465.491.491,0,0,0-.356-.362A10.68,10.68,0,0,0,12.083,2ZM20.5,12a1,1,0,0,1-.97-.757l-.358-1.43L17.74,9.428a1,1,0,0,1,.035-1.94l1.4-.325.351-1.406a1,1,0,0,1,1.94,0l.355,1.418,1.418.355a1,1,0,0,1,0,1.94l-1.418.355-.355,1.418A1,1,0,0,1,20.5,12ZM16,14a1,1,0,0,0,2,0A1,1,0,0,0,16,14Zm6,4a1,1,0,0,0,2,0A1,1,0,0,0,22,18Z"
+                                fill="currentColor" stroke="none"></path>
+                            <!-- Light mode icon -->
+                            <path class="light-mode-path"
+                                d="M23,11H18.92a6.924,6.924,0,0,0-.429-1.607l3.527-2.044a1,1,0,1,0-1-1.731l-3.53,2.047a7.062,7.062,0,0,0-1.149-1.15l2.046-3.531a1,1,0,0,0-1.731-1L14.607,5.509A6.9,6.9,0,0,0,13,5.08V1a1,1,0,0,0-2,0V5.08a6.9,6.9,0,0,0-1.607.429L7.349,1.982a1,1,0,0,0-1.731,1L7.664,6.515a7.062,7.062,0,0,0-1.149,1.15L2.985,5.618a1,1,0,1,0-1,1.731L5.509,9.393A6.924,6.924,0,0,0,5.08,11H1a1,1,0,0,0,0,2H5.08a6.924,6.924,0,0,0,.429,1.607L1.982,16.651a1,1,0,1,0,1,1.731l3.53-2.047a7.062,7.062,0,0,0,1.149,1.15L5.618,21.016a1,1,0,0,0,1.731,1l2.044-3.527A6.947,6.947,0,0,0,11,18.92V23a1,1,0,0,0,2,0V18.92a6.947,6.947,0,0,0,1.607-.429l2.044,3.527a1,1,0,0,0,1.731-1l-2.046-3.531a7.062,7.062,0,0,0,1.149-1.15l3.53,2.047a1,1,0,1,0,1-1.731l-3.527-2.044A6.924,6.924,0,0,0,18.92,13H23A1,1,0,0,0,23,11Z"
+                                fill="currentColor" stroke="none" style="display: none"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div style="height: 50px"></div>
+
+    <!-- Main Content -->
+    <main class="page-content">
+        <!-- holds blog content and pfp section -->
+        <div class="blog-layout">
+            <article class="blog-content fade-in-on-scroll visible">
+                <h1>Automating Word Count Display on a Static Blog with Python + Git Hooks</h1>
+                <div class="blog-meta">
+                    <span>May 15, 2025</span> • <span id="automatic-python"></span> • <span>5 min read</span>
+                </div>
+                <hr>
+
+                <h2>Why I Wanted This</h2>
+                <p>While working on my personal blog hosted on GitHub Pages, I had a simple idea: what if each post
+                    could show its word count automatically? I didn’t want to do this manually or hard-code anything —
+                    it felt like something a script should handle. And more importantly, I wanted it to update
+                    automatically every time I made a commit.</p>
+                <p>This turned out to be a fun mini-project that taught me more about Git hooks, Python scripting,
+                    encoding quirks, and working around GitHub Pages’ static limitations.</p>
+
+                <h2>The Setup I Ended Up With</h2>
+                <pre style="max-height: 300px;"><code>portfolio/
+├── blogs/                        # My HTML blog posts
+│   ├── post1.html
+│   └── post2.html
+├── data/
+│   └── blog-word-count.json      # Auto-generated word count file
+├── scripts/
+│   └── pre-commit.ps1            # PowerShell script to update the word count
+├── generate_word_counts.py       # Python script to scan all blog files
+└── .git/
+    └── hooks/
+        └── pre-commit            # Git hook that triggers pre-commit.ps1</code></pre>
+
+                <h2>Writing the Python Word Counter</h2>
+                <p>The heart of the setup was a Python script that loops through all HTML files in my
+                    <code>blogs/</code> folder, extracts the visible text using BeautifulSoup, counts the words, and
+                    writes the result to a JSON file. I made sure it was flexible enough to work for any file name.
+                </p>
+                <p>I ran into a surprising bug early on: I had added emoji icons like 📘 to the terminal output to make
+                    the logs cuter. Turns out Windows’ default terminal encoding (cp1252) couldn’t handle those — which
+                    completely broke the script in Git pre-commit context. That was my first lesson: keep hooks
+                    ASCII-safe.</p>
+                <p>Once that was fixed, the script worked flawlessly.</p>
+
+                <h2>Automating with PowerShell + Git Hook</h2>
+                <p>Next, I wanted to automate running the script before every commit. I initially tried putting the
+                    script directly in <code>.git/hooks/</code>, but realized that Git ignores anything inside
+                    <code>.git/</code> when cloning or sharing repos. So I moved the logic to a tracked
+                    <code>scripts/pre-commit.ps1</code> file and added a simple shell shim in
+                    <code>.git/hooks/pre-commit</code> to call it:
+                </p>
+
+                <pre style="max-height: 300px;"><code>#!/bin/sh
+powershell -ExecutionPolicy Bypass -File "scripts/pre-commit.ps1"</code></pre>
+
+                <p>The PowerShell script looks like this:</p>
+
+                <pre style="max-height: 300px;"><code>Write-Host "Running generate_word_counts.py..."
+
+$process = Start-Process -FilePath "python" -ArgumentList "generate_word_counts.py" -NoNewWindow -Wait -PassThru
+
+if ($process.ExitCode -ne 0) {
+    Write-Host "Python script failed. Aborting commit."
+    exit 1
+}
+
+git add data/blog-word-count.json
+
+Write-Host "Word count JSON updated and staged."</code></pre>
+
+                <p>Once this was hooked up correctly, committing felt magical — Git ran my script, updated the JSON, and
+                    staged it for me.</p>
+
+                <h2>Displaying the Word Count on My Site</h2>
+                <p>To actually use the data, I added this simple JS snippet to my HTML pages:</p>
+
+                <pre style="max-height: 300px;"><code>&lt;p&gt;This post has &lt;span id="post1"&gt;...&lt;/span&gt; words.&lt;/p&gt;
+
+&lt;script&gt;
+fetch('data/blog-word-count.json')
+  .then(res =&gt; res.json())
+  .then(data =&gt; {
+    for (const key in data) {
+      const el = document.getElementById(key);
+      if (el) {
+        el.textContent = data[key] + " words";
+      }
+    }
+  });
+&lt;/script&gt;</code></pre>
+
+                <p>Now each post updates its word count dynamically when deployed.</p>
+
+                <h2>A Few Gotchas Along the Way</h2>
+                <ol>
+                    <li><strong>Unicode Crashes in Terminal Output:</strong> Using emojis in Python <code>print()</code>
+                        statements caused <code>UnicodeEncodeError</code>. The fix was replacing them with ASCII-safe
+                        tags.</li>
+                    <li><strong>Git Couldn't Find My Script:</strong> Initially used a relative path that assumed the
+                        hook was executing from a different location. Fixed by referencing
+                        <code>scripts/pre-commit.ps1</code> directly.
+                    </li>
+                </ol>
+
+                <h2>What I Learned</h2>
+                <ul>
+                    <li>Git hooks are powerful, but picky about paths and encoding</li>
+                    <li>Don’t use emojis in anything that runs through Git hooks on Windows</li>
+                    <li>You can still build dynamic features on static sites — if you pre-process the data</li>
+                    <li>It's way more satisfying to automate something small and have it just work every time</li>
+                </ul>
+
+                <h2>Further Reading</h2>
+                <p>If you're interested in learning more about quadtrees and spatial partitioning:</p>
+                <ul>
+                    <li><a href="https://en.wikipedia.org/wiki/Quadtree" class="blog-content-link">Wikipedia:
+                            Quadtree</a></li>
+                    <li><a href="https://github.com/danlitvak" class="blog-content-link">Check out my GitHub</a> for
+                        implementation examples</li>
+                </ul>
+            </article>
+
+
+            <aside class="blog-sidebar">
+                <div style="height: 50px"></div>
+
+
+                <!-- Author -->
+                <div class="sidebar-section author-box">
+                    <img src="../assets/author.jpg" alt="Daniel Litvak" class="author-img" />
+                    <p class="author-name">Daniel Litvak</p>
+                    <p class="author-bio"> Writing code is not just a skill, its a mindset.</p>
+                </div>
+
+                <!-- Search -->
+                <div class="sidebar-section">
+                    <input type="text" placeholder="Search..." class="sidebar-search" />
+                    <button class="sidebar-button">Search</button>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="sidebar-section">
+                    <p>Subscribe to get blog updates:</p>
+                    <input type="email" placeholder="Your email" class="sidebar-input" />
+                    <button class="sidebar-button">Subscribe</button>
+                </div>
+
+                <!-- Categories -->
+                <div class="sidebar-section">
+                    <p><strong>Tags:</strong></p>
+                    <div class="tag-list">
+                        <span class="tag">#quadtrees</span>
+                        <span class="tag">#simulation</span>
+                        <span class="tag">#performance</span>
+                    </div>
+                </div>
+
+                <!-- Recent Posts -->
+                <div class="sidebar-section">
+                    <p><strong>Recent Posts:</strong></p>
+                    <ul class="sidebar-links">
+                        <li><a class="blog-content-link" href="#">Understanding Quadtrees</a></li>
+                        <li><a class="blog-content-link" href="#">Boids in Motion</a></li>
+                        <li><a class="blog-content-link" href="#">Gravity Sim Tips</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+
+        <style>
+            .sidebar-section p {
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+                margin-top: 0.5rem;
+            }
+
+            .blog-layout {
+                display: flex;
+                flex-direction: row;
+                gap: 2rem;
+                max-width: 1350px;
+                margin: 0 auto;
+                padding: 0 2rem;
+                box-sizing: border-box;
+                align-items: flex-start;
+            }
+
+            .blog-content {
+                width: 800px;
+                max-width: 100%;
+            }
+
+            .blog-sidebar {
+                width: 250px;
+                flex-shrink: 0;
+                position: sticky;
+                top: 50px;
+                align-self: flex-start;
+            }
+
+            /* ✅ Responsive: stack vertically on narrow screens */
+            @media (max-width: 1300px) {
+                .blog-layout {
+                    flex-direction: column;
+                }
+
+                .blog-content {
+                    width: 100%;
+                }
+
+                .blog-sidebar {
+                    position: static;
+                    width: 100%;
+                    margin-top: 2rem;
+                    padding-left: 0;
+                    border-left: none;
+                }
+            }
+
+
+            .author-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .author-img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 3px solid var(--accent-color);
+                margin-bottom: 0.5rem;
+            }
+
+            .author-name {
+                font-weight: bold;
+                margin: 0.5rem 0 0.25rem;
+                font-size: 1.1rem;
+            }
+
+            .author-bio {
+                font-size: 0.9rem;
+                text-align: left;
+                color: var(--muted-text);
+                margin-bottom: 0.5rem;
+            }
+
+            .sidebar-section {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar-search,
+            .sidebar-input {
+                padding: 0.5rem;
+                border: 1px solid var(--muted-border);
+                background: var(--card-bg);
+                color: var(--muted-text);
+                border-radius: 5px;
+                margin-bottom: 0.5rem;
+            }
+
+            .sidebar-button {
+                padding: 0.5rem;
+                margin-bottom: 0.5rem;
+                border: none;
+                background: var(--accent-color);
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .tag-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .tag {
+                background: var(--card-bg);
+                padding: 0.25rem 0.5rem;
+                border-radius: 5px;
+                font-size: 0.9rem;
+            }
+
+            .sidebar-links {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .sidebar-links li a {
+                text-decoration: none;
+                color: var(--muted-text);
+            }
+
+            /* Side bar end */
+        </style>
+
+    </main>
+
+
+    <div style="height: 50px"></div>
+
+    <!-- Footer -->
+    <footer class="fade-in-on-scroll">
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>[Daniel Litvak] - 2025</p>
+                <p>Hosted with GitHub Pages</p>
+                <p>© Powered by AI</p>
+            </div>
+            <div class="footer-links">
+                <p><a href="../sources.html">Sources</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- script -->
+    <script src="../script.js"></script>
+
+    <!-- word count script -->
+    <script>
+        fetch('../data/blog-word-count.json')
+            .then(response => response.json())
+            .then(data => {
+                for (const key in data) {
+                    const el = document.getElementById(key);
+                    if (el) {
+                        const wordCount = data[key];
+                        el.textContent = wordCount + " words";
+                    } else {
+                        console.warn(`Element with ID ${key} not found.`);
+                        el.textContent = "No Data";
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Failed to load or apply word counts:', error);
+            });
+    </script>
+</body>
+
+</html>

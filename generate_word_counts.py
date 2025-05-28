@@ -1,3 +1,6 @@
+# NOTE: if this file name / path changes, to update it in the .git/hooks/pre-commit file go to 
+#       Files: Exclude in vscode settings to show the .git folder
+
 import os
 from bs4 import BeautifulSoup
 import json
