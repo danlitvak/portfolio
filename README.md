@@ -12,4 +12,4 @@ Website Related:
 6) update p5 project template to new icon ✅
 7) move blog in-html styling outside to main style.css ❌
     - wonder if having muiltiple style files is a better way of going about things ❔
-8) go band for bang with a word count ❌
+8) go band for bang with a word count ✅
