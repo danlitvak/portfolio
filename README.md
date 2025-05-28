@@ -13,3 +13,4 @@ Website Related:
 7) move blog in-html styling outside to main style.css ❌
     - wonder if having muiltiple style files is a better way of going about things ❔
 8) go band for bang with a word count ✅
+9) add pfp to main website ❌
