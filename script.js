@@ -124,7 +124,34 @@ document.addEventListener("DOMContentLoaded", () => {
 const display = document.getElementById("trailing-words");
 if (display) {
 
-    const phrases = ["...", "hmm", "hmm ...", "???", "uhh", "uhh ...", " / / / ", "maybe ...", "why not?"];
+    const phrases = [
+        "...",
+        "hmm",
+        "hmm ...",
+        "???",
+        "uhh",
+        "uhh ...",
+        " / / / ",
+        "maybe ...",
+        "why not?",
+        "working",
+        "thinking",
+        "imagining",
+        "coding",
+        "exploring",
+        "designing",
+        "creating",
+        "debugging",
+        "optimizing",
+        "experimenting",
+        "iterating",
+        ";-)",
+        ":-)",
+        "(⌐■_■)",
+        "(¬_¬ )",
+        "＼（〇_ｏ）／"
+    ];
+
     let currentPhrase = "";
     let currentChar = 0;
     let isDeleting = false;
