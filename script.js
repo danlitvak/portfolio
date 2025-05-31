@@ -257,12 +257,17 @@ function initInfiniteCarousel({
     if (!slider || !track || !knurling || imageUrls.length === 0) return;
 
     // Populate track with images (duplicated for infinite loop)
-    [...imageUrls, ...imageUrls].forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.draggable = false;
-        img.addEventListener('dragstart', e => e.preventDefault());
-        track.appendChild(img);
+    [...imageUrls, ...imageUrls].forEach((src, index) => {
+        const container = document.createElement('div');
+        container.className = 'carrousel-image-container';
+        container.style.backgroundImage = `url(${src})`;
+
+        const caption = document.createElement('div');
+        caption.className = 'carrousel-caption';
+        caption.textContent = `Figure ${index % imageUrls.length + 1}`;
+
+        container.appendChild(caption);
+        track.appendChild(container);
     });
 
     // Constants

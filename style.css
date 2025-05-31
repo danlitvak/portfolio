@@ -467,6 +467,27 @@ section .about p {
     -webkit-user-drag: none;
 }
 
+.carrousel-image-container {
+    position: relative;
+    width: 300px;       /* Adjust as needed */
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.carrousel-caption {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 2px 4px;
+    font-size: small;
+    border-radius: 4px;
+}
+
 /* === KNURLING BAR STYLES (2px Cross‐Hatch) === */
 .knurling {
   width: 100%;
