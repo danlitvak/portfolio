@@ -383,11 +383,15 @@ initInfiniteCarousel({
     trackSelector: '#track',
     knurlingSelector: '#knurling',
     imageUrls: [
-        'https://picsum.photos/id/1011/300/200',
-        'https://picsum.photos/id/1012/300/200',
-        'https://picsum.photos/id/1013/300/200',
-        'https://picsum.photos/id/1014/300/200',
-        'https://picsum.photos/id/1015/300/200',
-        'https://picsum.photos/id/1016/300/200',
+        'assets/cool-images/flocking-boids.png',
+        'assets/cool-images/sinusoidal-function.png',
+        'assets/cool-images/conways-game.png',
+        'assets/cool-images/mandelbrot-set.png',
+        'assets/cool-images/curve-fitter.png',
+        'assets/cool-images/machine-pong.png',
+        'assets/cool-images/training-pong.png',
+        'assets/cool-images/quadtree-hi.png',
+        'assets/cool-images/hamiltonian-solver.png',
+        'assets/cool-images/gravity-simulation.png',
     ]
 });

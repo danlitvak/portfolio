@@ -486,6 +486,9 @@ section .about p {
     padding: 2px 4px;
     font-size: small;
     border-radius: 4px;
+    user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none;     /* IE10+ */
 }
 
 /* === KNURLING BAR STYLES (2px Cross‐Hatch) === */
