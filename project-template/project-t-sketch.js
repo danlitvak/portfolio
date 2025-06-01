@@ -9,9 +9,11 @@ let currentBackground = 0;
 function windowResized() {
     container = document.getElementById('canvas-container');
     canvasWidth = container.getBoundingClientRect().width;
-    canvasHeight = canvasWidth; // square canvas
+    canvasHeight = canvasWidth * 0.5; // square canvas
     resizeCanvas(canvasWidth, canvasHeight);
 }
+
+let test_class_loaded = false;
 
 function setup() {
     // start up
@@ -20,6 +22,7 @@ function setup() {
     canvas.parent(container);
     windowResized();
     // integration ends here
+    load_test_class();
 }
 
 function draw_background() {
@@ -32,6 +35,18 @@ function draw_background() {
     }
 
     background(currentBackground);
+
+    textAlign(CENTER, CENTER);
+    textSize(32);
+    fill(255 - currentBackground); // Adjust text color based on background
+    noStroke();
+    text("Teplate Project", width / 2, height / 2);
+    textSize(16);
+    if (test_class_loaded) {
+        text("Test class loaded", width / 2, height / 2 + 40);
+    } else {
+        text("Test class not loaded", width / 2, height / 2 + 40);
+    }
 }
 
 function draw() {
