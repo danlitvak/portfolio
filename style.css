@@ -152,6 +152,16 @@ body {
     color: var(--text-color);
 }
 
+a {
+    text-decoration: none;
+    color: var(--text-muted, #666);
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--text-color);
+}
+
 .nav-right {
     display: flex;
     align-items: center;
