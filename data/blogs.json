@@ -1,0 +1,114 @@
+{
+  "posts": [
+    {
+      "id": "understanding-quadtrees",
+      "slug": "understanding-quadtrees",
+      "title": "Understanding Quadtrees: A Visual Guide",
+      "subtitle": "A deep dive into quadtree data structures and their practical applications in game development and simulations.",
+      "author": "Daniel Litvak",
+      "published_at": "2025-05-15",
+      "updated_at": null,
+      "reading_time": "5 min read",
+      "word_count": 480,
+      "tags": [
+        "quadtrees",
+        "simulation",
+        "performance"
+      ],
+      "summary": "Explains how quadtrees optimize spatial partitioning for projects like flocking simulations and gravity calculations, with links to interactive demos and related projects.",
+      "content_html": "<h1>Understanding Quadtrees: A Visual Guide</h1>\n<div class=\"blog-meta\">\n    <span>May 15, 2025</span> • <span id=\"understanding-quadtrees\"></span> • <span>5 min read</span>\n</div>\n<hr>\n<h2>Introduction</h2>\n<p>As someone who has implemented quadtrees in multiple projects, I can tell you they're one of the most fascinating and useful data structures for spatial partitioning. In this post, I'll break down how quadtrees work and why they're so powerful for optimizing spatial queries in 2D space.<br><em>- Quadtrees are a cornerstone of efficient spatial partitioning in computer science.</em></p>\n<h2>What is a Quadtree?</h2>\n<p>A quadtree is a tree data structure where each node has exactly four children, or \"quadrants.\" It's particularly useful for dividing 2D space into smaller regions, making it perfect for tasks like collision detection, spatial indexing, and image compression.</p>\n<h2>Why Use Quadtrees?</h2>\n<p>The main advantage of quadtrees is their ability to reduce the complexity of spatial operations from O(n²) to O(n log n) or better. In my flocking birds simulation and gravity projects, this made a huge difference in performance when dealing with hundreds or thousands of objects.</p>\n<p style=\"text-align: center; margin: 2rem 0\"><a href=\"../projects/project-4/project-4.html\" class=\"accent-link\">Try the Interactive Demo →</a></p>\n<h2>Real-World Applications</h2>\n<p>I've used quadtrees in several projects on this site:</p>\n<ul>\n    <li>Flocking Birds Simulation: For efficient neighbor searches</li>\n    <li>2D Gravity Simulation: To optimize force calculations between bodies</li>\n    <li>Collision Detection: For quick spatial queries in game development</li>\n</ul>\n<h2>QuadTree with Boids</h2>\n<p>Below is a snapshot of how quadtrees are used to speed up flocking simulations:</p>\n<p>Notice how boids close together do not need to query for boids outside their vicinity, improving performance</p>\n<div class=\"image-section\">\n    <a href=\"../assets/blog-assets/understanding-quadtrees-assets/boids.png\" target=\"_blank\">\n        <img src=\"../assets/blog-assets/understanding-quadtrees-assets/boids.png\" alt=\"Quadtree Example\" style=\"max-width: 100%; height: auto;\">\n    </a>\n    <em class=\"image-caption\">Figure 1: Visualization of a Quadtree in action with boids.</em>\n</div>\n<h2>Boo! a slider section is below</h2>\n<p>There are three slides with images: </p>\n<ol>\n    <li>First slide: square image</li>\n    <li>Second slide: square image with a border radius</li>\n    <li>Third slide: filled image</li>\n</ol>\n<div class=\"swiper-horizontal\">\n    <div class=\"swiper-wrapper\">\n        <div class=\"swiper-slide\">\n            <img src=\"../assets/blog-assets/understanding-quadtrees-assets/hello.png\" alt=\"Quadtree Example\" style=\"width: calc(100% - 40px); height: calc(100% - 30px); object-fit: contain; margin: 10px;\">\n        </div>\n        <div class=\"swiper-slide\">\n            <div class=\"image-container\" style=\"border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;\">\n                <img src=\"../assets/blog-assets/understanding-quadtrees-assets/hello.png\" alt=\"Quadtree Example\" style=\"width: 100%; height: 80%; object-fit: cover; border-radius: 15px; margin: 20px 0;\">\n            </div>\n        </div>\n        <div class=\"swiper-slide\">\n            <div class=\"image-container\" style=\"border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center;\">\n                <img src=\"../assets/blog-assets/understanding-quadtrees-assets/hello.png\" alt=\"Background Example\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; margin: 0;\">\n            </div>\n        </div>\n    </div>\n    <div class=\"swiper-pagination\"></div>\n    <div class=\"swiper-button-prev\"></div>\n    <div class=\"swiper-button-next\"></div>\n</div>\n<h2>Implementation Insights</h2>\n<p>Here's a glimpse at the key parts of my quadtree implementation:</p>\n<pre style=\"max-height: 300px;\"><code>class QuadTree {\n        constructor(boundary, capacity) {\n            this.boundary = boundary;\n            this.capacity = capacity;\n            this.points = [];\n            this.divided = false;\n        }\n\n        subdivide() {\n            // Create four children...\n        }\n\n        insert(point) {\n            // Add points and subdivide when needed...\n        }\n\n        query(range) {\n            // Find points within a range...\n        }\n}</code></pre>\n<p>Key functions in the implementation:</p>\n<ol>\n    <li><strong>constructor(boundary, capacity)</strong>: Initializes the quadtree with a boundary and capacity.</li>\n    <li><strong>subdivide()</strong>: Divides the current node into four child nodes.</li>\n    <li><strong>insert(point)</strong>: Adds a point to the quadtree and subdivides if necessary.</li>\n    <li><strong>query(range)</strong>: Retrieves all points within a specified range.</li>\n</ol>\n<p>Check out my <a href=\" ../projects/project-1/project-1.html\" class=\"blog-content-link\">Flocking Birds</a> or <a href=\"../projects/project-4/project-4.html\" class=\"blog-content-link\">QuadTree Demo</a> projects to see these concepts in action!</p>\n<hr>\n<h2>Further Reading</h2>\n<p>If you're interested in learning more about quadtrees and spatial partitioning:</p>\n<ul>\n    <li><a href=\"https://en.wikipedia.org/wiki/Quadtree\" class=\"blog-content-link\">Wikipedia: Quadtree</a></li>\n    <li><a href=\"https://github.com/danlitvak\" class=\"blog-content-link\">Check out my GitHub</a> for implementation examples</li>\n</ul>",
+      "media": [
+        {
+          "type": "image",
+          "path": "assets/blog-assets/understanding-quadtrees-assets/boids.png",
+          "alt_text": "Quadtree Example",
+          "caption": "Visualization of a Quadtree in action with boids."
+        },
+        {
+          "type": "image",
+          "path": "assets/blog-assets/understanding-quadtrees-assets/hello.png",
+          "alt_text": "Quadtree Example",
+          "caption": "Slider images showing quadtree visuals."
+        }
+      ],
+      "links": {
+        "demo": "projects/project-4/project-4.html",
+        "related_projects": [
+          "projects/project-1/project-1.html",
+          "projects/project-4/project-4.html"
+        ],
+        "references": [
+          "https://en.wikipedia.org/wiki/Quadtree",
+          "https://github.com/danlitvak"
+        ]
+      }
+    },
+    {
+      "id": "automatic-python",
+      "slug": "automatic-python",
+      "title": "Automating Word Count Display on a Static Blog with Python + Git Hooks",
+      "subtitle": "My experience creating an automatic python script to count words of HTML files to enhance my blog.",
+      "author": "Daniel Litvak",
+      "published_at": "2025-05-28",
+      "updated_at": null,
+      "reading_time": "5 min read",
+      "word_count": 679,
+      "tags": [
+        "python",
+        "automation",
+        "git-hooks",
+        "static-sites"
+      ],
+      "summary": "Walkthrough of a Python + PowerShell workflow that auto-generates blog word counts during git commits and renders them on a static site.",
+      "content_html": "<h1>Automating Word Count Display on a Static Blog with Python + Git Hooks</h1>\n<div class=\"blog-meta\">\n    <span>May 15, 2025</span> • <span id=\"automatic-python\"></span> • <span>5 min read</span>\n</div>\n<hr>\n<h2>Why I Wanted This</h2>\n<p>While working on my personal blog hosted on GitHub Pages, I had a simple idea: what if each post could show its word count automatically? I didn’t want to do this manually or hard-code anything — it felt like something a script should handle. And more importantly, I wanted it to update automatically every time I made a commit.</p>\n<p>This turned out to be a fun mini-project that taught me more about Git hooks, Python scripting, encoding quirks, and working around GitHub Pages’ static limitations.</p>\n<h2>The Setup I Ended Up With</h2>\n<pre style=\"max-height: 300px;\"><code>portfolio/\n├── blogs/                        # My HTML blog posts\n│   ├── post1.html\n│   └── post2.html\n├── data/\n│   └── blog-word-count.json      # Auto-generated word count file\n├── scripts/\n│   └── pre-commit.ps1            # PowerShell script to update the word count\n├── generate_word_counts.py       # Python script to scan all blog files\n└── .git/\n    └── hooks/\n        └── pre-commit            # Git hook that triggers pre-commit.ps1</code></pre>\n<h2>Writing the Python Word Counter</h2>\n<p>The heart of the setup was a Python script that loops through all HTML files in my <code>blogs/</code> folder, extracts the visible text using BeautifulSoup, counts the words, and writes the result to a JSON file. I made sure it was flexible enough to work for any file name.</p>\n<p>I ran into a surprising bug early on: I had added emoji icons like 📘 to the terminal output to make the logs cuter. Turns out Windows’ default terminal encoding (cp1252) couldn’t handle those — which completely broke the script in Git pre-commit context. That was my first lesson: keep hooks ASCII-safe.</p>\n<p>Once that was fixed, the script worked flawlessly.</p>\n<h2>Automating with PowerShell + Git Hook</h2>\n<p>Next, I wanted to automate running the script before every commit. I initially tried putting the script directly in <code>.git/hooks/</code>, but realized that Git ignores anything inside <code>.git/</code> when cloning or sharing repos. So I moved the logic to a tracked <code>scripts/pre-commit.ps1</code> file and added a simple shell shim in <code>.git/hooks/pre-commit</code> to call it:</p>\n<pre style=\"max-height: 300px;\"><code>#!/bin/sh\npowershell -ExecutionPolicy Bypass -File \"scripts/pre-commit.ps1\"</code></pre>\n<p>The PowerShell script looks like this:</p>\n<pre style=\"max-height: 300px;\"><code>Write-Host \"Running generate_word_counts.py...\"\n\n$process = Start-Process -FilePath \"python\" -ArgumentList \"generate_word_counts.py\" -NoNewWindow -Wait -PassThru\n\nif ($process.ExitCode -ne 0) {\n    Write-Host \"Python script failed. Aborting commit.\"\n    exit 1\n}\n\ngit add data/blog-word-count.json\n\nWrite-Host \"Word count JSON updated and staged.\"</code></pre>\n<p>Once this was hooked up correctly, committing felt magical — Git ran my script, updated the JSON, and staged it for me.</p>\n<h2>Displaying the Word Count on My Site</h2>\n<p>To actually use the data, I added this simple JS snippet to my HTML pages:</p>\n<pre style=\"max-height: 300px;\"><code>&lt;p&gt;This post has &lt;span id=\"post1\"&gt;...&lt;/span&gt; words.&lt;/p&gt;\n\n&lt;script&gt;\nfetch('data/blog-word-count.json')\n  .then(res =&gt; res.json())\n  .then(data =&gt; {\n    for (const key in data) {\n      const el = document.getElementById(key);\n      if (el) {\n        el.textContent = data[key] + \" words\";\n      }\n    }\n  });\n&lt;/script&gt;</code></pre>\n<p>Now each post updates its word count dynamically when deployed.</p>\n<h2>A Few Gotchas Along the Way</h2>\n<ol>\n    <li><strong>Unicode Crashes in Terminal Output:</strong> Using emojis in Python <code>print()</code> statements caused <code>UnicodeEncodeError</code>. The fix was replacing them with ASCII-safe tags.</li>\n    <li><strong>Git Couldn't Find My Script:</strong> Initially used a relative path that assumed the hook was executing from a different location. Fixed by referencing <code>scripts/pre-commit.ps1</code> directly.</li>\n</ol>\n<h2>What I Learned</h2>\n<ul>\n    <li>Git hooks are powerful, but picky about paths and encoding</li>\n    <li>Don’t use emojis in anything that runs through Git hooks on Windows</li>\n    <li>You can still build dynamic features on static sites — if you pre-process the data</li>\n    <li>It's way more satisfying to automate something small and have it just work every time</li>\n</ul>\n<h2>Further Reading</h2>\n<p>If you're interested in learning more about quadtrees and spatial partitioning:</p>\n<ul>\n    <li><a href=\"https://en.wikipedia.org/wiki/Quadtree\" class=\"blog-content-link\">Wikipedia: Quadtree</a></li>\n    <li><a href=\"https://github.com/danlitvak\" class=\"blog-content-link\">Check out my GitHub</a> for implementation examples</li>\n</ul>",
+      "media": [
+        {
+          "type": "image",
+          "path": "assets/pfp/pfp.jpg",
+          "alt_text": "Daniel Litvak",
+          "caption": "Author profile image used in the sidebar."
+        }
+      ],
+      "links": {
+        "references": [
+          "https://en.wikipedia.org/wiki/Quadtree",
+          "https://github.com/danlitvak"
+        ]
+      }
+    },
+    {
+      "id": "neural-networks",
+      "slug": "neural-networks",
+      "title": "Neural Networks in Game Development",
+      "subtitle": "subtitle",
+      "author": "Daniel Litvak",
+      "status": "planned",
+      "published_at": null,
+      "updated_at": null,
+      "reading_time": null,
+      "word_count": null,
+      "tags": [],
+      "summary": "Planned post exploring neural network applications in game development.",
+      "content_html": "",
+      "media": [],
+      "links": {}
+    },
+    {
+      "id": "physics-engines",
+      "slug": "physics-engines",
+      "title": "Developing 2D Gravity Engines",
+      "subtitle": "subtitle",
+      "author": "Daniel Litvak",
+      "status": "planned",
+      "published_at": null,
+      "updated_at": null,
+      "reading_time": null,
+      "word_count": null,
+      "tags": [],
+      "summary": "Planned post on building and optimizing 2D gravity/physics engines.",
+      "content_html": "",
+      "media": [],
+      "links": {}
+    }
+  ]
+}

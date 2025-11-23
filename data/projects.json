@@ -1,0 +1,112 @@
+[
+  {
+    "id": "project-1",
+    "title": "Flocking Birds",
+    "summary": "Flocking bird simulation powered by a quadtree; simple rules create complex patterns.",
+    "description": "Simulation of flocking behavior using boids where agents align, cohere, and separate based on neighbors.",
+    "implementation": "Uses a quadtree to accelerate neighbor lookups and renders boids in p5.js; includes controls for frame display, grabbing birds, and debug view.",
+    "learnings": "Practiced optimizing simulations with quadtrees and explored emergent behavior from simple rules.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-1/project-1.html"}
+  },
+  {
+    "id": "project-2",
+    "title": "2D Gravity Simulation",
+    "summary": "Object-oriented Newtonian gravity simulation with field visualization and path predictions.",
+    "description": "Interactive 2D gravitational system where users add bodies and observe orbit dynamics.",
+    "implementation": "Calculates pairwise gravitational forces, predicts future positions, and visualizes results in p5.js with mouse and keyboard controls.",
+    "learnings": "Deepened understanding of Newtonian integration methods and interactive physics visualization.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-2/project-2.html"}
+  },
+  {
+    "id": "project-8",
+    "title": "Hamiltonian Path Solver",
+    "summary": "DFS-based solver inspired by Block Fill with interactive graph exploration.",
+    "description": "Work-in-progress Hamiltonian path visualizer with placeholder introduction text.",
+    "implementation": "Includes a noted solve_step implementation section and basic keyboard interaction placeholder.",
+    "learnings": "Notes mention practicing maps, keys, and array helpers over abstract objects.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-8/project-8.html"}
+  },
+  {
+    "id": "project-4",
+    "title": "QuadTree",
+    "summary": "Spatial index demo showing how quadtrees store and query 2D points efficiently.",
+    "description": "Explains naive vector searches versus quadtree subdivision and lets users add points to explore query performance.",
+    "implementation": "User-placed points are stored in a quadtree; query regions highlight which nodes return results while controls toggle query modes and shapes.",
+    "learnings": "Learned recursion techniques and AABB handling while implementing spatial data structures.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-4/project-4.html"}
+  },
+  {
+    "id": "project-5",
+    "title": "Machine Learning Pong",
+    "summary": "Evolutionary neural-network agents learn to play Pong autonomously.",
+    "description": "Pong simulation featuring AI players trained via evolutionary selection and mutation.",
+    "implementation": "Neural network players compete, top performers breed next generations, and gameplay is rendered with p5.js.",
+    "learnings": "Applied neural networks and evolutionary algorithms to a game context and strengthened practical ML intuition.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-5/project-5.html"}
+  },
+  {
+    "id": "project-6",
+    "title": "Curve Fitter",
+    "summary": "Iterative gradient-descent curve fitting with interactive graph controls.",
+    "description": "Polynomial curve fitting demo where users pan/zoom, add data, and watch coefficients update to minimize error.",
+    "implementation": "p5.js visualization drives gradient-descent updates, showing real-time curve and error changes with multiple input gestures.",
+    "learnings": "Gained hands-on experience implementing gradient descent and building responsive data-visualization tooling.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-6/project-6.html"}
+  },
+  {
+    "id": "project-7",
+    "title": "Mandelbrot Visualization",
+    "summary": "Zoomable Mandelbrot set explorer with HUD controls.",
+    "description": "Placeholder introduction describes zoom-based fractal exploration with undo and HUD toggles.",
+    "implementation": "p5.js rendering of the Mandelbrot set with mouse zoom, undo, and HUD toggle interactions.",
+    "learnings": "Placeholder learning notes; indicates ongoing documentation work.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-7/project-7.html"}
+  },
+  {
+    "id": "project-3",
+    "title": "Conway's Game of Life",
+    "summary": "Interactive Game of Life with statistics, step controls, and speed adjustments.",
+    "description": "Grid-based cellular automaton where users add/remove cells and explore emergent patterns.",
+    "implementation": "Updates cells based on Conway's rules, supports randomization, statistics, playback controls, and p5.js rendering.",
+    "learnings": "Learned about cellular automata, emergent complexity, and building interactive grid simulations.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-3/project-3.html"}
+  },
+  {
+    "id": "project-10",
+    "title": "Matrix Transformation",
+    "summary": "Affine transformation visualizer highlighting eigenvectors in real time.",
+    "description": "Work-in-progress matrix transformation demo with placeholder intro/implementation copy and related blog links.",
+    "implementation": "p5.js canvas paired with placeholder controls; page links to a quadtree-related blog for further reading.",
+    "learnings": "Placeholder learning notes pending fuller write-up.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-10/project-10.html"}
+  },
+  {
+    "id": "project-0",
+    "title": "Test Project",
+    "summary": "3D sinusoidal graph visualization testing WEBGL setup.",
+    "description": "Explores dynamic backgrounds and WEBGL by rendering orbitable 3D surfaces from mathematical functions.",
+    "implementation": "p5.js renders radial grids with orbit controls for rotation/zoom and cycling through surface functions.",
+    "learnings": "Practiced p5.js 3D rendering, lighting normals, and mathematical surface visualization.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-0/project-0.html"}
+  },
+  {
+    "id": "project-9",
+    "title": "Node Graph Visualization",
+    "summary": "Work-in-progress node graph visualizer using spring kinematics.",
+    "description": "Placeholder introduction with notes about porting the Hamiltonian solver to a node graph.",
+    "implementation": "Includes p5.js sketches and class files for node graphs, pan/zoom, and basic interactions.",
+    "learnings": "Placeholder learning notes indicating ongoing development.",
+    "tech_stack": ["JavaScript", "p5.js"],
+    "links": {"page": "projects/project-9/project-9.html"}
+  }
+]
