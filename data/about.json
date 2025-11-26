@@ -1,0 +1,115 @@
+{
+  "profile": {
+    "name": "Daniel Litvak",
+    "headline": "Engineer / Programmer / Developer",
+    "tagline": "Hey, I'm Daniel 👋",
+    "summary": "Engineer who is passionate about computers, robotics, machine learning, and programming, with a journey that started in Scratch, explored C#, and now focuses on JavaScript and p5.js projects.",
+    "availability": "Open to collaborations",
+    "interests": [
+      "Computers",
+      "Robotics",
+      "Machine learning",
+      "Programming",
+      "Simulations"
+    ]
+  },
+  "bio": {
+    "short": "Engineer passionate about computers, robotics, machine learning, and programming, currently focused on JavaScript and p5.js projects.",
+    "long": "I'm an engineer who is passionate about everything to do with computers, robotics, machine learning and programming. I began my journey with Scratch, then dived into C# before settling on working with JavaScript, specifically with the library p5.js. Many of my proudest projects have been created with this library, so explore and become inspired!"
+  },
+  "skills": {
+    "languages": [
+      "JavaScript ES6+",
+      "HTML5",
+      "CSS3",
+      "C#",
+      "C",
+      "C++",
+      "Python"
+    ],
+    "frameworks_libraries": [
+      "p5.js"
+    ],
+    "tools": [
+      "Git & Version Control"
+    ],
+    "domains": [
+      "Newtonian Simulations",
+      "Cellular Automaton",
+      "Recursive Search Algorithms",
+      "Monte Carlo Simulation",
+      "Boid / Flocking Behaviours",
+      "Evolutionary Machine Learning"
+    ]
+  },
+  "experience": [
+    {
+      "role": "Front End Developer / Adviser",
+      "organization": null,
+      "location": null,
+      "start": "2024",
+      "end": "2024",
+      "highlights": [
+        "Built a real-time data visualization dashboard",
+        "Collaborated to troubleshoot and fix API endpoints using HTML, CSS, JavaScript, and Python"
+      ]
+    },
+    {
+      "role": "Online Tutor",
+      "organization": null,
+      "location": null,
+      "start": "2025",
+      "end": "2025",
+      "highlights": [
+        "Teaching and helping high school students to succeed in exams and excel in course assignments"
+      ]
+    },
+    {
+      "role": "Pajo's Fish and Chips Restaurant",
+      "organization": "Pajo's Fish and Chips Restaurant",
+      "location": null,
+      "start": "2024",
+      "end": "2024",
+      "highlights": [
+        "Provided customer service through order management and kitchen operations",
+        "Maintained cleanliness, supported inventory, and coordinated with the team"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of British Columbia",
+      "degree": "Bachelor of Applied Sciences",
+      "field": null,
+      "start": "September 2024",
+      "end": "Present",
+      "honors": null
+    },
+    {
+      "institution": "King David High School",
+      "degree": "High School Diploma",
+      "field": null,
+      "start": "September 2020",
+      "end": "June 2024",
+      "honors": null
+    }
+  ],
+  "media": {
+    "photo_album": {
+      "title": "Photo Album",
+      "description": "They say images speak a thousand words ... I wouldn't read a thousand words either:",
+      "component": "Carousel slider with a track for images",
+      "status": "Rendered on About section"
+    }
+  },
+  "contact": {
+    "email": "daniel.litvak.64@gmail.com",
+    "github": "https://github.com/danlitvak",
+    "linkedin": "https://www.linkedin.com/in/daniel-litvak-837224313/",
+    "call_to_action": "Open to collaborations, you can reach me here"
+  },
+  "links": {
+    "site": "https://danlitvak.github.io/",
+    "blog": "blog.html"
+  }
+}
