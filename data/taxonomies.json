@@ -1,0 +1,79 @@
+{
+  "terms": [
+    {
+      "id": "tag-automation",
+      "label": "automation",
+      "description": null,
+      "type": "tag"
+    },
+    {
+      "id": "tag-git-hooks",
+      "label": "git-hooks",
+      "description": null,
+      "type": "tag"
+    },
+    {
+      "id": "tag-performance",
+      "label": "performance",
+      "description": null,
+      "type": "tag"
+    },
+    {
+      "id": "tag-python",
+      "label": "python",
+      "description": null,
+      "type": "tag"
+    },
+    {
+      "id": "tag-quadtrees",
+      "label": "quadtrees",
+      "description": null,
+      "type": "tag"
+    },
+    {
+      "id": "tag-simulation",
+      "label": "simulation",
+      "description": null,
+      "type": "tag"
+    },
+    {
+      "id": "tag-static-sites",
+      "label": "static-sites",
+      "description": null,
+      "type": "tag"
+    }
+  ],
+  "relationships": {
+    "projects": [],
+    "blogs": [
+      {
+        "term_id": "tag-automation",
+        "blog_ids": ["automatic-python"]
+      },
+      {
+        "term_id": "tag-git-hooks",
+        "blog_ids": ["automatic-python"]
+      },
+      {
+        "term_id": "tag-performance",
+        "blog_ids": ["understanding-quadtrees"]
+      },
+      {
+        "term_id": "tag-python",
+        "blog_ids": ["automatic-python"]
+      },
+      {
+        "term_id": "tag-quadtrees",
+        "blog_ids": ["understanding-quadtrees"]
+      },
+      {
+        "term_id": "tag-simulation",
+        "blog_ids": ["understanding-quadtrees"]
+      },
+      {
+        "term_id": "tag-static-sites",
+        "blog_ids": ["automatic-python"]
+      }
+    ]
+  }
+}
